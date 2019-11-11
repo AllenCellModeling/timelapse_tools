@@ -1,0 +1,22 @@
+timelapse\_access package
+=========================
+
+Submodules
+----------
+
+timelapse\_access.example module
+--------------------------------
+
+.. automodule:: timelapse_access.example
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: timelapse_access
+   :members:
+   :undoc-members:
+   :show-inheritance:
