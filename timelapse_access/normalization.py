@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from typing import List, Tuple
+
+import numpy as np
+
+
+def im2proj(
+    data: np.ndarray,
+    shape: List[Tuple[str, int]],
+    C: int = 0,
+    min_percent_intensity: float = 50.0,
+    max_percent_intensity: float = 99.8,
+    **kwargs
+) -> np.ndarray:
+    """
+
+    """
+    # Get shape operations
+    ops = []
+    z_index = 0
+    for i, dim_and_size in enumerate(shape):
+        # Uppercase for safety
+        dim, size = dim_and_size
+        dim = dim.upper()
+
+        # Set operation for that dimension
+        if dim == "S" or dim == "T":
+            ops.append(0)
+        elif dim == "C":
+            ops.append(C)
+        else:
+            ops.append(slice(None, None, None))
+
+        # Set index of z
+        if dim == "Z":
+            z_index
+
+    # Convert to tuple
+    ops = tuple(ops)
+
+    # These percentiles generally work pretty well for our data
+    norm_by = np.percentile(data[ops], [min_percent_intensity, max_percent_intensity])
+
+    # Normalize by min and max of the percentiles found
+    normed = (data - norm_by[0]) / (norm_by[1] - norm_by[0])
+
+    # Clip any values outside of 0 and 1
+    clipped = np.clip(normed, 0, 1)
+
+    # Scale them between 0 and 255
+    scaled = clipped * 255
+
+    # Return the max project through Z
+    return scaled[ops].max(axis=z_index)
