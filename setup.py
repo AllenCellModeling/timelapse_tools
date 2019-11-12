@@ -43,7 +43,14 @@ interactive_requirements = [
     "matplotlib",
 ]
 
-requirements = []
+requirements = [
+    "aicspylibczi==2.1.0",
+    "imageio==2.6.1",
+    "imageio-ffmpeg==0.3.0",
+    "numpy==1.17.4",
+    "pandas==0.25.3",
+    "Pillow==6.2.1",
+]
 
 extra_requirements = {
     "test": test_requirements,
@@ -71,11 +78,7 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     description="Load and convert timelapses",
-    entry_points={
-        "console_scripts": [
-            "my_example=timelapse_access.bin.my_example:main"
-        ],
-    },
+    entry_points={},
     install_requires=requirements,
     license="Allen Institute Software License",
     long_description=readme,
@@ -83,7 +86,7 @@ setup(
     include_package_data=True,
     keywords="timelapse_access",
     name="timelapse_access",
-    packages=find_packages(),
+    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*"]),
     python_requires=">=3.6",
     setup_requires=setup_requirements,
     test_suite="timelapse_access/tests",
