@@ -50,6 +50,7 @@ requirements = [
     "numpy==1.17.4",
     "pandas==0.25.3",
     "Pillow==6.2.1",
+    "tqdm==4.38.0",
 ]
 
 extra_requirements = {
