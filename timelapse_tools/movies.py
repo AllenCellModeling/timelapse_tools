@@ -30,7 +30,7 @@ def _process_timepoint(
     label: Optional[Union[Callable, str]] = None,
     font: Optional[ImageFont.FreeTypeFont] = None
 ) -> np.ndarray:
-    log.info(f"Reading timepoint: {T}...")
+    log.info(f"Reading timepoint: {T}")
     if C:
         read_slice, shape = img.read_image(T=T, B=0, S=S, C=C)
     else:
@@ -45,7 +45,7 @@ def _process_timepoint(
 
     # TODO: Add label generation
 
-    log.info(f"Completed timepoint {T} processing")
+    log.info(f"Completed timepoint: {T}")
     return proj
 
 
