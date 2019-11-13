@@ -34,7 +34,7 @@ def _process_timepoint(
     begin_t: int = 0
 ) -> np.ndarray:
     # Read timepoint
-    log.info(f"Reading timepoint: {T}")
+    log.debug(f"Reading timepoint: {T}")
     if C:
         read_slice, shape = img.read_image(T=T, B=0, S=S, C=C)
     else:
@@ -91,7 +91,7 @@ def _process_timepoint(
         # Return to numpy array
         proj = np.asarray(im).astype(np.uint8)
 
-    log.info(f"Completed timepoint: {T}")
+    log.debug(f"Completed timepoint: {T}")
     return proj
 
 
