@@ -96,39 +96,27 @@ def generate_movie(
     # Iterate over time dim
     len_T = img.dims()["T"][1]
 
-    # Show or hide progress bar
+    # Generate iterator
+    iterator = range(len_T)[series_range]
     if show_progress:
-        for i in tqdm(range(len_T)[series_range]):
-            # Process timepoint
-            processed = _process_timepoint(
-                img=img,
-                T=i,
-                S=S,
-                C=C,
-                norm_func=norm_func,
-                norm_kwargs=norm_kwargs,
-                label=label,
-                font=font
-            )
+        iterator = tqdm(iterator)
 
-            # Append projection
-            writer.append_data(processed)
-    else:
-        for i in range(len_T)[series_range]:
-            # Process timepoint
-            processed = _process_timepoint(
-                img=img,
-                T=i,
-                S=S,
-                C=C,
-                norm_func=norm_func,
-                norm_kwargs=norm_kwargs,
-                label=label,
-                font=font
-            )
+    # Iter through timepoints
+    for i in iterator:
+        # Process timepoint
+        processed = _process_timepoint(
+            img=img,
+            T=i,
+            S=S,
+            C=C,
+            norm_func=norm_func,
+            norm_kwargs=norm_kwargs,
+            label=label,
+            font=font
+        )
 
-            # Append projection
-            writer.append_data(processed)
+        # Append projection
+        writer.append_data(processed)
 
     # Close the writer
     writer.close()
