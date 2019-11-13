@@ -12,7 +12,7 @@ from lxml.etree import _Element
 from PIL import Image, ImageDraw, ImageFont
 from tqdm import tqdm
 
-from . import projections
+from . import projection
 
 ###############################################################################
 
@@ -27,7 +27,7 @@ def _process_timepoint(
     T: int,
     S: int,
     C: Optional[int] = None,
-    projection_func: Callable = projections.im2proj,
+    projection_func: Callable = projection.im2proj,
     projection_kwargs: Dict = {},
     label: Optional[Union[Callable, str]] = None,
     font: Optional[ImageFont.FreeTypeFont] = None,
@@ -99,7 +99,7 @@ def generate_movie(
     input_file: Union[str, Path],
     output_file: Union[str, Path],
     overwrite: bool = False,
-    projection_func: Callable = projections.im2proj,
+    projection_func: Callable = projection.im2proj,
     projection_kwargs: Dict = {},
     series_range: slice = slice(None, None, None),
     fps: int = 1,

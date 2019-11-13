@@ -11,3 +11,6 @@ __version__ = "0.1.0"
 
 def get_module_version():
     return __version__
+
+
+from .movie import generate_movie

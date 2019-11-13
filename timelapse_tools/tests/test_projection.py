@@ -8,7 +8,7 @@ import pytest
 from aicspylibczi import CziFile
 from imageio import imread
 
-from timelapse_tools import projections
+from timelapse_tools import projection
 
 ###############################################################################
 
@@ -34,7 +34,7 @@ def test_im2proj_valid(small_timelapse_czi, single_timepoint_png):
     data, shape = czi.read_image(B=0, S=0, T=0)
 
     # Generate projection
-    proj = projections.im2proj(
+    proj = projection.im2proj(
         data=data,
         shape=shape
     )
@@ -66,7 +66,7 @@ def test_im2proj_exceptions(small_timelapse_czi, inject_shape, project_axis):
     data, _ = czi.read_image(B=0, S=0, T=0)
 
     # Generate projection
-    projections.im2proj(
+    projection.im2proj(
         data=data,
         shape=inject_shape,
         project_axis=project_axis
@@ -79,7 +79,7 @@ def test_im2proj_all_axes_valid(small_timelapse_czi, single_timepoint_all_axes_p
     data, shape = czi.read_image(B=0, S=0, T=0)
 
     # Generate projection
-    proj = projections.im2proj_all_axes(
+    proj = projection.im2proj_all_axes(
         data=data,
         shape=shape
     )
