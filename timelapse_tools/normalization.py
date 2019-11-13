@@ -12,6 +12,7 @@ def im2proj(
     C: int = 0,
     min_percent_intensity: float = 50.0,
     max_percent_intensity: float = 99.8,
+    project_axis: str = "Z",
     **kwargs
 ) -> np.ndarray:
     """
@@ -19,7 +20,7 @@ def im2proj(
     """
     # Get shape operations
     ops = []
-    z_index = 0
+    kept_dims = []
     for i, dim_and_size in enumerate(shape):
         # Uppercase for safety
         dim, size = dim_and_size
@@ -32,10 +33,7 @@ def im2proj(
             ops.append(C)
         else:
             ops.append(slice(None, None, None))
-
-        # Set index of z
-        if dim == "Z":
-            z_index
+            kept_dims.append(dim)
 
     # Convert to tuple
     ops = tuple(ops)
@@ -52,5 +50,64 @@ def im2proj(
     # Scale them between 0 and 255
     scaled = clipped * 255
 
+    # Prepare for projection
+    project_axis = project_axis.upper()
+    projection_index = kept_dims.index(project_axis)
+
     # Return the max project through Z
-    return scaled[ops].max(axis=z_index)
+    return scaled[ops].max(axis=projection_index)
+
+
+def im2proj_all_axes(
+    data: np.ndarray,
+    shape: List[Tuple[str, int]],
+    C: int = 0,
+    min_percent_intensity: float = 50.0,
+    max_percent_intensity: float = 99.8,
+    **kwargs
+) -> np.ndarray:
+    """
+
+    """
+    # Gets the YX projection
+    z_projection = im2proj(
+        data=data,
+        shape=shape,
+        C=C,
+        min_percent_intensity=min_percent_intensity,
+        max_percent_intensity=max_percent_intensity,
+        project_axis="Z",
+        **kwargs
+    )
+
+    # Gets the ZX projection
+    y_projection = im2proj(
+        data=data,
+        shape=shape,
+        C=C,
+        min_percent_intensity=min_percent_intensity,
+        max_percent_intensity=max_percent_intensity,
+        project_axis="Y",
+        **kwargs
+    )
+
+    # Gets the ZY projection
+    x_projection = im2proj(
+        data=data,
+        shape=shape,
+        C=C,
+        min_percent_intensity=min_percent_intensity,
+        max_percent_intensity=max_percent_intensity,
+        project_axis="X",
+        **kwargs
+    )
+
+    # Combine upper portion by combining x.T and z projections
+    upper = np.hstack((x_projection.T, z_projection))
+
+    # Combine lower portion by combining zeros with y projection
+    zeros = np.zeros((min(y_projection.shape), min(x_projection.shape)))
+    lower = np.hstack((zeros, y_projection))
+
+    # Combine upper and lower portions
+    return np.vstack((upper, lower))
