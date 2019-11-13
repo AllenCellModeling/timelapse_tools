@@ -69,8 +69,8 @@ extra_requirements = {
 }
 
 setup(
-    author="Dave Williams",
-    author_email="cdavew@alleninstitute.org",
+    author="Jackson Brown, Dave Williams",
+    author_email="jacksonb@alleninstitute.org, cdavew@alleninstitute.org",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
@@ -79,7 +79,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
     ],
-    description="Load and convert timelapses",
+    description="Various tools to load and process timelapse data",
     entry_points={},
     install_requires=requirements,
     license="Allen Institute Software License",
