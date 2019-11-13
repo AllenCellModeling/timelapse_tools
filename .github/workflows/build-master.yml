@@ -31,7 +31,7 @@ jobs:
         pip install .[test]
     - name: Test with pytest
       run: |
-        pytest --cov-report xml --cov=timelapse_access timelapse_access/tests/
+        pytest --cov-report xml --cov=timelapse_tools timelapse_tools/tests/
         codecov -t ${{ secrets.CODECOV_TOKEN }}
 
   lint:
@@ -49,4 +49,4 @@ jobs:
         pip install .[test]
     - name: Lint with flake8
       run: |
-        flake8 timelapse_access --count --verbose --max-line-length=127 --show-source --statistics
+        flake8 timelapse_tools --count --verbose --max-line-length=127 --show-source --statistics

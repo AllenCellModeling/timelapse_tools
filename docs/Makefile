@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = timelapse_access
+SPHINXPROJ    = timelapse_tools
 SOURCEDIR     = .
 BUILDDIR      = _build
 

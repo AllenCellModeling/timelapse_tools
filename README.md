@@ -1,7 +1,7 @@
-# Timelapse Access
+# Timelapse Tools
 
-[![Build Status](https://github.com/AllenCellModeling/timelapse_access/workflows/Build%20Master/badge.svg)](https://github.com/AllenCellModeling/timelapse_access/actions)
-[![Documentation](https://github.com/AllenCellModeling/timelapse_access/workflows/Documentation/badge.svg)](https://AllenCellModeling.github.io/timelapse_access)
+[![Build Status](https://github.com/AllenCellModeling/timelapse_tools/workflows/Build%20Master/badge.svg)](https://github.com/AllenCellModeling/timelapse_tools/actions)
+[![Documentation](https://github.com/AllenCellModeling/timelapse_tools/workflows/Documentation/badge.svg)](https://AllenCellModeling.github.io/timelapse_tools)
 
 Load and convert timelapses
 
@@ -17,10 +17,10 @@ pass
 
 ## Installation
 
-`pip install git+https://github.com/AllenCellModeling/timelapse_access.git`
+`pip install git+https://github.com/AllenCellModeling/timelapse_tools.git`
 
 ## Documentation
-For full package documentation please visit [AllenCellModeling.github.io/timelapse_access](https://AllenCellModeling.github.io/timelapse_access).
+For full package documentation please visit [AllenCellModeling.github.io/timelapse_tools](https://AllenCellModeling.github.io/timelapse_tools).
 
 License: Allen Institute Software License
 

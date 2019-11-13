@@ -5,7 +5,7 @@ A clear and concise description of what the bug is.
 A clear and concise description of what you expected to happen.
 
 **System and Software:**
-* timelapse_access Version:
+* timelapse_tools Version:
 * Python Version:
 * Operating System:
 

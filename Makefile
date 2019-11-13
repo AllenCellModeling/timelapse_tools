@@ -49,9 +49,9 @@ build: ## run tox / run tests and lint
 	tox
 
 gen-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/timelapse_access*.rst
+	rm -f docs/timelapse_tools*.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ timelapse_access **/tests/
+	sphinx-apidoc -o docs/ timelapse_tools **/tests/
 	$(MAKE) -C docs html
 
 docs: ## generate Sphinx HTML documentation, including API docs, and serve to browser
