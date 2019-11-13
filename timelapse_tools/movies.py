@@ -11,7 +11,7 @@ from aicspylibczi import CziFile
 from PIL import Image, ImageDraw, ImageFont
 from tqdm import tqdm
 
-from . import normalization
+from . import projections
 
 ###############################################################################
 
@@ -25,7 +25,7 @@ def _process_timepoint(
     T: int,
     S: int,
     C: Optional[int] = None,
-    norm_func: Callable = normalization.im2proj,
+    norm_func: Callable = projections.im2proj,
     norm_kwargs: Dict = {},
     label: Optional[Union[Callable, str]] = None,
     font: Optional[ImageFont.FreeTypeFont] = None
@@ -53,7 +53,7 @@ def generate_movie(
     input_file: Union[str, Path],
     output_file: Union[str, Path],
     overwrite: bool = False,
-    norm_func: Callable = normalization.im2proj,
+    norm_func: Callable = projections.im2proj,
     norm_kwargs: Dict = {},
     series_range: slice = slice(None, None, None),
     fps: int = 1,
