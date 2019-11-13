@@ -127,6 +127,7 @@ def generate_movie(
 
     # Init czi
     img = CziFile(input_file)
+    metadata = img.read_meta()
 
     # Check czi
     if len(img.dims()) == 0:
@@ -139,7 +140,6 @@ def generate_movie(
     # Read the font file if labels are desired
     if label:
         font = ImageFont.truetype(str(font), 12)
-        metadata = img.read_meta()
     else:
         font = None
 
