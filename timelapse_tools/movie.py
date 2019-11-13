@@ -97,7 +97,7 @@ def _process_timepoint(
 
 def generate_movie(
     input_file: Union[str, Path],
-    output_file: Union[str, Path],
+    output_file: Optional[Union[str, Path]] = None,
     overwrite: bool = False,
     projection_func: Callable = projection.im2proj,
     projection_kwargs: Dict = {},
@@ -111,6 +111,12 @@ def generate_movie(
 ) -> Path:
     # Resolve paths
     input_file = Path(input_file).expanduser().resolve(strict=True)
+
+    # Create output filename if none passed
+    if output_file is None:
+        output_file = input_file.with_suffix(".mp4")
+
+    # Check path
     output_file = Path(output_file).expanduser().resolve()
 
     # Check input path
