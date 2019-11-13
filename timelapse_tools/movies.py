@@ -127,7 +127,10 @@ def generate_movie(
 
     # Init czi
     img = CziFile(input_file)
-    writer = imageio.get_writer(output_file, fps=fps)
+
+    # Check czi
+    if len(img.dims()) == 0:
+        raise IOError(f"The input file provided appears to be corrupted or is unreadable by `aicspylibczi`.")
 
     # Warn user about potential memory and IO
     if C is None:
@@ -152,6 +155,9 @@ def generate_movie(
     # Change iterator over to tqdm if desired
     if show_progress:
         iterator = tqdm(iterator)
+
+    # Init writer
+    writer = imageio.get_writer(output_file, fps=fps)
 
     # Iter through timepoints
     for i in iterator:
