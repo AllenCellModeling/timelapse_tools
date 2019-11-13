@@ -55,7 +55,7 @@ def im2proj(
     projection_index = kept_dims.index(project_axis)
 
     # Return the max project through Z
-    return scaled[ops].max(axis=projection_index)
+    return scaled[ops].max(axis=projection_index).astype(np.uint8)
 
 
 def im2proj_all_axes(
