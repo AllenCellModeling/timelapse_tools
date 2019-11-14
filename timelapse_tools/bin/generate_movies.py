@@ -28,7 +28,7 @@ def passthrough(io):
             input_file=input_fp,
             output_file=output_fp,
             projection_func=projection.im2proj_all_axes,
-            fps=4,
+            fps=24,
             label=label.t_index_labeler,
             C=0
         )
