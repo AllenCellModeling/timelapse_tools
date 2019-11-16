@@ -107,8 +107,16 @@ def im2proj_all_axes(
     # Combine upper portion by combining x.T and z projections
     upper = np.hstack((x_projection.T, z_projection))
 
-    # Combine lower portion by combining zeros with y projection
+    # Combine lower portion by combining zeros with the flipped y projection
     zeros = np.zeros((min(y_projection.shape), min(x_projection.shape)))
+
+    # Check which axis to flip
+    if len(y_projection.shape) == 3:
+        y_projection = np.flip(y_projection, axis=1)
+    else:
+        y_projection = np.flip(y_projection, axis=0)
+
+    # Stack
     lower = np.hstack((zeros, y_projection))
 
     # Combine upper and lower portions
