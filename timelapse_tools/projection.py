@@ -18,7 +18,25 @@ def im2proj(
     **kwargs
 ) -> np.ndarray:
     """
+    Generate a 2D (YX) projection for the ndarray.
 
+    Parameters
+    ----------
+    data: np.ndarray
+        The image data to create a projection for.
+    shape: List[Tuple[str, int]]
+        The dimension and shape information to infer projection processing with.
+    C: int
+        Which channel to use for the projection.
+    min_percent_intensity: float
+        The minimum percent intensity to allow through before projecting.
+    max_percent_intensity: float
+        The maximum percent intensity to allow through before projecting.
+
+    Returns
+    -------
+    projection: np.ndarray
+        The 2D (YX) projection.
     """
     # Get shape operations
     ops = []
@@ -69,7 +87,25 @@ def im2proj_all_axes(
     **kwargs
 ) -> np.ndarray:
     """
+    Generate 2D projections for all axes and stack them together for the ndarray.
 
+    Parameters
+    ----------
+    data: np.ndarray
+        The image data to create a projection for.
+    shape: List[Tuple[str, int]]
+        The dimension and shape information to infer projection processing with.
+    C: int
+        Which channel to use for the projection.
+    min_percent_intensity: float
+        The minimum percent intensity to allow through before projecting.
+    max_percent_intensity: float
+        The maximum percent intensity to allow through before projecting.
+
+    Returns
+    -------
+    projection: np.ndarray
+        The stacked 2D projections as a single 2D array.
     """
     # Gets the YX projection
     z_projection = im2proj(

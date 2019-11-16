@@ -33,6 +33,38 @@ def _process_timepoint(
     font: Optional[ImageFont.FreeTypeFont] = None,
     begin_t: int = 0
 ) -> np.ndarray:
+    """
+    Process a single frame of the movie. This read the desired plane then step through the projection function and the
+    label function.
+
+    Parameters
+    ----------
+    img: CziFile
+        The initialized CziFile to read from.
+    metadata: _Element
+        The already read file wide metadata.
+    T: int
+        Which timepoint to read.
+    S: int
+        Which scene to read.
+    C: Optional[int]
+        Optionally, which channel to read. If None, reads all channels for that timepoint and scene.
+    projection_func: Callable
+        Which function to be used to generate a projection for the plane.
+    projection_kwargs: Dict
+        Any additional kwargs to be passed to the projection function.
+    label: Optional[Union[Callable, str]]
+        Optionally, either: a function to generate a string or a string to placed on each frame.
+    font: Optional[ImageFont.FreeTypeFont]
+        Optionally, a preloaded font to use for the label.
+    begin_t: int
+        The first timepoint index to be processed by the generate_movie function.
+
+    Returns
+    -------
+    projection: np.ndarray
+        The 2D (YX) or 3D (CYX) ndarray to add as a frame to the movie.
+    """
     # Read timepoint
     log.debug(f"Reading timepoint: {T}")
     if C:
@@ -109,6 +141,40 @@ def generate_movie(
     S: int = 0,
     C: Optional[int] = None
 ) -> Path:
+    """
+    Convert a single large file into a much smaller movie. Image reading and writing is done a single frame at a time.
+
+    Parameters
+    ----------
+    input_file: Union[str, Path]
+        The path to the file to be processed.
+    output_file: Optional[Union[str, Path]]
+        Optionally, a path to where the output file should be stored. If None provided, stores it in the same directory
+        as the input_file, with the same name but with the .mp4 suffix.
+    overwrite: bool
+        If a file already exists at the output_file location, allow it to be overwritten.
+    projection_func: Callable
+        Which function to be used to generate a projection for the plane.
+    projection_kwargs: Dict
+        Any additional kwargs to be passed to the projection function.
+    series_range: slice
+        A slice object to inform which timepoints to use.
+    fps: int
+        How many frames should be shown per second in the output file.
+    label: Optional[Union[Callable, str]]
+        Optionally, either: a function to generate a string or a string to placed on each frame.
+    font: Optional[ImageFont.FreeTypeFont]
+        Optionally, a preloaded font to use for the label.
+    S: int
+        Which scene to read.
+    C: Optional[int]
+        Which channel to read. Default to reading all channels.
+
+    Returns
+    -------
+    saved_file: Path
+        The resulting save path for the produced file.
+    """
     # Resolve paths
     input_file = Path(input_file).expanduser().resolve(strict=True)
 
