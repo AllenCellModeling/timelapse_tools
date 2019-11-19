@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 import pandas as pd
@@ -56,5 +56,5 @@ output_save_paths = [
 io_paths = zip(input_file_paths, output_save_paths)
 
 # Run threadpool
-with ThreadPoolExecutor(max_workers=6) as exe:
+with ProcessPoolExecutor(max_workers=6) as exe:
     exe.map(passthrough, io_paths)
