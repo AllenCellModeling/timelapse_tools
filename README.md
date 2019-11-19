@@ -11,6 +11,21 @@ Load and convert timelapses
 * Load and convert time lapse images
 
 ## Quick Start
+
+_**Run computation over a large file:**_
+```python
+from timelapse_tools import compute
+from timelapse_tools.computation.min_max_intensity_finder import MinMaxIntensityFinder
+
+# Initialize your computation manager
+computation_manager = MinMaxIntensityFinder()
+
+# Compute
+results = compute("timelapse_tools/tests/data/s_1_t_5_c_1_z_1.czi", computation_manager)
+# (results.min_intensity, results.max_intensity) == (347, 1894)
+```
+
+_**Generate a movie:**_
 ```python
 from timelapse_tools import generate_movie, projection, label
 
