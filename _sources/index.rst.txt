@@ -1,4 +1,4 @@
-Welcome to Timelapse Access's documentation!
+Welcome to Timelapse Tools's documentation!
 ======================================
 
 .. toctree::
