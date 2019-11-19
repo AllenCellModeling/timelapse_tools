@@ -13,4 +13,5 @@ def get_module_version():
     return __version__
 
 
+from .compute import compute  # noqa: F401
 from .movie import generate_movie  # noqa: F401
