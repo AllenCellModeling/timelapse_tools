@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>timelapse_tools.movie &mdash; Timelapse Tools 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Timelapse Tools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../timelapse_tools.html">timelapse_tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../timelapse_tools.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../timelapse_tools.html#module-timelapse_tools.label">timelapse_tools.label module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../timelapse_tools.html#module-timelapse_tools.movie">timelapse_tools.movie module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../timelapse_tools.html#module-timelapse_tools.projection">timelapse_tools.projection module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../timelapse_tools.html#module-timelapse_tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Timelapse Tools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../timelapse_tools.html">timelapse_tools</a> &raquo;</li>
+        
+      <li>timelapse_tools.movie</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for timelapse_tools.movie</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">aicspylibczi</span> <span class="k">import</span> <span class="n">CziFile</span>
+<span class="kn">from</span> <span class="nn">lxml.etree</span> <span class="k">import</span> <span class="n">_Element</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">projection</span>
+
+<span class="c1">###############################################################################</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">###############################################################################</span>
+
+
+<span class="k">def</span> <span class="nf">_process_timepoint</span><span class="p">(</span>
+    <span class="n">img</span><span class="p">:</span> <span class="n">CziFile</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="p">:</span> <span class="n">_Element</span><span class="p">,</span>
+    <span class="n">T</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">S</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">C</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">projection_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">im2proj</span><span class="p">,</span>
+    <span class="n">projection_kwargs</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">label</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">font</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ImageFont</span><span class="o">.</span><span class="n">FreeTypeFont</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">begin_t</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Process a single frame of the movie. This read the desired plane then step through the projection function and the</span>
+<span class="sd">    label function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    img: CziFile</span>
+<span class="sd">        The initialized CziFile to read from.</span>
+<span class="sd">    metadata: _Element</span>
+<span class="sd">        The already read file wide metadata.</span>
+<span class="sd">    T: int</span>
+<span class="sd">        Which timepoint to read.</span>
+<span class="sd">    S: int</span>
+<span class="sd">        Which scene to read.</span>
+<span class="sd">    C: Optional[int]</span>
+<span class="sd">        Optionally, which channel to read. If None, reads all channels for that timepoint and scene.</span>
+<span class="sd">    projection_func: Callable</span>
+<span class="sd">        Which function to be used to generate a projection for the plane.</span>
+<span class="sd">    projection_kwargs: Dict</span>
+<span class="sd">        Any additional kwargs to be passed to the projection function.</span>
+<span class="sd">    label: Optional[Union[Callable, str]]</span>
+<span class="sd">        Optionally, either: a function to generate a string or a string to placed on each frame.</span>
+<span class="sd">    font: Optional[ImageFont.FreeTypeFont]</span>
+<span class="sd">        Optionally, a preloaded font to use for the label.</span>
+<span class="sd">    begin_t: int</span>
+<span class="sd">        The first timepoint index to be processed by the generate_movie function.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    projection: np.ndarray</span>
+<span class="sd">        The 2D (YX) or 3D (CYX) ndarray to add as a frame to the movie.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Read timepoint</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Reading timepoint: </span><span class="si">{T}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">C</span><span class="p">:</span>
+        <span class="n">read_slice</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">read_image</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">read_slice</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">read_image</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">)</span>
+
+    <span class="c1"># Generate projection</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Generating projection...&quot;</span><span class="p">)</span>
+    <span class="n">proj</span> <span class="o">=</span> <span class="n">projection_func</span><span class="p">(</span><span class="n">read_slice</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="o">**</span><span class="n">projection_kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Always cast to uint8</span>
+    <span class="n">proj</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+    <span class="c1"># Enforce projection dimensions</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">f</span><span class="s2">&quot;The array returned from provided projection function was {len(proj.shape)} dimensional. Expected 2 or 3.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Add label if provided</span>
+    <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+        <span class="c1"># Call label function with parameters</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">Callable</span><span class="p">):</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="p">(</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+                <span class="n">start_T</span><span class="o">=</span><span class="n">begin_t</span><span class="p">,</span>
+                <span class="n">current_T</span><span class="o">=</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">shape</span><span class="o">=</span><span class="n">shape</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Always cast to a string</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Label for frame: </span><span class="si">{T}</span><span class="s2"> was provided as </span><span class="si">{label}</span><span class="s2"> with type: {type(label)}. Casting to string.&quot;</span><span class="p">)</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="c1"># Read projection as Image</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
+
+        <span class="c1"># Get height and set intensity for text</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">intensity</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">intensity</span> <span class="o">=</span> <span class="mi">255</span>
+
+        <span class="c1"># Label position is lower left</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="mi">20</span><span class="p">)</span>
+
+        <span class="c1"># Attach label in lower left of image</span>
+        <span class="n">drawer</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+        <span class="n">drawer</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">intensity</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+
+        <span class="c1"># Return to numpy array</span>
+        <span class="n">proj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">im</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Completed timepoint: </span><span class="si">{T}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<div class="viewcode-block" id="generate_movie"><a class="viewcode-back" href="../../timelapse_tools.html#timelapse_tools.movie.generate_movie">[docs]</a><span class="k">def</span> <span class="nf">generate_movie</span><span class="p">(</span>
+    <span class="n">input_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="n">output_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">projection_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">im2proj</span><span class="p">,</span>
+    <span class="n">projection_kwargs</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">series_range</span><span class="p">:</span> <span class="nb">slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="n">fps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">label</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">font</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;fonts&quot;</span> <span class="o">/</span> <span class="s2">&quot;DejaVuSansMono.ttf&quot;</span><span class="p">),</span>
+    <span class="n">show_progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">S</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">C</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a single large file into a much smaller movie. Image reading and writing is done a single frame at a time.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_file: Union[str, Path]</span>
+<span class="sd">        The path to the file to be processed.</span>
+<span class="sd">    output_file: Optional[Union[str, Path]]</span>
+<span class="sd">        Optionally, a path to where the output file should be stored. If None provided, stores it in the same directory</span>
+<span class="sd">        as the input_file, with the same name but with the .mp4 suffix.</span>
+<span class="sd">    overwrite: bool</span>
+<span class="sd">        If a file already exists at the output_file location, allow it to be overwritten.</span>
+<span class="sd">    projection_func: Callable</span>
+<span class="sd">        Which function to be used to generate a projection for the plane.</span>
+<span class="sd">    projection_kwargs: Dict</span>
+<span class="sd">        Any additional kwargs to be passed to the projection function.</span>
+<span class="sd">    series_range: slice</span>
+<span class="sd">        A slice object to inform which timepoints to use.</span>
+<span class="sd">    fps: int</span>
+<span class="sd">        How many frames should be shown per second in the output file.</span>
+<span class="sd">    label: Optional[Union[Callable, str]]</span>
+<span class="sd">        Optionally, either: a function to generate a string or a string to placed on each frame.</span>
+<span class="sd">    font: Optional[ImageFont.FreeTypeFont]</span>
+<span class="sd">        Optionally, a preloaded font to use for the label.</span>
+<span class="sd">    S: int</span>
+<span class="sd">        Which scene to read.</span>
+<span class="sd">    C: Optional[int]</span>
+<span class="sd">        Which channel to read. Default to reading all channels.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    saved_file: Path</span>
+<span class="sd">        The resulting save path for the produced file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Resolve paths</span>
+    <span class="n">input_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Create output filename if none passed</span>
+    <span class="k">if</span> <span class="n">output_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">output_file</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.mp4&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Check path</span>
+    <span class="n">output_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+    <span class="c1"># Check input path</span>
+    <span class="k">if</span> <span class="n">input_file</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">IsADirectoryError</span><span class="p">(</span>
+            <span class="n">f</span><span class="s2">&quot;Please provide a single file to the `input_file` parameter. Receieved directory: </span><span class="si">{input_file}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Check output path</span>
+    <span class="k">if</span> <span class="n">output_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span>
+            <span class="n">f</span><span class="s2">&quot;A file already exists at the specified output location: </span><span class="si">{output_file}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Init czi</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">CziFile</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">read_meta</span><span class="p">()</span>
+
+    <span class="c1"># Check czi</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">dims</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;The input file provided appears to be corrupted or is unreadable by `aicspylibczi`.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Warn user about potential memory and IO</span>
+    <span class="k">if</span> <span class="n">C</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;All dimension `C` (Channel) data will be read on each iteration. This may increase time and memory.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Read the font file if labels are desired</span>
+    <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">font</span><span class="p">),</span> <span class="mi">12</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Iterate over time dim</span>
+    <span class="n">len_T</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">dims</span><span class="p">()[</span><span class="s2">&quot;T&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Generate iterator</span>
+    <span class="n">iterator</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_T</span><span class="p">)[</span><span class="n">series_range</span><span class="p">]</span>
+
+    <span class="c1"># Store beginning timepoint as it may be useful for labeling if desired</span>
+    <span class="n">begin_t</span> <span class="o">=</span> <span class="n">iterator</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Change iterator over to tqdm if desired</span>
+    <span class="k">if</span> <span class="n">show_progress</span><span class="p">:</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+
+    <span class="c1"># Init writer</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">imageio</span><span class="o">.</span><span class="n">get_writer</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">)</span>
+
+    <span class="c1"># Iter through timepoints</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+        <span class="c1"># Process timepoint</span>
+        <span class="n">processed</span> <span class="o">=</span> <span class="n">_process_timepoint</span><span class="p">(</span>
+            <span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+            <span class="n">T</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+            <span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">,</span>
+            <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span>
+            <span class="n">projection_func</span><span class="o">=</span><span class="n">projection_func</span><span class="p">,</span>
+            <span class="n">projection_kwargs</span><span class="o">=</span><span class="n">projection_kwargs</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
+            <span class="n">begin_t</span><span class="o">=</span><span class="n">begin_t</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Append projection</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span>
+
+    <span class="c1"># Close the writer</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">output_file</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Dave Williams
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

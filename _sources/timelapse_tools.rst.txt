@@ -1,0 +1,38 @@
+timelapse\_tools package
+========================
+
+Submodules
+----------
+
+timelapse\_tools.label module
+-----------------------------
+
+.. automodule:: timelapse_tools.label
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+timelapse\_tools.movie module
+-----------------------------
+
+.. automodule:: timelapse_tools.movie
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+timelapse\_tools.projection module
+----------------------------------
+
+.. automodule:: timelapse_tools.projection
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: timelapse_tools
+   :members:
+   :undoc-members:
+   :show-inheritance:

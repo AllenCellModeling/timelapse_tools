@@ -1,7 +1,7 @@
-timelapse_access
-================
+timelapse_tools
+===============
 
 .. toctree::
    :maxdepth: 4
 
-   timelapse_access
+   timelapse_tools
