@@ -9,6 +9,12 @@ import numpy as np
 from aicspylibczi import CziFile
 from tqdm import tqdm
 
+from .. import exceptions
+
+###############################################################################
+
+AVAILABLE_OPERATING_DIMENSIONS = ["S", "T", "C", "Z"]
+
 ###############################################################################
 
 
@@ -79,25 +85,58 @@ def compute(
             f"Received {type(input_file)}"
         )
 
-    # Iterate over time dim
-    len_T = input_file.dims()[operating_dimension][1]
+    # Upper operating dimension
+    operating_dimension = operating_dimension.upper()
+
+    # Check that the operating dimension exists in the dimensions for the file
+    if operating_dimension not in input_file.dims():
+        raise ValueError(
+            f"Operating dimension: '{operating_dimension}' not found in file dimensions: {input_file.dims()}"
+        )
+
+    # Handle operating dimension provided is specified as read specific
+    specified_read_dim = locals().get(operating_dimension)
+    if specified_read_dim:
+        raise exceptions.ConflictingArgumentsError(
+            f"Cannot specify reading only '{operating_dimension}': {specified_read_dim} "
+            f"because '{operating_dimension}' is currently the operating dimension as well."
+        )
+
+    # Iterate over operating dim
+    len_operating_dim = input_file.dims()[operating_dimension][1]
 
     # Generate iterator
-    iterator = range(len_T)[series_range]
+    iterator = range(len_operating_dim)[series_range]
 
     # Change iterator over to tqdm if desired
     if show_progress:
         iterator = tqdm(iterator)
 
+    # Create dictionary to store which dims we will need to read on each iteration
+    read_dims = {}
+    if "B" in input_file.dims():
+        read_dims["B"] = 0
+
+    # Set the available dims left to retrieve
+    available_dims = AVAILABLE_OPERATING_DIMENSIONS.copy()
+    available_dims.remove(operating_dimension)
+
+    # Set the rest of the passed dims
+    for dim in available_dims:
+        # Only add the dimension if it exists in the file
+        if dim in input_file.dims():
+            if locals().get(dim) is not None:
+                read_dims[dim] = locals().get(dim)
+
     # Process each frame
     for i in iterator:
+        # Set the operating dimension current index
+        read_dims[operating_dimension] = i
+
         # Read slice
-        if C:
-            read_slice, dims = input_file.read_image(T=i, B=0, S=S, C=C)
-        else:
-            read_slice, dims = input_file.read_image(T=i, B=0, S=S)
+        data, dims = input_file.read_image(**read_dims)
 
         # Compute
-        computation_manager.process_data(data=read_slice, dimensions=dims, file_pointer=input_file)
+        computation_manager.process_data(data=data, dimensions=dims, file_pointer=input_file, read_dims=read_dims)
 
     return computation_manager

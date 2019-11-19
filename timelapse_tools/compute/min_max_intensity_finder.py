@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import numpy as np
 from aicspylibczi import CziFile
@@ -20,7 +20,13 @@ class MinMaxIntensityFinder(ComputationManager):
         self.min_intensity = None
         self.max_intensity = None
 
-    def process_data(self, data: np.ndarray, dimensions: List[Tuple[str, int]], file_pointer: CziFile):
+    def process_data(
+        self,
+        data: np.ndarray,
+        dimensions: List[Tuple[str, int]],
+        file_pointer: CziFile,
+        read_dims: Dict[str, int]
+    ):
         # Get min and max
         min = data.min()
         max = data.max()
