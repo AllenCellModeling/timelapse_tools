@@ -67,7 +67,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
-docs/timelapse_access.*rst
+docs/timelapse_tools.*rst
 
 # PyBuilder
 target/

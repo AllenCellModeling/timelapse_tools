@@ -16,30 +16,28 @@ jobs:
     strategy:
       max-parallel: 6
       matrix:
-        python-version: [3.6, 3.7]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, macOS-latest]
 
     steps:
     - uses: actions/checkout@master
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python
       uses: actions/setup-python@master
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.7
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install .[test]
     - name: Test with pytest
       run: |
-        pytest --cov-report xml --cov=timelapse_access timelapse_access/tests/
-        codecov -t ${{ secrets.CODECOV_TOKEN }}
+        pytest timelapse_tools/tests/
 
   lint:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@master
-    - name: Set up Python 3.7
+    - name: Set up Python
       uses: actions/setup-python@master
       with:
         python-version: 3.7
@@ -49,4 +47,4 @@ jobs:
         pip install .[test]
     - name: Lint with flake8
       run: |
-        flake8 timelapse_access --count --verbose --max-line-length=127 --show-source --statistics
+        flake8 timelapse_tools --count --verbose --max-line-length=127 --show-source --statistics

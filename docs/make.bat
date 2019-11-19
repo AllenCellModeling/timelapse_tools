@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=timelapse_access
+set SPHINXPROJ=timelapse_tools
 
 if "%1" == "" goto help
 

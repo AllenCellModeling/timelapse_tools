@@ -43,7 +43,16 @@ interactive_requirements = [
     "matplotlib",
 ]
 
-requirements = []
+requirements = [
+    "aicspylibczi==2.1.0",
+    "imageio==2.6.1",
+    "imageio-ffmpeg==0.3.0",
+    "lxml==4.4.1",
+    "numpy==1.17.4",
+    "pandas==0.25.3",
+    "Pillow==6.2.1",
+    "tqdm==4.38.0",
+]
 
 extra_requirements = {
     "test": test_requirements,
@@ -60,8 +69,8 @@ extra_requirements = {
 }
 
 setup(
-    author="Dave Williams",
-    author_email="cdavew@alleninstitute.org",
+    author="Jackson Brown, Dave Williams",
+    author_email="jacksonb@alleninstitute.org, cdavew@alleninstitute.org",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
@@ -70,26 +79,22 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
     ],
-    description="Load and convert timelapses",
-    entry_points={
-        "console_scripts": [
-            "my_example=timelapse_access.bin.my_example:main"
-        ],
-    },
+    description="Various tools to load and process timelapse data",
+    entry_points={},
     install_requires=requirements,
     license="Allen Institute Software License",
     long_description=readme,
     long_description_content_type="text/markdown",
     include_package_data=True,
-    keywords="timelapse_access",
-    name="timelapse_access",
-    packages=find_packages(),
+    keywords="timelapse_tools",
+    name="timelapse_tools",
+    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*"]),
     python_requires=">=3.6",
     setup_requires=setup_requirements,
-    test_suite="timelapse_access/tests",
+    test_suite="timelapse_tools/tests",
     tests_require=test_requirements,
     extras_require=extra_requirements,
-    url="https://github.com/AllenCellModeling/timelapse_access",
+    url="https://github.com/AllenCellModeling/timelapse_tools",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
     version="0.1.0",
