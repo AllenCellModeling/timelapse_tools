@@ -1,0 +1,30 @@
+timelapse\_tools.computation package
+====================================
+
+Submodules
+----------
+
+timelapse\_tools.computation.computation\_manager module
+--------------------------------------------------------
+
+.. automodule:: timelapse_tools.computation.computation_manager
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+timelapse\_tools.computation.min\_max\_intensity\_finder module
+---------------------------------------------------------------
+
+.. automodule:: timelapse_tools.computation.min_max_intensity_finder
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: timelapse_tools.computation
+   :members:
+   :undoc-members:
+   :show-inheritance:

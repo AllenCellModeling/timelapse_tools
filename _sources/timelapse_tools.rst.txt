@@ -1,8 +1,23 @@
 timelapse\_tools package
 ========================
 
+Subpackages
+-----------
+
+.. toctree::
+
+   timelapse_tools.computation
+
 Submodules
 ----------
+
+timelapse\_tools.exceptions module
+----------------------------------
+
+.. automodule:: timelapse_tools.exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 timelapse\_tools.label module
 -----------------------------
