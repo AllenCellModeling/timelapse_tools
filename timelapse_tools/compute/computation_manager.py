@@ -1,15 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np
 from aicspylibczi import CziFile
 from tqdm import tqdm
 
 from .. import exceptions
+
+###############################################################################
+
+log = logging.getLogger(__name__)
 
 ###############################################################################
 
@@ -35,7 +40,13 @@ class ComputationManager(ABC):
         pass
 
     @abstractmethod
-    def process_data(self, data: np.ndarray, dimensions: List[Tuple[str, int]], file_pointer: CziFile):
+    def process_data(
+        self,
+        data: np.ndarray,
+        dimensions: List[Tuple[str, int]],
+        file_pointer: CziFile,
+        read_dims: Dict[str, int]
+    ):
         """
         Process a single data cube read from the file. You should store the outputs from your processing on as
         attributes on this objects. So that you have access to them on the next iteration if required.
@@ -49,6 +60,8 @@ class ComputationManager(ABC):
         file_pointer: CziFile
             The file pointer (or buffer reference) in the case you want to explicitely access more information from the
             file during each process operation.
+        read_dims: Dict[str, int]
+            The dimensions and which indices that were used to read this data cube from the file.
         """
         pass
 
@@ -60,10 +73,55 @@ def compute(
     series_range: slice = slice(None, None, None),
     S: Optional[int] = None,
     C: Optional[int] = None,
-    Z: Optional[int] = None,
     T: Optional[int] = None,
+    Z: Optional[int] = None,
     show_progress: bool = False
 ):
+    """
+    Run a computation across each data cube retrieved over the operating dimension and store it in the computation
+    managers state.
+
+    Parameters
+    ----------
+    input_file: Union[str, Path, CziFile]
+        The file to process.
+    computation_manager: ComputationManager
+        An initialized computation manager object that will be handed the read data cube on each iteration.
+    operating_dimension: str
+        Which dimension to iterate over.
+        Default: "T" (Time)
+    series_range: slice
+        A slice object to inform which indices to read over the available indices from the operating dimension.
+        Default: all, slice(None, None, None)
+    S: Optional[int]
+        Which scene to read at each iteration.
+        Default: None, read all scenes
+    C: Optional[int]
+        Which channel to read at each iteration.
+        Default: None, read all channels
+    T: Optional[int]
+        Which timepoint to read at each iteration.
+        Default: None, read all timepoints.
+    Z: Optional[int]
+        Which spatial Z plane to read at each iteration.
+        Default: None, read all spatial Z planes.
+    show_progress: bool
+        Display a progress bar.
+        Default: False
+
+    Returns
+    -------
+    computation_manager: ComputationManager
+        The provided computation manager after it has processed each iteration.
+
+    Notes
+    -----
+    You may notice that the default `operating_dimension` is "T" and that the default `T` is None. This behavior is
+    enforced. You cannot specify an index to read on each iteration for a dimension that is acting as the operating
+    dimension. As an example, any value besides `T=None`, for `operating_dimension="T"` will raise a
+    `ConflictingArgumentsError`. Similary, any value besides `Z=None`, for `operating_dimension="Z"` will raise a
+    `ConflictingArgumentsError`.
+    """
     # Convert pathlike to CziFile
     if isinstance(input_file, (str, Path)):
         # Resolve path
@@ -127,6 +185,10 @@ def compute(
         if dim in input_file.dims():
             if locals().get(dim) is not None:
                 read_dims[dim] = locals().get(dim)
+            else:
+                log.warn(
+                    f"All '{dim}' dimension data will be read on each iteration. This may increase time and memory."
+                )
 
     # Process each frame
     for i in iterator:
