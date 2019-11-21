@@ -31,7 +31,7 @@ def _process_timepoint(
     projection_kwargs: Dict = {},
     label: Optional[Union[Callable, str]] = None,
     font: Optional[ImageFont.FreeTypeFont] = None,
-    begin_t: int = 0
+    begin_t: int = 0,
 ) -> np.ndarray:
     """
     Process a single frame of the movie. This read the desired plane then step through the projection function and the
@@ -89,16 +89,13 @@ def _process_timepoint(
     if label:
         # Call label function with parameters
         if isinstance(label, Callable):
-            label = label(
-                metadata=metadata,
-                start_T=begin_t,
-                current_T=T,
-                shape=shape
-            )
+            label = label(metadata=metadata, start_T=begin_t, current_T=T, shape=shape)
 
         # Always cast to a string
         if not isinstance(label, str):
-            log.debug(f"Label for frame: {T} was provided as {label} with type: {type(label)}. Casting to string.")
+            log.debug(
+                f"Label for frame: {T} was provided as {label} with type: {type(label)}. Casting to string."
+            )
             label = str(label)
 
         # Read projection as Image
@@ -139,7 +136,7 @@ def generate_movie(
     font: Path = (Path(__file__).parent / "fonts" / "DejaVuSansMono.ttf"),
     show_progress: bool = False,
     S: int = 0,
-    C: Optional[int] = None
+    C: Optional[int] = None,
 ) -> Path:
     """
     Convert a single large file into a much smaller movie. Image reading and writing is done a single frame at a time.
@@ -203,11 +200,15 @@ def generate_movie(
 
     # Check czi
     if len(img.dims()) == 0:
-        raise IOError(f"The input file provided appears to be corrupted or is unreadable by `aicspylibczi`.")
+        raise IOError(
+            f"The input file provided appears to be corrupted or is unreadable by `aicspylibczi`."
+        )
 
     # Warn user about potential memory and IO
     if C is None:
-        log.warn(f"All dimension `C` (Channel) data will be read on each iteration. This may increase time and memory.")
+        log.warn(
+            f"All dimension `C` (Channel) data will be read on each iteration. This may increase time and memory."
+        )
 
     # Read the font file if labels are desired
     if label:
@@ -244,7 +245,7 @@ def generate_movie(
             projection_kwargs=projection_kwargs,
             label=label,
             font=font,
-            begin_t=begin_t
+            begin_t=begin_t,
         )
 
         # Append projection
