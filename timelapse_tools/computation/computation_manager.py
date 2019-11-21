@@ -45,7 +45,7 @@ class ComputationManager(ABC):
         data: np.ndarray,
         dimensions: List[Tuple[str, int]],
         file_pointer: CziFile,
-        read_dims: Dict[str, int]
+        read_dims: Dict[str, int],
     ):
         """
         Process a single data cube read from the file. You should store the outputs from your processing on as
@@ -75,7 +75,7 @@ def compute(
     C: Optional[int] = None,
     T: Optional[int] = None,
     Z: Optional[int] = None,
-    show_progress: bool = False
+    show_progress: bool = False,
 ):
     """
     Run a computation across each data cube retrieved over the operating dimension and store it in the computation
@@ -199,6 +199,8 @@ def compute(
         data, dims = input_file.read_image(**read_dims)
 
         # Compute
-        computation_manager.process_data(data=data, dimensions=dims, file_pointer=input_file, read_dims=read_dims)
+        computation_manager.process_data(
+            data=data, dimensions=dims, file_pointer=input_file, read_dims=read_dims
+        )
 
     return computation_manager

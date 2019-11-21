@@ -25,7 +25,7 @@ class MinMaxIntensityFinder(ComputationManager):
         data: np.ndarray,
         dimensions: List[Tuple[str, int]],
         file_pointer: CziFile,
-        read_dims: Dict[str, int]
+        read_dims: Dict[str, int],
     ):
         # Get min and max
         min = data.min()
