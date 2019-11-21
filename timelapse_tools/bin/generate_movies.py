@@ -12,8 +12,10 @@ from timelapse_tools import generate_movie, label, projection
 ###############################################################################
 
 log = logging.getLogger()
-logging.basicConfig(level=logging.INFO,
-                    format='[%(asctime)s - %(name)s - %(lineno)3d][%(levelname)s] %(message)s')
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s - %(name)s - %(lineno)3d][%(levelname)s] %(message)s",
+)
 
 ###############################################################################
 
@@ -30,7 +32,7 @@ def passthrough(io):
             projection_func=projection.im2proj_all_axes,
             fps=24,
             label=label.t_index_labeler,
-            C=0
+            C=0,
         )
         log.info(f"Completed processing for: {input_fp}. Saved to: {output_fp}")
     except Exception as e:
@@ -39,7 +41,9 @@ def passthrough(io):
 
 
 # Read data csv
-data = (Path(__file__).resolve().parent.parent.parent / "data" / "raw_image_list.csv").resolve(strict=True)
+data = (
+    Path(__file__).resolve().parent.parent.parent / "data" / "raw_image_list.csv"
+).resolve(strict=True)
 data = pd.read_csv(data)
 
 # Generate list of input file paths and output save paths
@@ -48,7 +52,9 @@ input_file_paths = [
     for i, row in data.iterrows()
 ]
 output_save_paths = [
-    (Path("/allen/aics/modeling/jacksonb/projects/timelapse_movies") / row["File Name"]).resolve().with_suffix(".mp4")
+    (Path("/allen/aics/modeling/jacksonb/projects/timelapse_movies") / row["File Name"])
+    .resolve()
+    .with_suffix(".mp4")
     for i, row in data.iterrows()
 ]
 

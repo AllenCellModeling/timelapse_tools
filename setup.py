@@ -14,6 +14,7 @@ test_requirements = [
     "pytest",
     "pytest-cov",
     "pytest-raises",
+    "black",
 ]
 
 setup_requirements = [

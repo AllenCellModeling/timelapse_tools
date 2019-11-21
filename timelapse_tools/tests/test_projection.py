@@ -34,10 +34,7 @@ def test_im2proj_valid(small_timelapse_czi, single_timepoint_png):
     data, shape = czi.read_image(B=0, S=0, T=0)
 
     # Generate projection
-    proj = projection.im2proj(
-        data=data,
-        shape=shape
-    )
+    proj = projection.im2proj(data=data, shape=shape)
 
     # Read expected projection
     expected = imread(single_timepoint_png)
@@ -46,31 +43,39 @@ def test_im2proj_valid(small_timelapse_czi, single_timepoint_png):
     assert np.array_equal(proj, expected)
 
 
-@pytest.mark.parametrize("inject_shape, project_axis", [
-    # fails because dimension D not found in shape
-    pytest.param(
-        [("S", 1), ("T", 1), ("C", 1), ("Z", 1), ("Y", 624), ("X", 924)],
-        "D",
-        marks=pytest.mark.raises(exception=ValueError)
-    ),
-    # fails because data.shape is a different length than shape
-    pytest.param(
-        [("A", 1), ("B", 1), ("S", 1), ("T", 1), ("C", 1), ("Z", 1), ("Y", 624), ("X", 924)],
-        "Z",
-        marks=pytest.mark.raises(exception=IndexError)
-    )
-])
+@pytest.mark.parametrize(
+    "inject_shape, project_axis",
+    [
+        # fails because dimension D not found in shape
+        pytest.param(
+            [("S", 1), ("T", 1), ("C", 1), ("Z", 1), ("Y", 624), ("X", 924)],
+            "D",
+            marks=pytest.mark.raises(exception=ValueError),
+        ),
+        # fails because data.shape is a different length than shape
+        pytest.param(
+            [
+                ("A", 1),
+                ("B", 1),
+                ("S", 1),
+                ("T", 1),
+                ("C", 1),
+                ("Z", 1),
+                ("Y", 624),
+                ("X", 924),
+            ],
+            "Z",
+            marks=pytest.mark.raises(exception=IndexError),
+        ),
+    ],
+)
 def test_im2proj_exceptions(small_timelapse_czi, inject_shape, project_axis):
     # Read CZI
     czi = CziFile(small_timelapse_czi)
     data, _ = czi.read_image(B=0, S=0, T=0)
 
     # Generate projection
-    projection.im2proj(
-        data=data,
-        shape=inject_shape,
-        project_axis=project_axis
-    )
+    projection.im2proj(data=data, shape=inject_shape, project_axis=project_axis)
 
 
 def test_im2proj_all_axes_valid(small_timelapse_czi, single_timepoint_all_axes_png):
@@ -79,10 +84,7 @@ def test_im2proj_all_axes_valid(small_timelapse_czi, single_timepoint_all_axes_p
     data, shape = czi.read_image(B=0, S=0, T=0)
 
     # Generate projection
-    proj = projection.im2proj_all_axes(
-        data=data,
-        shape=shape
-    )
+    proj = projection.im2proj_all_axes(data=data, shape=shape)
 
     # Read expected projection
     expected = imread(single_timepoint_all_axes_png)
