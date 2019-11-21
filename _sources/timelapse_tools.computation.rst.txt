@@ -12,6 +12,22 @@ timelapse\_tools.computation.computation\_manager module
    :undoc-members:
    :show-inheritance:
 
+timelapse\_tools.computation.file\_summary module
+-------------------------------------------------
+
+.. automodule:: timelapse_tools.computation.file_summary
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+timelapse\_tools.computation.intensity\_distributions module
+------------------------------------------------------------
+
+.. automodule:: timelapse_tools.computation.intensity_distributions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 timelapse\_tools.computation.min\_max\_intensity\_finder module
 ---------------------------------------------------------------
 

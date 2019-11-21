@@ -258,6 +258,79 @@ dimension. As an example, any value besides <cite>T=None</cite>, for <cite>opera
 </dd></dl>
 
 </div>
+<div class="section" id="module-timelapse_tools.computation.file_summary">
+<span id="timelapse-tools-computation-file-summary-module"></span><h2>timelapse_tools.computation.file_summary module<a class="headerlink" href="#module-timelapse_tools.computation.file_summary" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="timelapse_tools.computation.file_summary.channel_names">
+<code class="sig-prename descclassname">timelapse_tools.computation.file_summary.</code><code class="sig-name descname">channel_names</code><span class="sig-paren">(</span><em class="sig-param">czi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timelapse_tools/computation/file_summary.html#channel_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.computation.file_summary.channel_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Metadata specified channel names</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="timelapse_tools.computation.file_summary.collected_by">
+<code class="sig-prename descclassname">timelapse_tools.computation.file_summary.</code><code class="sig-name descname">collected_by</code><span class="sig-paren">(</span><em class="sig-param">czi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timelapse_tools/computation/file_summary.html#collected_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.computation.file_summary.collected_by" title="Permalink to this definition">¶</a></dt>
+<dd><p>User of record</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="timelapse_tools.computation.file_summary.date_created">
+<code class="sig-prename descclassname">timelapse_tools.computation.file_summary.</code><code class="sig-name descname">date_created</code><span class="sig-paren">(</span><em class="sig-param">czi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timelapse_tools/computation/file_summary.html#date_created"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.computation.file_summary.date_created" title="Permalink to this definition">¶</a></dt>
+<dd><p>Date created as indicated by czi metadata</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="timelapse_tools.computation.file_summary.dimensions">
+<code class="sig-prename descclassname">timelapse_tools.computation.file_summary.</code><code class="sig-name descname">dimensions</code><span class="sig-paren">(</span><em class="sig-param">czi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timelapse_tools/computation/file_summary.html#dimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.computation.file_summary.dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>The STCZ dimensions of the czi as indicated by czi.dims()</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="timelapse_tools.computation.file_summary.file_size">
+<code class="sig-prename descclassname">timelapse_tools.computation.file_summary.</code><code class="sig-name descname">file_size</code><span class="sig-paren">(</span><em class="sig-param">fn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timelapse_tools/computation/file_summary.html#file_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.computation.file_summary.file_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>File size in GB</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="timelapse_tools.computation.file_summary.time_per_frame">
+<code class="sig-prename descclassname">timelapse_tools.computation.file_summary.</code><code class="sig-name descname">time_per_frame</code><span class="sig-paren">(</span><em class="sig-param">czi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timelapse_tools/computation/file_summary.html#time_per_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.computation.file_summary.time_per_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Waiting on subblock metadata</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="timelapse_tools.computation.file_summary.total_duration">
+<code class="sig-prename descclassname">timelapse_tools.computation.file_summary.</code><code class="sig-name descname">total_duration</code><span class="sig-paren">(</span><em class="sig-param">czi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timelapse_tools/computation/file_summary.html#total_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.computation.file_summary.total_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Waiting on subblock metadata</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-timelapse_tools.computation.intensity_distributions">
+<span id="timelapse-tools-computation-intensity-distributions-module"></span><h2>timelapse_tools.computation.intensity_distributions module<a class="headerlink" href="#module-timelapse_tools.computation.intensity_distributions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="timelapse_tools.computation.intensity_distributions.IntensityDistributions">
+<em class="property">class </em><code class="sig-prename descclassname">timelapse_tools.computation.intensity_distributions.</code><code class="sig-name descname">IntensityDistributions</code><a class="reference internal" href="_modules/timelapse_tools/computation/intensity_distributions.html#IntensityDistributions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.computation.intensity_distributions.IntensityDistributions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#timelapse_tools.computation.computation_manager.ComputationManager" title="timelapse_tools.computation.computation_manager.ComputationManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">timelapse_tools.computation.computation_manager.ComputationManager</span></code></a></p>
+<p>Find intensity distributions over the data cubes</p>
+<dl class="method">
+<dt id="timelapse_tools.computation.intensity_distributions.IntensityDistributions.process_data">
+<code class="sig-name descname">process_data</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">dimensions</em>, <em class="sig-param">file_pointer</em>, <em class="sig-param">read_dims</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timelapse_tools/computation/intensity_distributions.html#IntensityDistributions.process_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.computation.intensity_distributions.IntensityDistributions.process_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process a single data cube read from the file. You should store the outputs from your processing on as
+attributes on this objects. So that you have access to them on the next iteration if required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>np.ndarray</em>) – The read data cube to process.</p></li>
+<li><p><strong>dimensions</strong> (<em>List[Tuple[str, int]]</em>) – The dimensions object returned during the read data operation.</p></li>
+<li><p><strong>file_pointer</strong> (<em>CziFile</em>) – The file pointer (or buffer reference) in the case you want to explicitely access more information from the
+file during each process operation.</p></li>
+<li><p><strong>read_dims</strong> (<em>Dict[str, int]</em>) – The dimensions and which indices that were used to read this data cube from the file.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-timelapse_tools.computation.min_max_intensity_finder">
 <span id="timelapse-tools-computation-min-max-intensity-finder-module"></span><h2>timelapse_tools.computation.min_max_intensity_finder module<a class="headerlink" href="#module-timelapse_tools.computation.min_max_intensity_finder" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
