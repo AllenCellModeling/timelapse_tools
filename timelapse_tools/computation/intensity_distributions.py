@@ -16,9 +16,6 @@ class IntensityDistributions(ComputationManager):
         self.intens_dist = None
 
     def process_data(self, data, dimensions, file_pointer, read_dims):
-        """Find intensities for a single time point.
-        See ComputationManager.process_data for parameter documentation.
-        """
         # Pre-calculate and allocate the properties we'll be writing to
         if self._T is None:
             self._T = file_pointer.dims()["T"]

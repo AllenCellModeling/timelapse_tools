@@ -6,6 +6,7 @@ import dateutil
 
 
 def file_size(fn):
+    """File size in GB"""
     return os.path.getsize(fn) / 2 ** 20
 
 
