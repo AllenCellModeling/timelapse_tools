@@ -3,8 +3,6 @@
 
 import numpy as np
 
-from aicspylibczi import CziFile
-
 from .computation_manager import ComputationManager
 
 
