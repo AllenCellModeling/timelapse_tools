@@ -48,6 +48,7 @@ requirements = [
     "aicspylibczi==2.1.0",
     "imageio==2.6.1",
     "imageio-ffmpeg==0.3.0",
+    "jinja2==2.10.3",
     "lxml==4.4.1",
     "numpy==1.17.4",
     "pandas==0.25.3",

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>File Report: {{ filename }}</title>
+        <link rel="stylesheet" href="resources/main.css">
+    </head>
+    <body>
+        <div class="content">
+            <h1 class="filename">File Report: {{ filename }}</h1>
+            <div class="main-content">
+                <div class="left">
+                    <div class="attributes">
+                        {% for metadata in attributes %}
+                            <p>{{ metadata.name }}: {{ metadata.value }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="supplimentary">
+                        {% for img in suppliments %}
+                            <img src="{{ img.src }}" alt="{{ img.name }}" class="supplimentary-image"/>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="media">
+                        {% for video in media %}
+                            <video src="{{ video.src }}" controls class="media-video" />
+                            <p>{{ video.name }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
