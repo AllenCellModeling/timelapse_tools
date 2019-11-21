@@ -9,8 +9,9 @@ from aicspylibczi import CziFile
 from jinja2 import Template
 
 from . import projection
-from .computation import file_summary
+from .computation import compute, file_summary, intensity_distributions
 from .movie import generate_movie
+from .render import plots
 
 ###############################################################################
 
@@ -33,6 +34,8 @@ def generate_report(
     # Check save dir
     if save_dir is None:
         save_dir = Path(f"file_report-{filepath.name}").resolve()
+    else:
+        save_dir = Path(save_dir).resolve()
 
     # Make save dir if needed
     save_dir.mkdir(parents=True, exist_ok=True)
@@ -61,9 +64,10 @@ def generate_report(
     # Generate media
     channel_names = file_summary.channel_names(czi)
     media = []
-    if "C" in czi.dims():
+    dims = czi.dims()
+    if "C" in dims:
         # Generate max project movies for each channel
-        for channel_index in range(czi.dims()["C"][1]):
+        for channel_index in range(dims["C"][0], dims["C"][1]):
             curr_channel = channel_names[channel_index]
             saved_projection = generate_movie(
                 input_file=filepath,
@@ -76,6 +80,23 @@ def generate_report(
             # Append the data to media
             # Make the file relative to the save directory instead of a hard coded full path
             media.append({"name": curr_channel, "src": str(saved_projection.relative_to(save_dir))})
+
+    # Generate suppliments
+    suppliments = []
+    if "C" in dims:
+        # Generate max project movies for each channel
+        for channel_index in range(dims["C"][0], dims["C"][1]):
+            intensity_distribution_calc = intensity_distributions.IntensityDistributions()
+            compute(
+                input_file=filepath,
+                computation_manager=intensity_distribution_calc,
+                C=channel_index
+            )
+
+            # Get projections from computed
+            yz_proj = intensity_distribution_calc.median_intensity_across_dim[0]
+            yz_proj_b64 = plots.fig_to_base64(plots.small_heatmap(yz_proj))
+            suppliments.append({"name": "YZ Projection", "src": yz_proj_b64})
 
     # Read and parse the template
     with open(RESOURCES / "template.html", "r") as read_template:
