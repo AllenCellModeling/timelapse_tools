@@ -96,14 +96,14 @@ def generate_report(
             # Get projections from computed
             yz_proj = intensity_distribution_calc.median_intensity_across_dim[0]
             yz_proj_b64 = plots.fig_to_base64(plots.small_heatmap(yz_proj))
-            suppliments.append({"name": "YZ Projection", "src": yz_proj_b64})
+            suppliments.append({"name": f"YZ Projection for Channel: {channel_index}", "src": yz_proj_b64})
 
     # Read and parse the template
     with open(RESOURCES / "template.html", "r") as read_template:
         template = Template(read_template.read())
 
     # Fill template
-    filled = template.render(filename=filepath.name, attributes=attributes, suppliments=[], media=media)
+    filled = template.render(filename=filepath.name, attributes=attributes, suppliments=suppliments, media=media)
 
     # Save dir of outputs
     with open(save_dir / "index.html", "w") as write_index:
