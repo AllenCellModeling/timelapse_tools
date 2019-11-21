@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os
-import dateutil
+
+from dateutil import parser
 
 
 def file_size(fn):
@@ -14,7 +15,7 @@ def date_created(czi):
     """Date created as indicated by czi metadata"""
     creation_xml = czi.read_meta().xpath("//CreationDate")
     assert len(creation_xml) == 1, "Wrong number of creation dates"
-    creation_date = dateutil.parser.isoparse(creation_xml[0].text)
+    creation_date = parser.isoparse(creation_xml[0].text)
     creation_string = creation_date.date().isoformat()
     return creation_string
 
