@@ -30,7 +30,7 @@ class IntensityDistributions(ComputationManager):
         if self.intens_dist is None:
             t_n = self._T[1] - self._T[0]
             self.intens_dist = np.zeros((t_n, len(self.intens_bins) - 1))
-        # Find current time
+        # Find index of current time, not assuming starting at 0
         t_ind = [v for k, v in dimensions if k == "T"][0] - self._T[0]
         # Write median projection
         for axis, dim in enumerate(dimensions):
