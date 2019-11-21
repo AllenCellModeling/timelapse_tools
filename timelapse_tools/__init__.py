@@ -15,3 +15,4 @@ def get_module_version():
 
 from .computation import compute  # noqa: F401
 from .movie import generate_movie  # noqa: F401
+from .report import generate_report  # noqa: F401
