@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import shutil
+from concurrent.futures import ProcessPoolExecutor
+from functools import partial
 from pathlib import Path
 from typing import Optional, Union
 
@@ -18,6 +20,36 @@ from .render import plots
 RESOURCES = (Path(__file__).parent / "resources").resolve(strict=True)
 
 ###############################################################################
+
+
+def _projection(channel_index, channel_names, filepath, save_dir_resources_dir, save_dir):
+    curr_channel = channel_names[channel_index]
+    saved_projection = generate_movie(
+        input_file=filepath,
+        output_file=save_dir_resources_dir / f"{curr_channel}.mp4",
+        overwrite=True,
+        projection_func=projection.im2proj_all_axes,
+        C=channel_index,
+        fps=12
+    )
+
+    # Append the data to media
+    # Make the file relative to the save directory instead of a hard coded full path
+    return {"name": channel_names[channel_index], "src": str(saved_projection.relative_to(save_dir))}
+
+
+def _computation(channel_index, filepath, channel_names):
+    intensity_distribution_calc = intensity_distributions.IntensityDistributions()
+    compute(
+        input_file=filepath,
+        computation_manager=intensity_distribution_calc,
+        C=channel_index
+    )
+
+    # Get projections from computed
+    yz_proj = intensity_distribution_calc.median_intensity_across_dim[0]
+    yz_proj_b64 = plots.fig_to_base64(plots.small_heatmap(yz_proj))
+    return {"name": f"YZ Projection for Channel: {channel_names[channel_index]}", "src": yz_proj_b64}
 
 
 def generate_report(
@@ -61,42 +93,34 @@ def generate_report(
     # Convert attributes dictionary to format for jinja
     attributes = [{"name": name, "value": value} for name, value in attributes.items()]
 
-    # Generate media
-    channel_names = file_summary.channel_names(czi)
-    media = []
+    # Generate media and suppliments
     dims = czi.dims()
+    channel_names = file_summary.channel_names(czi)
     if "C" in dims:
+        # Generate channel indicies list to process
+        channel_indices = list(range(dims["C"][0], dims["C"][1] + 1))
+
         # Generate max project movies for each channel
-        for channel_index in range(dims["C"][0], dims["C"][1]):
-            curr_channel = channel_names[channel_index]
-            saved_projection = generate_movie(
-                input_file=filepath,
-                output_file=save_dir_resources_dir / f"{curr_channel}.mp4",
-                overwrite=True,
-                projection_func=projection.im2proj_all_axes,
-                C=channel_index
-            )
+        projection_func = partial(
+            _projection,
+            channel_names=channel_names,
+            filepath=filepath,
+            save_dir_resources_dir=save_dir_resources_dir,
+            save_dir=save_dir
+        )
 
-            # Append the data to media
-            # Make the file relative to the save directory instead of a hard coded full path
-            media.append({"name": curr_channel, "src": str(saved_projection.relative_to(save_dir))})
+        # Generate computations for each channel
+        computation_func = partial(
+            _computation,
+            channel_names=channel_names,
+            filepath=filepath
+        )
 
-    # Generate suppliments
-    suppliments = []
-    if "C" in dims:
-        # Generate max project movies for each channel
-        for channel_index in range(dims["C"][0], dims["C"][1]):
-            intensity_distribution_calc = intensity_distributions.IntensityDistributions()
-            compute(
-                input_file=filepath,
-                computation_manager=intensity_distribution_calc,
-                C=channel_index
-            )
+        with ProcessPoolExecutor() as exe:
+            media = list(exe.map(projection_func, channel_indices))
 
-            # Get projections from computed
-            yz_proj = intensity_distribution_calc.median_intensity_across_dim[0]
-            yz_proj_b64 = plots.fig_to_base64(plots.small_heatmap(yz_proj))
-            suppliments.append({"name": f"YZ Projection for Channel: {channel_index}", "src": yz_proj_b64})
+        with ProcessPoolExecutor() as exe:
+            suppliments = list(exe.map(computation_func, channel_indices))
 
     # Read and parse the template
     with open(RESOURCES / "template.html", "r") as read_template:
