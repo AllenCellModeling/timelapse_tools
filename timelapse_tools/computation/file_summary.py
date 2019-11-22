@@ -39,7 +39,7 @@ def channel_names(czi):
     path = "./Metadata/Information/Image/Dimensions/Channels/Channel"
     channels = czi.read_meta().findall(path)
     names = [c.get("Name") for c in channels]
-    return ", ".join([f"Channel {i}: {n}" for i, n in enumerate(names)])
+    return names
 
 
 def time_per_frame(czi):
