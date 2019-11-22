@@ -51,7 +51,7 @@ input_file_paths = [
 # Create partially filled function
 processing_func = partial(
     passthrough,
-    save_dir=Path("/allen/aics/modeling/jacksonb/projects/timelapse_reports").resolve()
+    save_dir=Path("/allen/aics/modeling/jacksonb/projects/timelapse_reports_fixed").resolve()
 )
 
 # Run threadpool
