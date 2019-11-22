@@ -43,3 +43,35 @@ class IntensityDistributions(ComputationManager):
         # Write intensity distribution
         intens_hist, _ = np.histogram(data.flat, self.intens_bins)
         self.intens_dist[t_ind, :] = intens_hist
+
+    def crop_intensity_distribution(self, distribution, bins, percentile=None):
+        """From a dist[time, bins], crop bins at top and bottom that equal 0
+
+        Parameters
+        ----------
+        distribution: np.array
+            distribution of shape [time, bins]
+        bins: np.array
+            list of bin edges, of length distribution.shape[1]+1
+        percentile: float
+            percentile to use as cut off, defaults to 0
+
+        Returns
+        -------
+        cropped_distribution: np.array
+            distribution cropped to be [time, bins-n]
+        cropped_bins: np.array
+            bins cropped to match new distribution
+        """
+        if percentile is None:
+            limit = 0
+        else:
+            limit = np.percentile(distribution.flat, percentile)
+        # Find edges
+        has_entries = (distribution > limit).any(0)
+        first = has_entries.searchsorted(True)
+        last = -has_entries[::-1].searchsorted(True)
+        # Crop
+        cropped_distribution = distribution[:, first:last]
+        cropped_bins = bins[first:last]
+        return cropped_distribution, cropped_bins
