@@ -49,7 +49,10 @@ def _computation(channel_index, filepath, channel_names):
     # Get projections from computed
     yz_proj = intensity_distribution_calc.median_intensity_across_dim[0]
     yz_proj_b64 = plots.fig_to_base64(plots.small_heatmap(yz_proj))
-    return {"name": f"YZ Projection for Channel: {channel_names[channel_index]}", "src": yz_proj_b64}
+    return {
+        "name": f"YZ Projection for Channel: {channel_names[channel_index]}",
+        "src": f"data:image/png;base64,{yz_proj_b64}"
+    }
 
 
 def generate_report(
