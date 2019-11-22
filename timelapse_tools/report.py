@@ -98,7 +98,7 @@ def generate_report(
     channel_names = file_summary.channel_names(czi)
     if "C" in dims:
         # Generate channel indicies list to process
-        channel_indices = list(range(dims["C"][0], dims["C"][1] + 1))
+        channel_indices = list(range(dims["C"][0], dims["C"][1]))
 
         # Generate max project movies for each channel
         projection_func = partial(
