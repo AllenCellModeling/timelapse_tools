@@ -210,7 +210,39 @@
             <span class="n">out_arr</span><span class="p">[:,</span> <span class="n">t_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">median_proj</span>
         <span class="c1"># Write intensity distribution</span>
         <span class="n">intens_hist</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">intens_bins</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">intens_dist</span><span class="p">[</span><span class="n">t_ind</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">intens_hist</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intens_dist</span><span class="p">[</span><span class="n">t_ind</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">intens_hist</span></div>
+
+<div class="viewcode-block" id="IntensityDistributions.crop_intensity_distribution"><a class="viewcode-back" href="../../../timelapse_tools.computation.html#timelapse_tools.computation.intensity_distributions.IntensityDistributions.crop_intensity_distribution">[docs]</a>    <span class="k">def</span> <span class="nf">crop_intensity_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;From a dist[time, bins], crop bins at top and bottom that equal 0</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        distribution: np.array</span>
+<span class="sd">            distribution of shape [time, bins]</span>
+<span class="sd">        bins: np.array</span>
+<span class="sd">            list of bin edges, of length distribution.shape[1]+1</span>
+<span class="sd">        percentile: float</span>
+<span class="sd">            percentile to use as cut off, defaults to 0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cropped_distribution: np.array</span>
+<span class="sd">            distribution cropped to be [time, bins-n]</span>
+<span class="sd">        cropped_bins: np.array</span>
+<span class="sd">            bins cropped to match new distribution</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">percentile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">limit</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">distribution</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">percentile</span><span class="p">)</span>
+        <span class="c1"># Find edges</span>
+        <span class="n">has_entries</span> <span class="o">=</span> <span class="p">(</span><span class="n">distribution</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">has_entries</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="o">-</span><span class="n">has_entries</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Crop</span>
+        <span class="n">cropped_distribution</span> <span class="o">=</span> <span class="n">distribution</span><span class="p">[:,</span> <span class="n">first</span><span class="p">:</span><span class="n">last</span><span class="p">]</span>
+        <span class="n">cropped_bins</span> <span class="o">=</span> <span class="n">bins</span><span class="p">[</span><span class="n">first</span><span class="p">:</span><span class="n">last</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">cropped_distribution</span><span class="p">,</span> <span class="n">cropped_bins</span></div></div>
 </pre></div>
 
            </div>

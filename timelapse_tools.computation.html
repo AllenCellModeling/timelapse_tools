@@ -311,6 +311,28 @@ dimension. As an example, any value besides <cite>T=None</cite>, for <cite>opera
 <dd><p>Bases: <a class="reference internal" href="#timelapse_tools.computation.computation_manager.ComputationManager" title="timelapse_tools.computation.computation_manager.ComputationManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">timelapse_tools.computation.computation_manager.ComputationManager</span></code></a></p>
 <p>Find intensity distributions over the data cubes</p>
 <dl class="method">
+<dt id="timelapse_tools.computation.intensity_distributions.IntensityDistributions.crop_intensity_distribution">
+<code class="sig-name descname">crop_intensity_distribution</code><span class="sig-paren">(</span><em class="sig-param">distribution</em>, <em class="sig-param">bins</em>, <em class="sig-param">percentile=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timelapse_tools/computation/intensity_distributions.html#IntensityDistributions.crop_intensity_distribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.computation.intensity_distributions.IntensityDistributions.crop_intensity_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>From a dist[time, bins], crop bins at top and bottom that equal 0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>distribution</strong> (<em>np.array</em>) – distribution of shape [time, bins]</p></li>
+<li><p><strong>bins</strong> (<em>np.array</em>) – list of bin edges, of length distribution.shape[1]+1</p></li>
+<li><p><strong>percentile</strong> (<em>float</em>) – percentile to use as cut off, defaults to 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>cropped_distribution</strong> (<em>np.array</em>) – distribution cropped to be [time, bins-n]</p></li>
+<li><p><strong>cropped_bins</strong> (<em>np.array</em>) – bins cropped to match new distribution</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="timelapse_tools.computation.intensity_distributions.IntensityDistributions.process_data">
 <code class="sig-name descname">process_data</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">dimensions</em>, <em class="sig-param">file_pointer</em>, <em class="sig-param">read_dims</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timelapse_tools/computation/intensity_distributions.html#IntensityDistributions.process_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.computation.intensity_distributions.IntensityDistributions.process_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process a single data cube read from the file. You should store the outputs from your processing on as
