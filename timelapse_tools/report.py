@@ -43,7 +43,8 @@ def _computation(channel_index, filepath, channel_names):
     compute(
         input_file=filepath,
         computation_manager=intensity_distribution_calc,
-        C=channel_index
+        C=channel_index,
+        S=0
     )
 
     # Get projections from computed
