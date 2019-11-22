@@ -3,11 +3,12 @@
 
 import logging
 from concurrent.futures import ProcessPoolExecutor
+from functools import partial
 from pathlib import Path
 
 import pandas as pd
 
-from timelapse_tools import generate_movie, label, projection
+from timelapse_tools import generate_report
 
 ###############################################################################
 
@@ -21,20 +22,15 @@ logging.basicConfig(
 
 
 # Write passthrough function that will be multithreaded
-def passthrough(io):
-    input_fp, output_fp = io
-
+def passthrough(input_fp, save_dir):
     log.info(f"Beginning processing for: {input_fp}")
+    save_dir = save_dir / input_fp.name
     try:
-        generate_movie(
-            input_file=input_fp,
-            output_file=output_fp,
-            projection_func=projection.im2proj_all_axes,
-            fps=24,
-            label=label.t_index_labeler,
-            C=0,
+        generate_report(
+            filepath=input_fp,
+            save_dir=save_dir
         )
-        log.info(f"Completed processing for: {input_fp}. Saved to: {output_fp}")
+        log.info(f"Completed processing for: {input_fp}. Saved to: {save_dir}")
     except Exception as e:
         log.error(f"Recieved error from file: {input_fp}. Exception:")
         log.error(e)
@@ -51,16 +47,10 @@ input_file_paths = [
     (Path("/allen") / row["Isilon path"][1:] / row["File Name"]).resolve(strict=True)
     for i, row in data.iterrows()
 ]
-output_save_paths = [
-    (Path("/allen/aics/modeling/jacksonb/projects/timelapse_movies") / row["File Name"])
-    .resolve()
-    .with_suffix(".mp4")
-    for i, row in data.iterrows()
-]
 
-# Zip them together for passthrough function to unpack
-io_paths = zip(input_file_paths, output_save_paths)
+# Create partially filled function
+processing_func = partial(passthrough, save_dir="/allen/aics/modeling/jacksonb/projects/timelapse_reports")
 
 # Run threadpool
-with ProcessPoolExecutor(max_workers=6) as exe:
-    exe.map(passthrough, io_paths)
+with ProcessPoolExecutor() as exe:
+    exe.map(processing_func, input_file_paths)
