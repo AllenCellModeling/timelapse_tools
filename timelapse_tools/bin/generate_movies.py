@@ -23,8 +23,8 @@ logging.basicConfig(
 
 # Write passthrough function that will be multithreaded
 def passthrough(input_fp, save_dir):
-    log.info(f"Beginning processing for: {input_fp}")
     save_dir = save_dir / input_fp.name
+    log.info(f"Beginning processing for: {save_dir}")
     try:
         generate_report(
             filepath=input_fp,
@@ -49,7 +49,10 @@ input_file_paths = [
 ]
 
 # Create partially filled function
-processing_func = partial(passthrough, save_dir="/allen/aics/modeling/jacksonb/projects/timelapse_reports")
+processing_func = partial(
+    passthrough,
+    save_dir=Path("/allen/aics/modeling/jacksonb/projects/timelapse_reports").resolve()
+)
 
 # Run threadpool
 with ProcessPoolExecutor() as exe:
