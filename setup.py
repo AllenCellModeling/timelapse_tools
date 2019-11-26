@@ -45,6 +45,7 @@ interactive_requirements = [
 ]
 
 requirements = [
+    "xlrd",
     "aicspylibczi==2.1.0",
     "imageio==2.6.1",
     "imageio-ffmpeg==0.3.0",
