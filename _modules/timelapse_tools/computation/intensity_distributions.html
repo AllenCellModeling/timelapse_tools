@@ -171,13 +171,13 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.computation_manager</span> <span class="k">import</span> <span class="n">ComputationManager</span>
+<span class="kn">from</span> <span class="nn">.computation_manager</span> <span class="kn">import</span> <span class="n">ComputationManager</span>
 
 
 <div class="viewcode-block" id="IntensityDistributions"><a class="viewcode-back" href="../../../timelapse_tools.computation.html#timelapse_tools.computation.intensity_distributions.IntensityDistributions">[docs]</a><span class="k">class</span> <span class="nc">IntensityDistributions</span><span class="p">(</span><span class="n">ComputationManager</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Find intensity distributions over the data cubes&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_T</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">median_intensity_across_dim</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">intens_bins</span> <span class="o">=</span> <span class="kc">None</span>
