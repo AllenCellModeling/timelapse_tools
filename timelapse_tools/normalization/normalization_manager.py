@@ -10,12 +10,12 @@ from aicspylibczi import CziFile
 ###############################################################################
 
 
-class ComputationManager(ABC):
+class NormalizationManager(ABC):
     """
-    ComputationManagers are simple objects used to manage computation of a delayed dask
-    array. The only requirement of ComputationManager sub-classes is that they must have
-    a `process_data` function which has a specific set of parameters. Look at the
-    documentation for `process_data` for more details.
+    NormalizationManagers are simple objects used to manage normalization of the delayed
+    dask array. The only requirement of NormalizationManager sub-classes is that they
+    must have a `process_data` function which has a specific set of parameters. Look at
+    the documentation for `process_data` for more details.
 
     Why not just provide a function, why specify a whole class?
     By using a class it allows for a couple things: better code splitting capabilities,
@@ -33,7 +33,8 @@ class ComputationManager(ABC):
         data: da,
         dimensions: List[Tuple[str, int]],
         file_pointer: CziFile,
-        read_dims: Dict[str, int]
+        read_dims: Dict[str, int],
+        computation_results: Any
     ) -> Any:
         """
         Process the data cube read from the file. The outputs from processing should be

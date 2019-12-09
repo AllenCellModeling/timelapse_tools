@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 import dask.array as da
 from aicspylibczi import CziFile
 
-from .computation_manager import ComputationManager
+from .normalization_manager import NormalizationManager
 
 ###############################################################################
 
 
-class PassthroughCM(ComputationManager):
+class PassthroughNM(NormalizationManager):
     """
-    A ComputationManager that does no operation and simply passes through the data.
+    A NormalizationManager that does no operation and simply passes through the data.
     """
 
     def process_data(
@@ -22,5 +22,6 @@ class PassthroughCM(ComputationManager):
         dimensions: List[Tuple[str, int]],
         file_pointer: CziFile,
         read_dims: Dict[str, int],
+        computation_results: Any
     ):
         pass

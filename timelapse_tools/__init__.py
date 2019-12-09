@@ -9,5 +9,8 @@ __email__ = "jacksonb@alleninstitute.org, cdavew@alleninstitute.org"
 __version__ = "0.1.0"
 
 
+from .utils import daread  # noqa: F401
+
+
 def get_module_version():
     return __version__
