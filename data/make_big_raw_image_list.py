@@ -55,15 +55,20 @@ time_lapse_values = np.concatenate([df["Time-lapse"].unique() for df in raw_dfs]
 print("Values for 'Time-lapse' are:")
 print(time_lapse_values)
 
-print("Might need to update negative values if there are new ones, e.g. 'nope' or 'naw'")
-negative_values = set(['no', 'NO', 'No ', ' no', 'No', 'nan', np.nan, 'No and yes', '  '])
+print(
+    "Might need to update negative values if there are new ones, e.g. 'nope' or 'naw'"
+)
+negative_values = set(
+    ["no", "NO", "No ", " no", "No", "nan", np.nan, "No and yes", "  "]
+)
 positive_values = set(time_lapse_values).difference(negative_values)
 
 # Sort out entries that don't have a negative entry
-time_lapse_dfs = [df.loc[df['Time-lapse'].isin(positive_values)] for df in raw_dfs]
-time_lapse_df = pd.concat(time_lapse_dfs, join='inner', ignore_index=True, sort=False)
+time_lapse_dfs = [df.loc[df["Time-lapse"].isin(positive_values)] for df in raw_dfs]
+time_lapse_df = pd.concat(time_lapse_dfs, join="inner", ignore_index=True, sort=False)
 
 # Figure out the full path
+
 
 def row_to_path(row):
     if type(row.Date) is not pd._libs.tslibs.timestamps.Timestamp:
@@ -71,15 +76,17 @@ def row_to_path(row):
     user = usr_lookup_for_path[row.User]
     year = row.Date.strftime("%Y")
     date = row.Date.strftime("%Y%m%d")
-    path = os.path.join('/allen/aics/assay-dev/MicroscopyData/',user,year,date)
+    path = os.path.join("/allen/aics/assay-dev/MicroscopyData/", user, year, date)
     return path
 
+
 def annotate_user_path(df):
-    df['Path'] = df.apply(row_to_path, 1)
+    df["Path"] = df.apply(row_to_path, 1)
     return df
 
+
 time_lapse_df = annotate_user_path(time_lapse_df)
-time_lapse_df = time_lapse_df.query('Path not in [None,]')
+time_lapse_df = time_lapse_df.query("Path not in [None,]")
 
 # Write out
-time_lapse_df.to_csv('./big_raw_image_list.csv')
+time_lapse_df.to_csv("./big_raw_image_list.csv")

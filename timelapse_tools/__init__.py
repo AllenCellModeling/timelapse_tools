@@ -11,7 +11,3 @@ __version__ = "0.1.0"
 
 def get_module_version():
     return __version__
-
-
-from .computation import compute  # noqa: F401
-from .movie import generate_movie  # noqa: F401

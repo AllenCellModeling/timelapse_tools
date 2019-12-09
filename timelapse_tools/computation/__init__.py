@@ -2,4 +2,5 @@
 
 """Compute package for timelapse_tools."""
 
-from .computation_manager import compute  # noqa: F401
+
+from .passthrough_cm import PassthroughCM  # noqa: F401
