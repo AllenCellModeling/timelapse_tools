@@ -10,9 +10,6 @@ import numpy as np
 from aicspylibczi import CziFile
 from dask import delayed
 
-from .. import exceptions
-from ..constants import AVAILABLE_OPERATING_DIMENSIONS
-
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -56,14 +53,7 @@ def _imread(img: CziFile, read_dims: Optional[Dict[str, int]] = None) -> np.ndar
     return data
 
 
-def daread(
-    img: Union[str, Path, CziFile],
-    S: Optional[int] = None,
-    T: Optional[int] = None,
-    C: Optional[int] = None,
-    Z: Optional[int] = None,
-    operating_dimension: str = None
-) -> da:
+def daread(img: Union[str, Path, CziFile]) -> da:
     # Convert pathlike to CziFile
     if isinstance(img, (str, Path)):
         # Resolve path
@@ -87,76 +77,67 @@ def daread(
             f"Received type: {type(img)}"
         )
 
-    # Upper operating dimension and check valid
-    operating_dimension = operating_dimension.upper()
-    if operating_dimension not in AVAILABLE_OPERATING_DIMENSIONS:
-        raise ValueError(
-            f"Operating dimension: '{operating_dimension}' is a not a valid operating "
-            f"dimension. Possible options: {AVAILABLE_OPERATING_DIMENSIONS}"
-        )
-
     # Get image dims
     image_dims = img.dims()
-
-    # Check that the operating_dimension is in the dimensions for the file
-    if operating_dimension not in image_dims:
-        raise ValueError(
-            f"Operating dimension: '{operating_dimension}' not found in file "
-            f"dimensions: {image_dims}"
-        )
-
-    # Handle operating dimension provided is specified as read specific
-    specified_read_dim = locals().get(operating_dimension)
-    if specified_read_dim:
-        raise exceptions.ConflictingArgumentsError(
-            f"Cannot specify reading only '{operating_dimension}': "
-            f"{specified_read_dim} because '{operating_dimension}' is currently the "
-            f"operating dimension."
-        )
-
-    # Get the bounds of the time dimension
-    op_dim_begin_index, op_dim_len = image_dims[operating_dimension]
-
-    # Create the reading arguments
-    read_dims = {operating_dimension: op_dim_begin_index}
     if "B" in image_dims:
-        read_dims["B"] = 0
+        image_dims.pop("B")
 
-    # Set the available dims left to retrieve
-    available_dims = AVAILABLE_OPERATING_DIMENSIONS.copy()
-    available_dims.remove(operating_dimension)
+    # Setup the read dimensions dictionary for reading the first plane
+    read_dims = {}
+    for dim, dim_info in image_dims.items():
+        # Unpack dimension info
+        dim_begin_index, dim_len = dim_info
 
-    # Set the rest of the passed dims
-    for dim in available_dims:
-        # Only add the dimension if it exists in the file
-        if dim in image_dims:
-            if locals().get(dim) is not None:
-                read_dims[dim] = locals().get(dim)
-            else:
-                log.warn(
-                    f"All '{dim}' dimension data will be read on each iteration. "
-                    f"This may increase time and memory."
-                )
+        # Add to read dims
+        read_dims[dim] = dim_begin_index
 
     # Read first plane for information used by dask.array.from_delayed
-    sample, sample_dims = _read_image(img, read_dims)
+    sample, sample_dims = img.read_image(**read_dims)
 
-    # Create delayed functions
-    lazy_arrays = []
-    for i in range(op_dim_begin_index, op_dim_begin_index + op_dim_len):
-        read_dims[operating_dimension] = i
-        lazy_arrays.append(
-            delayed(_imread)(img, read_dims)
-        )
-
-    # Create dask arrays from delayed
-    dask_arrays = [
-        # Only use the last two dimensions (YX) from shape
-        da.from_delayed(delayed_reader, shape=sample.shape, dtype=sample.dtype)
-        for delayed_reader in lazy_arrays
+    # We want these readers in the true dim order.
+    # Because `image_dims` is a dictionary we can't trust the order like we can
+    # the `sample_dims`. We use both to have the full positional and size information
+    # Before we do this though we need to remove the Y and X dimensions because those
+    # are the base operating planes of the CZI format
+    operating_dims = [
+        dim_info for dim_info in sample_dims if dim_info[0] not in ["Y", "X"]
     ]
 
-    # Stack into one large dask.array
-    stack = da.stack(dask_arrays, axis=0)
+    # Just the dim characters
+    dims = [dim_info[0] for dim_info in operating_dims]
 
-    return stack
+    # Create operating shape
+    operating_shape = []
+    for dim_info in operating_dims:
+        dim, size = dim_info
+        operating_shape.append(image_dims[dim][1])
+
+    operating_shape = tuple(operating_shape)
+
+    # Create empty numpy array to be filled with delayed dask arrays
+    correctly_shaped_array = np.ndarray(operating_shape, np.object)
+    lazy_arrays = []
+
+    # Iter through the dimensions and add the readers with those indices
+    it = np.nditer(correctly_shaped_array, flags=["multi_index", "refs_ok"])
+    while not it.finished:
+        read_dims = {
+            dim: image_dims[dim][0] + it.multi_index[dims.index(dim)]
+            for dim in dims
+        }
+        lazy_arrays.append(da.from_delayed(
+            delayed(_imread)(img, read_dims),
+            shape=sample.shape[-2:],
+            dtype=sample.dtype
+        ))
+        it.iternext()
+
+    # Convert to dask array
+    # We flatten then to list so that we can stack and reshape properly
+    real_shape = tuple(list(operating_shape) + list(sample.shape[-2:]))
+    chunk_shape = tuple(list(np.ones(len(operating_shape))) + list(sample.shape[-2:]))
+    stacked = da.stack(lazy_arrays).reshape(real_shape).rechunk(chunk_shape)
+
+    # Convert to dask array and return
+    dims = dims + ["Y", "X"]
+    return stacked, "".join(dims)
