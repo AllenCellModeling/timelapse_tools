@@ -100,73 +100,49 @@ def daread(img: Union[str, Path, CziFile]) -> da:
     # in multiple places so we pull out for storage
     sample_YX_shape = sample.shape[-2:]
 
-    # We want these readers in the true dim order.
-    # Because `image_dims` is a dictionary we can't trust the order like we can
-    # the `sample_dims`. We use both to have the full positional and size information
-    # Before we do this though we need to remove the Y and X dimensions because those
-    # are the base storage planes of the CZI format and we can't operate over them
-    # At the end of this we are going to produce a `lazy_arrays` list of delayed dask
-    # arrays that are of the 2D YX planes found in the file. Everything else is simply
-    # reshaping of the array to fit the normal image model
+    # This produces a list of tuples of dim character and index such as:
+    # [("S", 0), ("T", 0), ("C", 0), ("Z", 0)]
     operating_dims = [
         dim_info for dim_info in sample_dims if dim_info[0] not in ["Y", "X"]
     ]
 
-    # Create operating shape
-    # This will result in a tuple of dim size integers
+    # Create operating shape and dim order list
+    # Using the image_dims pulled at the start and the operating_dims,
+    # match them up to get the true shape of the data without the YX plane sizes
+    # This will result in a list of dim size integers such as:
+    # [3, 100, 2, 70]
+    # ["S", "T", "C", "Z"]
     operating_shape = []
+    dims = []
     for dim_info in operating_dims:
         dim, size = dim_info
         operating_shape.append(image_dims[dim][1])
+        dims.append(dim)
 
     # Convert to tuple
     operating_shape = tuple(operating_shape)
 
     # Create empty numpy array with the operating shape so that we can iter through
     # and use the multi_index to create the readers
-    correctly_shaped_array = np.ndarray(operating_shape)
+    # We add empty dimensions of size one to fake being the Y and X dimensions
+    lazy_arrays = np.ndarray(operating_shape + (1, 1), dtype=object)
 
-    # Create a flat list of all the delayed dask arrays
-    lazy_arrays = []
-
-    # Create an array of just the dimension characters
-    # This list of dim characters will be in the same order as the operating_shape
-    dims = [dim_info[0] for dim_info in operating_dims]
-
-    # Iter through the dimensions and add the readers with iteration indices
-    it = np.nditer(correctly_shaped_array, flags=["multi_index", "refs_ok"])
-    while not it.finished:
-        # Construct read dims from the multi index for this iteration
-        # Because the operating shape and the dims are in the same order
-        # We can basically zip the multi index with the dim character but as a dict
-        read_dims = {
-            dim: image_dims[dim][0] + it.multi_index[i]
-            for i, dim in enumerate(dims)
-        }
-
-        # Append the delayed dask array to the flat list of arrays
-        lazy_arrays.append(da.from_delayed(
-            # In short terms, this creates a partial function of _imread
-            # with parameters im and read_dims.
+    # We can enumerate over the multi-indexed array and construct read_dims
+    # dictionaries by simply zipping together the ordered dims list and the current
+    # multi-index. We then pass set the value of the array at that multi-index to
+    # the delayed reader using the constructed read_dims dictionary.
+    for i, _ in np.ndenumerate(lazy_arrays):
+        read_dims = dict(zip(dims, i))
+        lazy_arrays[i] = da.from_delayed(
             delayed(_imread)(img, read_dims),
-
-            # Because we are using the _imread function and the hyper specific
-            # read_dims, we know we are expecting a 2D YX plane from this
-            # from_delayed needs to know the shape of the expecation
-            # we use the last two values from the sample to pass through because
-            # the sample shape will also have YX on the end
             shape=sample_YX_shape,
             dtype=sample.dtype
-        ))
-        it.iternext()
+        )
 
-    # Convert to dask array
-    # We create the real shape by simply adding the YX shape to the operating shape
-    real_shape = tuple(list(operating_shape) + list(sample_YX_shape))
-    # Stack and reshape to get what would normally be returned by any old imread
-    stacked = da.stack(lazy_arrays).reshape(real_shape)
+    # Convert the numpy array of lazy readers into a dask array
+    merged = da.block(lazy_arrays.tolist())
 
     # Because dimensions outside of Y and X can be in any order and present or not
     # we also return the dimension order string
     dims = dims + ["Y", "X"]
-    return stacked, "".join(dims)
+    return merged, "".join(dims)
