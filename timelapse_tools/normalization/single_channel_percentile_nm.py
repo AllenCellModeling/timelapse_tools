@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Any, Dict, List, Tuple
+from typing import Any, Optional
 
 import dask.array as da
-import numpy as np
 from aicspylibczi import CziFile
 
 from .normalization_manager import NormalizationManager
@@ -28,14 +27,12 @@ class SingleChannelPercentileNM(NormalizationManager):
 
     def process_data(
         self,
-        data: da,
-        dimensions: List[Tuple[str, int]],
+        data: da.core.Array,
         file_pointer: CziFile,
-        read_dims: Dict[str, int],
-        computation_results: Any
-    ):
+        computation_results: Optional[Any] = None
+    ) -> da.core.Array:
         # Get the norm by values
-        norm_by = np.percentile(
+        norm_by = da.percentile(
             data.flatten(),
             [self._min_percentile, self._max_percentile]
         )
@@ -44,7 +41,7 @@ class SingleChannelPercentileNM(NormalizationManager):
         normed = (data - norm_by[0]) / (norm_by[1] - norm_by[0])
 
         # Clip any values outside of 0 and 1
-        clipped = np.clip(normed, 0, 1)
+        clipped = da.clip(normed, 0, 1)
 
         # Scale them between 0 and 255
         return clipped * 255

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import dask.array as da
 from aicspylibczi import CziFile
@@ -30,25 +30,18 @@ class ComputationManager(ABC):
     @abstractmethod
     def process_data(
         self,
-        data: da,
-        dimensions: List[Tuple[str, int]],
-        file_pointer: CziFile,
-        read_dims: Dict[str, int]
+        data: da.core.Array,
+        file_pointer: CziFile
     ) -> Any:
         """
-        Process the data cube read from the file. The outputs from processing should be
-        stored as attributes on the ComputationManager instance.
+        Process the data cube read from the file.
 
         Parameters
         ----------
-        data: da
+        data: dask.array.core.Array
             The read data cube to process.
-        dimensions: List[Tuple[str, int]]
-            The dimensions object returned during the read data operation.
         file_pointer: CziFile
             The file pointer (or buffer reference) in the case you want to explicitly
             access more information from the file during each process operation.
-        read_dims: Dict[str, int]
-            Which dimensions and indices were used to read the provided data cube.
         """
         pass

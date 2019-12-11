@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Tuple
+from typing import Any, Optional
 
 import dask.array as da
 from aicspylibczi import CziFile
@@ -30,26 +30,31 @@ class NormalizationManager(ABC):
     @abstractmethod
     def process_data(
         self,
-        data: da,
-        dimensions: List[Tuple[str, int]],
+        data: da.core.Array,
         file_pointer: CziFile,
-        read_dims: Dict[str, int],
-        computation_results: Any
-    ) -> Any:
+        computation_results: Optional[Any] = None
+    ) -> da.core.Array:
         """
-        Process the data cube read from the file. The outputs from processing should be
-        stored as attributes on the ComputationManager instance.
+        Normalize a data cube.
 
         Parameters
         ----------
-        data: da
-            The read data cube to process.
-        dimensions: List[Tuple[str, int]]
-            The dimensions object returned during the read data operation.
+        data: dask.array.core.Array
+            The data cube to normalize.
         file_pointer: CziFile
             The file pointer (or buffer reference) in the case you want to explicitly
             access more information from the file during each process operation.
-        read_dims: Dict[str, int]
-            Which dimensions and indices were used to read the provided data cube.
+        computation_results: Optional[Any]
+            The results generated from the previously ran ComputationManager.
+
+        Returns
+        -------
+        data: dask.array.core.Array
+            The normalized data cube.
+
+        Notes
+        -----
+        You do not need to call `compute` on the dask array during this function.
+        We will call it at the end of the entire workflow.
         """
         pass

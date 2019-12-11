@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Dict, List, Tuple
-
 import dask.array as da
 from aicspylibczi import CziFile
 
@@ -18,9 +16,7 @@ class PassthroughCM(ComputationManager):
 
     def process_data(
         self,
-        data: da,
-        dimensions: List[Tuple[str, int]],
-        file_pointer: CziFile,
-        read_dims: Dict[str, int],
+        data: da.core.Array,
+        file_pointer: CziFile
     ):
         pass
