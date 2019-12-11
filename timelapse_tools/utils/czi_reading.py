@@ -26,6 +26,7 @@ def _read_image(
         read_dims = {}
 
     # Read image
+    log.debug(f"Reading dimensions: {read_dims}")
     data, dims = img.read_image(**read_dims)
 
     # Drop dims that shouldn't be provided back
@@ -44,7 +45,7 @@ def _read_image(
             ops.append(slice(None, None, None))
             real_dims.append(dim_info)
 
-    # Convert ops and run
+    # Convert ops and run getitem
     return data[tuple(ops)], real_dims
 
 
@@ -53,7 +54,21 @@ def _imread(img: CziFile, read_dims: Optional[Dict[str, int]] = None) -> np.ndar
     return data
 
 
-def daread(img: Union[str, Path, CziFile]) -> da:
+def daread(img: Union[str, Path, CziFile]) -> da.core.Array:
+    """
+    Read a CZI image file as a delayed dask array where each YX plane will be read on
+    request.
+
+    Parameters
+    ----------
+    img: Union[str, Path, CziFile]
+        The filepath to or the already initialized CziFile to read.
+
+    Returns
+    -------
+    img: dask.array.core.Array
+        The constructed dask array where each YX plane is a delayed read.
+    """
     # Convert pathlike to CziFile
     if isinstance(img, (str, Path)):
         # Resolve path
@@ -95,9 +110,9 @@ def daread(img: Union[str, Path, CziFile]) -> da:
     # Read first plane for information used by dask.array.from_delayed
     sample, sample_dims = img.read_image(**read_dims)
 
-    # The Y and X dimensions are always the last two dimensions, in that order
+    # The Y and X dimensions are always the last two dimensions, in that order.
     # These dimensions cannot be operated over but the shape information is used
-    # in multiple places so we pull out for storage
+    # in multiple places so we pull them out for easier access.
     sample_YX_shape = sample.shape[-2:]
 
     # This produces a list of tuples of dim character and index such as:
@@ -108,7 +123,7 @@ def daread(img: Union[str, Path, CziFile]) -> da:
 
     # Create operating shape and dim order list
     # Using the image_dims pulled at the start and the operating_dims,
-    # match them up to get the true shape of the data without the YX plane sizes
+    # match them up to get the true shape of the data without the YX plane sizes.
     # This will result in a list of dim size integers such as:
     # [3, 100, 2, 70]
     # ["S", "T", "C", "Z"]
@@ -119,17 +134,17 @@ def daread(img: Union[str, Path, CziFile]) -> da:
         operating_shape.append(image_dims[dim][1])
         dims.append(dim)
 
-    # Convert to tuple
+    # Convert operating shape to tuple
     operating_shape = tuple(operating_shape)
 
     # Create empty numpy array with the operating shape so that we can iter through
-    # and use the multi_index to create the readers
-    # We add empty dimensions of size one to fake being the Y and X dimensions
+    # and use the multi_index to create the readers.
+    # We add empty dimensions of size one to fake being the Y and X dimensions.
     lazy_arrays = np.ndarray(operating_shape + (1, 1), dtype=object)
 
     # We can enumerate over the multi-indexed array and construct read_dims
     # dictionaries by simply zipping together the ordered dims list and the current
-    # multi-index. We then pass set the value of the array at that multi-index to
+    # multi-index. We then set the value of the array at the same multi-index to
     # the delayed reader using the constructed read_dims dictionary.
     for i, _ in np.ndenumerate(lazy_arrays):
         read_dims = dict(zip(dims, i))
@@ -143,6 +158,6 @@ def daread(img: Union[str, Path, CziFile]) -> da:
     merged = da.block(lazy_arrays.tolist())
 
     # Because dimensions outside of Y and X can be in any order and present or not
-    # we also return the dimension order string
+    # we also return the dimension order string.
     dims = dims + ["Y", "X"]
     return merged, "".join(dims)
