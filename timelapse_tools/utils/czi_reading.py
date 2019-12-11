@@ -144,12 +144,18 @@ def daread(img: Union[str, Path, CziFile]) -> da.core.Array:
 
     # We can enumerate over the multi-indexed array and construct read_dims
     # dictionaries by simply zipping together the ordered dims list and the current
-    # multi-index. We then set the value of the array at the same multi-index to
+    # multi-index plus the begin index for that plane.
+    # We then set the value of the array at the same multi-index to
     # the delayed reader using the constructed read_dims dictionary.
+    begin_indicies = tuple(image_dims[dim][0] for dim in dims)
     for i, _ in np.ndenumerate(lazy_arrays):
+        read_indicies = (
+            current_dim_begin_index + curr_dim_index
+            for current_dim_begin_index, curr_dim_index in zip(begin_indicies, i)
+        )
         read_dims = dict(zip(dims, i))
         lazy_arrays[i] = da.from_delayed(
-            delayed(_imread)(img, read_dims),
+            delayed(_imread)(img, read_indicies),
             shape=sample_YX_shape,
             dtype=sample.dtype
         )
