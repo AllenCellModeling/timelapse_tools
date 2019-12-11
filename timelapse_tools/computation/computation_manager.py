@@ -42,6 +42,6 @@ class ComputationManager(ABC):
             The read data cube to process.
         file_pointer: CziFile
             The file pointer (or buffer reference) in the case you want to explicitly
-            access more information from the file during each process operation.
+            access more information from the file during the process operation.
         """
         pass

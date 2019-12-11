@@ -43,7 +43,7 @@ class NormalizationManager(ABC):
             The data cube to normalize.
         file_pointer: CziFile
             The file pointer (or buffer reference) in the case you want to explicitly
-            access more information from the file during each process operation.
+            access more information from the file during the process operation.
         computation_results: Optional[Any]
             The results generated from the previously ran ComputationManager.
 
