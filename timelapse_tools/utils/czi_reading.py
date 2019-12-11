@@ -153,9 +153,9 @@ def daread(img: Union[str, Path, CziFile]) -> da.core.Array:
             current_dim_begin_index + curr_dim_index
             for current_dim_begin_index, curr_dim_index in zip(begin_indicies, i)
         )
-        read_dims = dict(zip(dims, i))
+        read_dims = dict(zip(dims, read_indicies))
         lazy_arrays[i] = da.from_delayed(
-            delayed(_imread)(img, read_indicies),
+            delayed(_imread)(img, read_dims),
             shape=sample_YX_shape,
             dtype=sample.dtype
         )
