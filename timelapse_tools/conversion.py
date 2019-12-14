@@ -183,17 +183,36 @@ def _generate_process_list(
 
 
 @task
+def _generate_selected_dims_list(
+    dims: str,
+    getitem_indicies: List[Tuple[Union[int, slice]]]
+) -> List[Dict[str, int]]:
+    selected_dims = []
+    for getitem_selection in getitem_indicies:
+        this_set_dims = {}
+        for i, dim in enumerate(dims):
+            if isinstance(getitem_selection[i], int):
+                this_set_dims[dim] = getitem_selection[i]
+
+        selected_dims.append(this_set_dims)
+
+    return selected_dims
+
+
+@task
 def _generate_movie(
     data: da.core.Array,
+    selected_indices: Dict[str, int],
     dims: str,
     operating_dim: str,
     save_path: Path,
-    # normalization_func: Callable,
+    normalization_func: Callable,
     normalization_kwargs: Dict[str, Any],
-    # projection_func: Callable,
+    projection_func: Callable,
     projection_kwargs: Dict[str, Any]
 ) -> da.core.Array:
-    return
+    # Normalize the data
+    data = normalization_func(data=data, **normalization_kwargs)
 
 
 def convert_to_mp4(
@@ -202,9 +221,9 @@ def convert_to_mp4(
     distributed_executor_port: Union[str, int] = 8888,
     save_path: Optional[Union[str, Path]] = None,
     overwrite: bool = False,
-    # normalization_func: Callable = percentile_norm,
+    normalization_func: Callable = percentile_norm,
     normalization_kwargs: Dict[str, Any] = {},
-    # projection_func: Callable = single_channel_max_project,
+    projection_func: Callable = single_channel_max_project,
     projection_kwargs: Dict[str, Any] = {},
     operating_dim: str = "T",
     S: Optional[Union[int, slice]] = None,
@@ -264,15 +283,22 @@ def convert_to_mp4(
             getitem_indicies=getitem_indicies
         )
 
+        # Generate a list of dictionaries that map dimension to selected data
+        selected_indices = _generate_selected_dims_list(
+            dims=dims,
+            getitem_indicies=getitem_indicies
+        )
+
         # Generate movies for each
         _generate_movie.map(
             data=to_process,
+            selected_indices=selected_indices,
             dims=unmapped(dims),
             operating_dim=unmapped(operating_dim),
             save_path=unmapped(save_path),
-            # normalization_func=unmapped(normalization_func),
+            normalization_func=unmapped(normalization_func),
             normalization_kwargs=unmapped(normalization_kwargs),
-            # projection_func=unmapped(projection_func),
+            projection_func=unmapped(projection_func),
             projection_kwargs=unmapped(projection_kwargs)
         )
 

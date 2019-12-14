@@ -2,17 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import dask.array as da
-from prefect import task
 
 from .. import exceptions
 
 ###############################################################################
 
 
-@task
-def single_channel_max_project(data: da.core.Array, dims: str) -> da.core.Array:
+def single_channel_max_project(
+    data: da.core.Array,
+    dims: str,
+    max_project_dim: str = "Z",
+    **kwargs
+) -> da.core.Array:
     if len(data.shape) > 3:
         raise exceptions.InvalidShapeError(len(data.shape), 3)
 
-    max_project_axis = dims.index("Z")
-    return da.max(data, axis=max_project_axis)[0, :]
+    return data.max(dims.index(max_project_dim))

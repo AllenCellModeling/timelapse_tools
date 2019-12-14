@@ -2,22 +2,21 @@
 # -*- coding: utf-8 -*-
 
 import dask.array as da
-from prefect import task
 
 from .. import exceptions
 
 ###############################################################################
 
 
-@task
 def percentile_norm(
     data: da.core.Array,
     min_p: float = 50.0,
-    max_p: float = 99.8
+    max_p: float = 99.8,
+    **kwargs
 ) -> da.core.Array:
     # Enforce shape
-    if len(data.shape) > 3:
-        raise exceptions.InvalidShapeError(len(data.shape), 3)
+    if len(data.shape) > 4:
+        raise exceptions.InvalidShapeError(len(data.shape), 4)
 
     # Get the norm by values
     norm_by = da.percentile(

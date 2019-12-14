@@ -246,6 +246,59 @@ def test_generate_process_list(img, getitem_indicies, expected_process_list):
         assert np.array_equal(to_process.compute(), expected.compute())
 
 
+@pytest.mark.parametrize("dims, getitem_indicies, expected", [
+    (
+        "STCZYX",
+        [
+            (0, select_all, 0, select_all, select_all, select_all),
+            (1, select_all, 0, select_all, select_all, select_all),
+            (0, select_all, 1, select_all, select_all, select_all),
+            (1, select_all, 1, select_all, select_all, select_all)
+        ],
+        [
+            {"S": 0, "C": 0},
+            {"S": 1, "C": 0},
+            {"S": 0, "C": 1},
+            {"S": 1, "C": 1}
+        ]
+    ),
+    (
+        "STZYX",
+        [
+            (0, select_all, select_all, select_all, select_all),
+            (1, select_all, select_all, select_all, select_all)
+        ],
+        [
+            {"S": 0},
+            {"S": 1}
+        ]
+    ),
+    (
+        "TCZYX",
+        [
+            (select_all, 0, select_all, select_all, select_all),
+            (select_all, 1, select_all, select_all, select_all)
+        ],
+        [
+            {"C": 0},
+            {"C": 1},
+        ]
+    ),
+    (
+        "TZYX",
+        [
+            (select_all, select_all, select_all, select_all)
+        ],
+        [
+            {}
+        ]
+    ),
+])
+def test_generate_selected_dims_list(dims, getitem_indicies, expected):
+    actual = conversion._generate_selected_dims_list.run(dims, getitem_indicies)
+    assert actual == expected
+
+
 @pytest.mark.parametrize("img", [
     ("s_1_t_5_c_1_z_1.czi"),
     ("s_None_t_5_c_1_z_None.czi")
