@@ -249,23 +249,26 @@ def convert_to_mp4(
             dim_name=Dimensions.Channel,
             dim_indicies_selected=C
         )
+        # Unpack image details because they will be used all over the place now
+        img = img_details[0]
+        dims = img_details[1]
 
         # Generate all the indicie sets we will need to process
         getitem_indicies = _generate_getitem_indicies(
-            img_shape=_get_image_shape(img_details[0]),
-            dims=img_details[1]
+            img_shape=_get_image_shape(img),
+            dims=dims
         )
 
         # Generate all the movie selections
         to_process = _generate_process_list(
-            img=img_details[0],
+            img=img,
             getitem_indicies=getitem_indicies
         )
 
         # Generate movies for each
         _generate_movie.map(
             data=to_process,
-            dims=unmapped(img_details[1]),
+            dims=unmapped(dims),
             operating_dim=unmapped(operating_dim),
             save_path=unmapped(save_path),
             # normalization_func=unmapped(normalization_func),
