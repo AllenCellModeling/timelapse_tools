@@ -4,11 +4,9 @@
 import logging
 from itertools import product
 from pathlib import Path
-from typing import (Any, Callable, Dict, List, NamedTuple, Optional, Tuple,
-                    Union)
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import dask.array as da
-from aicspylibczi import CziFile
 from prefect import Flow, task, unmapped
 
 from .constants import AVAILABLE_OPERATING_DIMENSIONS, Dimensions
@@ -22,26 +20,52 @@ log = logging.getLogger(__name__)
 
 ###############################################################################
 
-
-class ImageDetails(NamedTuple):
-    data: da.core.Array
-    dims: str
+ImageDetails = Tuple[da.core.Array, str]
 
 ###############################################################################
 
 
 @task
-def _generate_movie(
-    data: da.core.Array,
-    dims: str,
-    operating_dim: str,
-    save_path: Path,
-    normalization_func: Callable,
-    normalization_kwargs: Dict[str, Any],
-    projection_func: Callable,
-    projection_kwargs: Dict[str, Any]
-) -> da.core.Array:
-    pass
+def _get_save_path(
+    save_path: Optional[Union[str, Path, None]],
+    overwrite: bool,
+    fname: str
+) -> Path:
+    # If save_path was provided just double check it is valid
+    if save_path is not None:
+        # Resolve path
+        save_path = Path(save_path).expanduser().resolve()
+
+        # Check that no directory or file exists at this location
+        if save_path.exists() and not overwrite:
+            raise FileExistsError(
+                f"The save path provided already points to an existing resource and "
+                f"overwrite wasn't specified. "
+                f"Provided: {save_path}"
+            )
+
+        return save_path
+
+    return Path(fname).expanduser().resolve()
+
+
+@task
+def _img_prep(img: Union[str, Path], operating_dim: str) -> ImageDetails:
+    # Convert to dask.array
+    img, dims = daread(img)
+
+    # Get valid operating dimensions for this image by using set intersection
+    valid_op_dims = set([d for d in dims]) & AVAILABLE_OPERATING_DIMENSIONS
+
+    # Check that the operating dim provided is valid for this image
+    if operating_dim not in valid_op_dims:
+        raise ValueError(
+            f"Invalid operating dimension provided. "
+            f"Provided operating dimension: '{operating_dim}'. "
+            f"Valid operating dimensions for this image: {valid_op_dims}."
+        )
+
+    return img, dims
 
 
 @task
@@ -84,7 +108,12 @@ def _select_dimension(
                 f"({dim_indicies_selected}) as it was not found in the file."
             )
 
-    return ImageDetails(data=img, dims=dims)
+    return img, dims
+
+
+@task
+def _get_image_shape(img: da.core.Array) -> Tuple[int]:
+    return img.shape
 
 
 @task
@@ -147,32 +176,38 @@ def _generate_getitem_indicies(
 
 
 @task
-def _img_prep(img: Union[str, Path, CziFile], operating_dim: str) -> ImageDetails:
-    # Convert to dask.array
-    img, dims = daread(img)
+def _generate_process_list(
+    img: da.core.Array,
+    getitem_indicies: List[Tuple[Union[int, slice]]]
+) -> List[da.core.Array]:
+    print(img)
+    print(getitem_indicies)
+    return [img[getitem_selection] for getitem_selection in getitem_indicies]
 
-    # Get valid operating dimensions for this image by using set intersection
-    valid_op_dims = set([d for d in dims]) & AVAILABLE_OPERATING_DIMENSIONS
 
-    # Check that the operating dim provided is valid for this image
-    if operating_dim not in valid_op_dims:
-        raise ValueError(
-            f"Invalid operating dimension provided. "
-            f"Provided operating dimension: '{operating_dim}'. "
-            f"Valid operating dimensions for this image: {valid_op_dims}."
-        )
-
-    return ImageDetails(data=img, dims=dims)
+@task
+def _generate_movie(
+    data: da.core.Array,
+    dims: str,
+    operating_dim: str,
+    save_path: Path,
+    # normalization_func: Callable,
+    normalization_kwargs: Dict[str, Any],
+    # projection_func: Callable,
+    projection_kwargs: Dict[str, Any]
+) -> da.core.Array:
+    return
 
 
 def convert_to_mp4(
-    img: Union[str, Path, CziFile],
+    img: Union[str, Path],
     distributed: bool = False,
     distributed_executor_port: Union[str, int] = 8888,
     save_path: Optional[Union[str, Path]] = None,
-    normalization_func: Callable = percentile_norm,
+    overwrite: bool = False,
+    # normalization_func: Callable = percentile_norm,
     normalization_kwargs: Dict[str, Any] = {},
-    projection_func: Callable = single_channel_max_project,
+    # projection_func: Callable = single_channel_max_project,
     projection_kwargs: Dict[str, Any] = {},
     operating_dim: str = "T",
     S: Optional[Union[int, slice]] = None,
@@ -188,48 +223,53 @@ def convert_to_mp4(
     # Run all processing through prefect + dask for better
     # parallelization and task optimization
     with Flow("czi_to_mp4_conversion") as flow:
+        # Convert img to Path
+        img = Path(img).expanduser().resolve(strict=True)
+
+        # Determine save path
+        save_path = _get_save_path(
+            save_path=save_path,
+            overwrite=overwrite,
+            fname=img.with_suffix("").name
+        )
+
         # Setup and check image and operating dimension provided
         img_details = _img_prep(img=img, operating_dim=operating_dim)
 
-        # TODO:
-        # Determine save path
-
         # Select scene data
         img_details = _select_dimension(
-            img=img_details.data,
-            dims=img_details.dims,
+            img=img_details[0],
+            dims=img_details[1],
             dim_name=Dimensions.Scene,
             dim_indicies_selected=S
         )
+
         # Select channel data
         img_details = _select_dimension(
-            img=img_details.data,
-            dims=img_details.dims,
+            img=img_details[0],
+            dims=img_details[1],
             dim_name=Dimensions.Channel,
             dim_indicies_selected=C
         )
 
         # Generate all the indicie sets we will need to process
         getitem_indicies = _generate_getitem_indicies(
-            img_shape=img_details.data.shape,
-            dims=img_details.dims
+            img_shape=_get_image_shape(img_details[0]),
+            dims=img_details[1]
         )
 
         # Generate all the movie selections
-        movies = [
-            img_details.data[getitem_selection]
-            for getitem_selection in getitem_indicies
-        ]
+        to_process = _generate_process_list(img=img, getitem_indicies=getitem_indicies)
 
         # Generate movies for each
         _generate_movie.map(
-            data=movies,
-            dims=unmapped(img_details.dims),
+            data=to_process,
+            dims=unmapped(img_details[1]),
             operating_dim=unmapped(operating_dim),
             save_path=unmapped(save_path),
-            normalization_func=unmapped(normalization_func),
+            # normalization_func=unmapped(normalization_func),
             normalization_kwargs=unmapped(normalization_kwargs),
-            projection_func=unmapped(projection_func),
+            # projection_func=unmapped(projection_func),
             projection_kwargs=unmapped(projection_kwargs)
         )
 
