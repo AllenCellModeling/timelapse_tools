@@ -121,13 +121,14 @@ def _generate_getitem_indicies(
     img_shape: tuple,
     dims: str
 ) -> List[Tuple[Union[int, slice]]]:
+    getitem_indicies = []
+
     # Generate getitem ops to process for each scene x channel pair
     if Dimensions.Scene in dims and Dimensions.Channel in dims:
         sc_indicies = list(product(
             range(img_shape[dims.index(Dimensions.Scene)]),
             range(img_shape[dims.index(Dimensions.Channel)])
         ))
-        getitem_indicies = []
         for sc_index_pair in sc_indicies:
             this_pair_getitem_indices = []
             for dim in dims:
@@ -143,7 +144,6 @@ def _generate_getitem_indicies(
     # Generate getitem ops to process for each scene
     elif Dimensions.Scene in dims:
         s_indicies = list(range(img_shape[dims.index(Dimensions.Scene)]))
-        getitem_indicies = []
         for s_index in s_indicies:
             this_index_getitem_indices = []
             for dim in dims:
@@ -157,7 +157,6 @@ def _generate_getitem_indicies(
     # Generate getitem ops to process for each channel
     elif Dimensions.Channel in dims:
         c_indicies = list(range(img_shape[dims.index(Dimensions.Channel)]))
-        getitem_indicies = []
         for c_index in c_indicies:
             this_index_getitem_indices = []
             for dim in dims:
@@ -170,7 +169,7 @@ def _generate_getitem_indicies(
 
     # Just pass through a list of a single getitem all
     else:
-        getitem_indicies = [tuple([slice(None, None, None) for dim in dims])]
+        getitem_indicies.append(tuple([slice(None, None, None) for dim in dims]))
 
     return getitem_indicies
 
@@ -280,7 +279,7 @@ def convert_to_mp4(
     # Run the flow
     state = flow.run(executor=executor)
 
-    # Get resulting path(s)
+    # Get resulting path
     save_path = state.result[flow.get_tasks(name="_get_save_path")[0]].result
 
     return save_path
