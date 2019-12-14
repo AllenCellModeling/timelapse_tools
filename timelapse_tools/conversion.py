@@ -180,8 +180,6 @@ def _generate_process_list(
     img: da.core.Array,
     getitem_indicies: List[Tuple[Union[int, slice]]]
 ) -> List[da.core.Array]:
-    print(img)
-    print(getitem_indicies)
     return [img[getitem_selection] for getitem_selection in getitem_indicies]
 
 
@@ -259,7 +257,10 @@ def convert_to_mp4(
         )
 
         # Generate all the movie selections
-        to_process = _generate_process_list(img=img, getitem_indicies=getitem_indicies)
+        to_process = _generate_process_list(
+            img=img_details[0],
+            getitem_indicies=getitem_indicies
+        )
 
         # Generate movies for each
         _generate_movie.map(
