@@ -3,9 +3,12 @@
 
 from pathlib import Path
 
+import dask.array as da
+import numpy as np
 import pytest
 
 from timelapse_tools import conversion
+from timelapse_tools.constants import Dimensions
 
 ###############################################################################
 
@@ -14,7 +17,33 @@ from timelapse_tools import conversion
 def data_dir() -> Path:
     return Path(__file__).parent / "data"
 
+
+select_all = slice(None, None, None)
+
 ###############################################################################
+
+
+@pytest.mark.parametrize("save_path, overwrite, fname, expected", [
+    (Path(__file__) / "test_dir", False, None, Path(__file__) / "test_dir"),
+    (Path(__file__).parent, True, None, Path(__file__).parent),
+    pytest.param(
+        Path(__file__).parent,
+        False,
+        None,
+        None,
+        marks=pytest.mark.raises(exception=FileExistsError)
+    ),
+    pytest.param(
+        Path(__file__),
+        False,
+        None,
+        None,
+        marks=pytest.mark.raises(exception=FileExistsError)
+    )
+])
+def test_get_save_path(save_path, overwrite, fname, expected):
+    actual = conversion._get_save_path.run(save_path, overwrite, fname)
+    assert actual == expected
 
 
 @pytest.mark.parametrize("img, operating_dim", [
@@ -39,3 +68,187 @@ def data_dir() -> Path:
 ])
 def test_img_prep(data_dir, img, operating_dim):
     img, dims = conversion._img_prep.run(data_dir / img, operating_dim)
+
+
+@pytest.mark.parametrize(
+    "img, dims, dim_name, dim_indicies_selected, expected_shape, expected_dims",
+    [
+        (
+            da.ones((1, 2, 3, 4, 5)),
+            "SCZYX",
+            Dimensions.Scene,
+            0,
+            (2, 3, 4, 5),
+            "CZYX"
+        ),
+        (
+            da.ones((1, 2, 3, 4, 5)),
+            "SCZYX",
+            Dimensions.Scene,
+            slice(0, 1, 1),
+            (1, 2, 3, 4, 5),
+            "SCZYX"
+        ),
+        (
+            da.ones((1, 2, 3, 4, 5)),
+            "SCZYX",
+            Dimensions.Channel,
+            0,
+            (1, 3, 4, 5),
+            "SZYX"
+        ),
+        (
+            da.ones((1, 2, 3, 4, 5)),
+            "SCZYX",
+            Dimensions.Channel,
+            slice(0, 1, 1),
+            (1, 1, 3, 4, 5),
+            "SCZYX"
+        ),
+        (
+            da.ones((1, 1)),
+            "YX",
+            Dimensions.Channel,
+            0,
+            (1, 1),
+            "YX"
+        ),
+        (
+            da.ones((1, 1)),
+            "YX",
+            Dimensions.Channel,
+            slice(0, 1, 1),
+            (1, 1),
+            "YX"
+        ),
+        pytest.param(
+            da.ones((1, 1, 1)),
+            "CYX",
+            Dimensions.Channel,
+            "Wrong selector type",
+            None,
+            None,
+            marks=pytest.mark.raises(exception=TypeError)
+        )
+    ]
+)
+def test_select_dimension(
+    img,
+    dims,
+    dim_name,
+    dim_indicies_selected,
+    expected_shape,
+    expected_dims
+):
+    img, dims = conversion._select_dimension.run(
+        img,
+        dims,
+        dim_name,
+        dim_indicies_selected
+    )
+    assert img.shape == expected_shape
+    assert dims == expected_dims
+
+
+@pytest.mark.parametrize("img, expected_shape", [
+    (da.ones((1, 2, 3)), (1, 2, 3)),
+    (da.ones((1, 2, 3, 4, 5)), (1, 2, 3, 4, 5))
+])
+def test_get_image_shape(img, expected_shape):
+    assert conversion._get_image_shape.run(img) == expected_shape
+
+
+@pytest.mark.parametrize("img_shape, dims, expected_getitem_indicies", [
+    (
+        (1, 2, 3, 4, 5, 6),
+        "STCZYX",
+        [
+            (0, select_all, 0, select_all, select_all, select_all),
+            (0, select_all, 1, select_all, select_all, select_all),
+            (0, select_all, 2, select_all, select_all, select_all)
+        ]
+    ),
+    (
+        (3, 2, 1, 4, 5, 6),
+        "STCZYX",
+        [
+            (0, select_all, 0, select_all, select_all, select_all),
+            (1, select_all, 0, select_all, select_all, select_all),
+            (2, select_all, 0, select_all, select_all, select_all)
+        ]
+    ),
+    (
+        (3, 2, 3, 4, 5),
+        "STZYX",
+        [
+            (0, select_all, select_all, select_all, select_all),
+            (1, select_all, select_all, select_all, select_all),
+            (2, select_all, select_all, select_all, select_all)
+        ]
+    ),
+    (
+        (3, 3, 3, 4, 5),
+        "TCZYX",
+        [
+            (select_all, 0, select_all, select_all, select_all),
+            (select_all, 1, select_all, select_all, select_all),
+            (select_all, 2, select_all, select_all, select_all)
+        ]
+    ),
+    (
+        (1, 2, 3, 4),
+        "TZYX",
+        [(select_all, select_all, select_all, select_all)]
+    )
+])
+def test_generate_getitem_indicies(img_shape, dims, expected_getitem_indicies):
+    actual = conversion._generate_getitem_indicies.run(img_shape, dims)
+    assert actual == expected_getitem_indicies
+
+
+@pytest.mark.parametrize("img, getitem_indicies, expected_process_list", [
+    (
+        da.ones((1, 2, 3, 4)),
+        [(select_all, select_all, select_all, select_all)],
+        [da.ones((1, 2, 3, 4))]
+    ),
+    (
+        da.ones((3, 2, 3, 4, 5)),
+        [
+            (0, select_all, select_all, select_all, select_all),
+            (1, select_all, select_all, select_all, select_all)
+        ],
+        [
+            da.ones((2, 3, 4, 5)),
+            da.ones((2, 3, 4, 5)),
+            da.ones((2, 3, 4, 5)),
+        ]
+    ),
+    (
+        da.ones((2, 4, 2, 4, 4, 4)),
+        [
+            (0, select_all, 0, select_all, select_all, select_all),
+            (1, select_all, 0, select_all, select_all, select_all),
+            (0, select_all, 1, select_all, select_all, select_all),
+            (1, select_all, 1, select_all, select_all, select_all)
+        ],
+        [
+            da.ones((4, 4, 4, 4)),
+            da.ones((4, 4, 4, 4)),
+            da.ones((4, 4, 4, 4)),
+            da.ones((4, 4, 4, 4)),
+        ]
+    )
+])
+def test_generate_process_list(img, getitem_indicies, expected_process_list):
+    actual = conversion._generate_process_list.run(img, getitem_indicies)
+    for to_process, expected in zip(actual, expected_process_list):
+        assert np.array_equal(to_process.compute(), expected.compute())
+
+
+@pytest.mark.parametrize("img", [
+    ("s_1_t_5_c_1_z_1.czi"),
+    ("s_None_t_5_c_1_z_None.czi")
+])
+def test_convert_to_mp4(data_dir, img):
+    conversion.convert_to_mp4(data_dir / img)
