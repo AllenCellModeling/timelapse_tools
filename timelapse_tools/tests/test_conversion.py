@@ -275,4 +275,4 @@ def test_generate_movies(data_dir, tmpdir, img, expected):
     # Read the only one and compare with expected
     actual = np.stack(mimread(produced_files[0]))
     expected = np.stack(mimread(data_dir / expected))
-    assert np.array_equal(actual, expected)
+    assert np.allclose(actual, expected)
