@@ -2,39 +2,41 @@
 
 [![Build Status](https://github.com/AllenCellModeling/timelapse_tools/workflows/Build%20Master/badge.svg)](https://github.com/AllenCellModeling/timelapse_tools/actions)
 [![Documentation](https://github.com/AllenCellModeling/timelapse_tools/workflows/Documentation/badge.svg)](https://AllenCellModeling.github.io/timelapse_tools)
+[![Code Coverage](https://codecov.io/gh/AllenCellModeling/timelapse_tools/branch/master/graph/badge.svg)](https://codecov.io/gh/AllenCellModeling/timelapse_tools)
 
-Load and convert timelapses
+Load and convert timelapse CZI files to movie formats
 
 ---
 
 ## Features
-* Load and convert time lapse images
+* Generate movies function that can operate on the `T` or `Z` axis
+* General purpose CZI delayed reader
+* Supported output formats:
+    * `mov`
+    * `avi`
+    * `mpg`
+    * `mpeg`
+    * `mp4`
+    * `mkv`
+    * `wmv`
 
 ## Quick Start
 
-_**Run computation over a large file:**_
+_**Read and interact with a large file:**_
 ```python
-from timelapse_tools import compute
-from timelapse_tools.computation.min_max_intensity_finder import MinMaxIntensityFinder
+from timelapse_tools import daread
 
-# Initialize your computation manager
-computation_manager = MinMaxIntensityFinder()
-
-# Compute
-results = compute("timelapse_tools/tests/data/s_1_t_5_c_1_z_1.czi", computation_manager)
-# (results.min_intensity, results.max_intensity) == (347, 1894)
+# Dask array with delayed reads for every YX plane
+img = daread("my_very_large_image.czi")
 ```
 
-_**Generate a movie:**_
+_**Generate all scene and channel movie pairs from a file:**_
 ```python
-from timelapse_tools import generate_movie, projection, label
+from timelapse_tools import generate_movies
 
-generate_movie(
-    "my_very_large_image.czi",
-    projection_func=projection.im2proj_all_axes,
-    label=label.t_index_labeler,
-    C=0
-)
+# Generates a folder with every scene and channel pair of videos in the file
+# and an index.html for you to view them all in
+generate_movies("my_very_large_image.czi")
 ```
 
 ![Example Generated Timelapse Movie](data/example.mp4)
