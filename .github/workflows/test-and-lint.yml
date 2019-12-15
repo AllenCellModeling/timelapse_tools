@@ -39,4 +39,4 @@ jobs:
         pip install .[test]
     - name: Lint with flake8
       run: |
-        flake8 timelapse_tools --count --verbose --max-line-length=127 --show-source --statistics
+        flake8 timelapse_tools --count --verbose --max-line-length=88 --show-source --statistics
