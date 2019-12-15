@@ -210,6 +210,7 @@ def _generate_movie(
     operating_dim: str,
     save_path: Path,
     fps: int,
+    save_format: str,
     normalization_func: Callable,
     normalization_kwargs: Dict[str, Any],
     projection_func: Callable,
@@ -250,7 +251,10 @@ def _generate_movie(
         this_file.append(str(selected))
     this_file = "_".join(this_file)
 
-    output_file = save_path / f"dims-{this_file}.mp4"
+    # Remove any leading period from save format
+    if save_format[0] == ".":
+        save_format = save_format[1:]
+    output_file = save_path / f"dims-{this_file}.{save_format}"
 
     # Make save dir if doesn't exist yet
     save_path.mkdir(parents=True, exist_ok=True)
@@ -273,6 +277,7 @@ def generate_movies(
     save_path: Optional[Union[str, Path]] = None,
     overwrite: bool = False,
     fps: int = 12,
+    save_format: str = "mp4",
     normalization_func: Callable = percentile_norm,
     normalization_kwargs: Dict[str, Any] = {},
     projection_func: Callable = single_channel_max_project,
@@ -351,6 +356,7 @@ def generate_movies(
             operating_dim=unmapped(operating_dim),
             save_path=unmapped(save_path),
             fps=unmapped(fps),
+            save_format=unmapped(save_format),
             normalization_func=unmapped(normalization_func),
             normalization_kwargs=unmapped(normalization_kwargs),
             projection_func=unmapped(projection_func),
