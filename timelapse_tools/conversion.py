@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import dask.array as da
+import imageio
+import numpy as np
 from prefect import Flow, task, unmapped
 
 from .constants import AVAILABLE_OPERATING_DIMENSIONS, Dimensions
@@ -33,20 +35,21 @@ def _get_save_path(
 ) -> Path:
     # If save_path was provided just double check it is valid
     if save_path is not None:
-        # Resolve path
         save_path = Path(save_path).expanduser().resolve()
 
-        # Check that no directory or file exists at this location
-        if save_path.exists() and not overwrite:
-            raise FileExistsError(
-                f"The save path provided already points to an existing resource and "
-                f"overwrite wasn't specified. "
-                f"Provided: {save_path}"
-            )
+    # Else use filename to generate location
+    else:
+        save_path = Path(fname).expanduser().resolve()
 
-        return save_path
+    # Check that no directory or file exists at this location
+    if save_path.exists() and not overwrite:
+        raise FileExistsError(
+            f"The save path provided already points to an existing resource and "
+            f"overwrite wasn't specified. "
+            f"Provided: {save_path}"
+        )
 
-    return Path(fname).expanduser().resolve()
+    return save_path
 
 
 @task
@@ -206,21 +209,70 @@ def _generate_movie(
     dims: str,
     operating_dim: str,
     save_path: Path,
+    fps: int,
     normalization_func: Callable,
     normalization_kwargs: Dict[str, Any],
     projection_func: Callable,
-    projection_kwargs: Dict[str, Any]
+    projection_kwargs: Dict[str, Any],
 ) -> da.core.Array:
     # Normalize the data
     data = normalization_func(data=data, **normalization_kwargs)
 
+    # Get the dims for this movie
+    dims = "".join(dim for dim in dims if dim not in selected_indices)
 
-def convert_to_mp4(
+    # Generate projections for each index of the operating dim
+    frame_getitem_indicies = []
+    for i in range(data.shape[dims.index(operating_dim)]):
+        this_frame_set = []
+        for dim in dims:
+            if dim is operating_dim:
+                this_frame_set.append(i)
+            else:
+                this_frame_set.append(slice(None, None, None))
+        frame_getitem_indicies.append(tuple(this_frame_set))
+
+    # Project all frames
+    frames = []
+    for frame_getitem_set in frame_getitem_indicies:
+        frames.append(
+            projection_func(
+                data=data[frame_getitem_set],
+                dims=dims.replace(operating_dim, ""),
+                **projection_kwargs
+            )
+        )
+
+    # Generate output file name
+    this_file = []
+    for dim, selected in selected_indices.items():
+        this_file.append(dim),
+        this_file.append(str(selected))
+    this_file = "_".join(this_file)
+
+    output_file = save_path / f"dims-{this_file}.mp4"
+
+    # Make save dir if doesn't exist yet
+    save_path.mkdir(parents=True, exist_ok=True)
+
+    # Init writer
+    writer = imageio.get_writer(output_file, fps=fps)
+
+    # Iter over frames and append to writer
+    for frame in frames:
+        writer.append_data(frame.compute().astype(np.uint8))
+
+    # Close writer
+    writer.close()
+
+
+def generate_movies(
     img: Union[str, Path],
     distributed: bool = False,
     distributed_executor_port: Union[str, int] = 8888,
     save_path: Optional[Union[str, Path]] = None,
     overwrite: bool = False,
+    fps: int = 12,
     normalization_func: Callable = percentile_norm,
     normalization_kwargs: Dict[str, Any] = {},
     projection_func: Callable = single_channel_max_project,
@@ -250,7 +302,12 @@ def convert_to_mp4(
         )
 
         # Setup and check image and operating dimension provided
-        img_details = _img_prep(img=img, operating_dim=operating_dim)
+        img_details = _img_prep(
+            img=img,
+            operating_dim=operating_dim,
+            # Don't run if save path checking failed
+            upstream_tasks=[save_path]
+        )
 
         # Select scene data
         img_details = _select_dimension(
@@ -267,25 +324,22 @@ def convert_to_mp4(
             dim_name=Dimensions.Channel,
             dim_indicies_selected=C
         )
-        # Unpack image details because they will be used all over the place now
-        img = img_details[0]
-        dims = img_details[1]
 
         # Generate all the indicie sets we will need to process
         getitem_indicies = _generate_getitem_indicies(
-            img_shape=_get_image_shape(img),
-            dims=dims
+            img_shape=_get_image_shape(img_details[0]),
+            dims=img_details[1]
         )
 
         # Generate all the movie selections
         to_process = _generate_process_list(
-            img=img,
+            img=img_details[0],
             getitem_indicies=getitem_indicies
         )
 
         # Generate a list of dictionaries that map dimension to selected data
         selected_indices = _generate_selected_dims_list(
-            dims=dims,
+            dims=img_details[1],
             getitem_indicies=getitem_indicies
         )
 
@@ -293,9 +347,10 @@ def convert_to_mp4(
         _generate_movie.map(
             data=to_process,
             selected_indices=selected_indices,
-            dims=unmapped(dims),
+            dims=unmapped(img_details[1]),
             operating_dim=unmapped(operating_dim),
             save_path=unmapped(save_path),
+            fps=unmapped(fps),
             normalization_func=unmapped(normalization_func),
             normalization_kwargs=unmapped(normalization_kwargs),
             projection_func=unmapped(projection_func),

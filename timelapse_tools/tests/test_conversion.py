@@ -6,6 +6,7 @@ from pathlib import Path
 import dask.array as da
 import numpy as np
 import pytest
+from imageio import mimread
 
 from timelapse_tools import conversion
 from timelapse_tools.constants import Dimensions
@@ -299,9 +300,23 @@ def test_generate_selected_dims_list(dims, getitem_indicies, expected):
     assert actual == expected
 
 
-@pytest.mark.parametrize("img", [
-    ("s_1_t_5_c_1_z_1.czi"),
-    ("s_None_t_5_c_1_z_None.czi")
+@pytest.mark.parametrize("img, expected", [
+    ("s_1_t_5_c_1_z_1.czi", "s_1_t_5_c_1_z_1.mp4"),
+    ("s_None_t_5_c_1_z_None.czi", "s_None_t_5_c_1_z_None.mp4")
 ])
-def test_convert_to_mp4(data_dir, img):
-    conversion.convert_to_mp4(data_dir / img)
+def test_generate_movies(data_dir, tmpdir, img, expected):
+    # Generate movies
+    save_dir = conversion.generate_movies(
+        data_dir / img,
+        save_path=tmpdir,
+        overwrite=True
+    )
+
+    # There _should_ only be one file produced from this, select it
+    produced_files = [f for f in save_dir.iterdir()]
+    assert len(produced_files)
+
+    # Read the only one and compare with expected
+    actual = np.stack(mimread(produced_files[0]))
+    expected = np.stack(mimread(data_dir / expected))
+    assert np.array_equal(actual, expected)

@@ -14,7 +14,13 @@ def single_channel_max_project(
     max_project_dim: str = "Z",
     **kwargs
 ) -> da.core.Array:
+    # Check shape
     if len(data.shape) > 3:
         raise exceptions.InvalidShapeError(len(data.shape), 3)
 
-    return data.max(dims.index(max_project_dim))
+    # If shape is three, we know we need to project
+    if len(data.shape) == 3:
+        return data.max(dims.index(max_project_dim))
+
+    # If it is less than three, it's two and just return
+    return data

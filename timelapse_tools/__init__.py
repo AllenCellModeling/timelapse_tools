@@ -9,7 +9,7 @@ __email__ = "jacksonb@alleninstitute.org, cdavew@alleninstitute.org"
 __version__ = "0.1.0"
 
 
-from .conversion import convert_to_mp4  # noqa: F401
+from .conversion import generate_movies  # noqa: F401
 from .utils import daread  # noqa: F401
 
 
