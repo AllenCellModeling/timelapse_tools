@@ -9,20 +9,14 @@ from .. import exceptions
 
 
 def percentile_norm(
-    data: da.core.Array,
-    min_p: float = 50.0,
-    max_p: float = 99.8,
-    **kwargs
+    data: da.core.Array, min_p: float = 50.0, max_p: float = 99.8, **kwargs
 ) -> da.core.Array:
     # Enforce shape
     if len(data.shape) > 4:
         raise exceptions.InvalidShapeError(len(data.shape), 4)
 
     # Get the norm by values
-    norm_by = da.percentile(
-        data.flatten(),
-        [min_p, min_p]
-    )
+    norm_by = da.percentile(data.flatten(), [min_p, min_p])
 
     # Norm
     normed = (data - norm_by[0]) / (norm_by[1] - norm_by[0])

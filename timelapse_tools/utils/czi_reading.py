@@ -18,8 +18,7 @@ log = logging.getLogger(__name__)
 
 
 def _read_image(
-    img: CziFile,
-    read_dims: Optional[Dict[str, int]] = None
+    img: CziFile, read_dims: Optional[Dict[str, int]] = None
 ) -> Tuple[np.ndarray, List[Tuple[str, int]]]:
     # Catch optional read dim
     if read_dims is None:
@@ -155,9 +154,7 @@ def daread(img: Union[str, Path, CziFile]) -> da.core.Array:
         )
         read_dims = dict(zip(dims, read_indicies))
         lazy_arrays[i] = da.from_delayed(
-            delayed(_imread)(img, read_dims),
-            shape=sample_YX_shape,
-            dtype=sample.dtype
+            delayed(_imread)(img, read_dims), shape=sample_YX_shape, dtype=sample.dtype
         )
 
     # Convert the numpy array of lazy readers into a dask array

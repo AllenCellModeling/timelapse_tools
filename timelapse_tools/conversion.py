@@ -29,9 +29,7 @@ ImageDetails = Tuple[da.core.Array, str]
 
 @task
 def _get_save_path(
-    save_path: Optional[Union[str, Path, None]],
-    overwrite: bool,
-    fname: str
+    save_path: Optional[Union[str, Path, None]], overwrite: bool, fname: str
 ) -> Path:
     # If save_path was provided just double check it is valid
     if save_path is not None:
@@ -76,7 +74,7 @@ def _select_dimension(
     img: da.core.Array,
     dims: str,
     dim_name: str,
-    dim_indicies_selected: Optional[Union[int, slice]] = None
+    dim_indicies_selected: Optional[Union[int, slice]] = None,
 ) -> ImageDetails:
     # Select which dimensions to process
     if dim_name in dims:
@@ -121,17 +119,18 @@ def _get_image_shape(img: da.core.Array) -> Tuple[int]:
 
 @task
 def _generate_getitem_indicies(
-    img_shape: tuple,
-    dims: str
+    img_shape: tuple, dims: str
 ) -> List[Tuple[Union[int, slice]]]:
     getitem_indicies = []
 
     # Generate getitem ops to process for each scene x channel pair
     if Dimensions.Scene in dims and Dimensions.Channel in dims:
-        sc_indicies = list(product(
-            range(img_shape[dims.index(Dimensions.Scene)]),
-            range(img_shape[dims.index(Dimensions.Channel)])
-        ))
+        sc_indicies = list(
+            product(
+                range(img_shape[dims.index(Dimensions.Scene)]),
+                range(img_shape[dims.index(Dimensions.Channel)]),
+            )
+        )
         for sc_index_pair in sc_indicies:
             this_pair_getitem_indices = []
             for dim in dims:
@@ -179,16 +178,14 @@ def _generate_getitem_indicies(
 
 @task
 def _generate_process_list(
-    img: da.core.Array,
-    getitem_indicies: List[Tuple[Union[int, slice]]]
+    img: da.core.Array, getitem_indicies: List[Tuple[Union[int, slice]]]
 ) -> List[da.core.Array]:
     return [img[getitem_selection] for getitem_selection in getitem_indicies]
 
 
 @task
 def _generate_selected_dims_list(
-    dims: str,
-    getitem_indicies: List[Tuple[Union[int, slice]]]
+    dims: str, getitem_indicies: List[Tuple[Union[int, slice]]]
 ) -> List[Dict[str, int]]:
     selected_dims = []
     for getitem_selection in getitem_indicies:
@@ -240,7 +237,7 @@ def _generate_movie(
             projection_func(
                 data=data[frame_getitem_set],
                 dims=dims.replace(operating_dim, ""),
-                **projection_kwargs
+                **projection_kwargs,
             )
         )
 
@@ -288,9 +285,11 @@ def generate_movies(
 ) -> Path:
     if distributed:
         from prefect.engine.executors import DaskExecutor
+
         executor = DaskExecutor(address=f"tcp://localhost:{distributed_executor_port}")
     else:
         from prefect.engine.executors import LocalExecutor
+
         executor = LocalExecutor()
 
     # Run all processing through prefect + dask for better
@@ -301,9 +300,7 @@ def generate_movies(
 
         # Determine save path
         save_path = _get_save_path(
-            save_path=save_path,
-            overwrite=overwrite,
-            fname=img.with_suffix("").name
+            save_path=save_path, overwrite=overwrite, fname=img.with_suffix("").name
         )
 
         # Setup and check image and operating dimension provided
@@ -311,7 +308,7 @@ def generate_movies(
             img=img,
             operating_dim=operating_dim,
             # Don't run if save path checking failed
-            upstream_tasks=[save_path]
+            upstream_tasks=[save_path],
         )
 
         # Select scene data
@@ -319,7 +316,7 @@ def generate_movies(
             img=img_details[0],
             dims=img_details[1],
             dim_name=Dimensions.Scene,
-            dim_indicies_selected=S
+            dim_indicies_selected=S,
         )
 
         # Select channel data
@@ -327,25 +324,22 @@ def generate_movies(
             img=img_details[0],
             dims=img_details[1],
             dim_name=Dimensions.Channel,
-            dim_indicies_selected=C
+            dim_indicies_selected=C,
         )
 
         # Generate all the indicie sets we will need to process
         getitem_indicies = _generate_getitem_indicies(
-            img_shape=_get_image_shape(img_details[0]),
-            dims=img_details[1]
+            img_shape=_get_image_shape(img_details[0]), dims=img_details[1]
         )
 
         # Generate all the movie selections
         to_process = _generate_process_list(
-            img=img_details[0],
-            getitem_indicies=getitem_indicies
+            img=img_details[0], getitem_indicies=getitem_indicies
         )
 
         # Generate a list of dictionaries that map dimension to selected data
         selected_indices = _generate_selected_dims_list(
-            dims=img_details[1],
-            getitem_indicies=getitem_indicies
+            dims=img_details[1], getitem_indicies=getitem_indicies
         )
 
         # Generate movies for each
@@ -360,7 +354,7 @@ def generate_movies(
             normalization_func=unmapped(normalization_func),
             normalization_kwargs=unmapped(normalization_kwargs),
             projection_func=unmapped(projection_func),
-            projection_kwargs=unmapped(projection_kwargs)
+            projection_kwargs=unmapped(projection_kwargs),
         )
 
     # Run the flow

@@ -9,10 +9,7 @@ from .. import exceptions
 
 
 def single_channel_max_project(
-    data: da.core.Array,
-    dims: str,
-    max_project_dim: str = "Z",
-    **kwargs
+    data: da.core.Array, dims: str, max_project_dim: str = "Z", **kwargs
 ) -> da.core.Array:
     # Check shape
     if len(data.shape) > 3:

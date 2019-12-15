@@ -13,7 +13,4 @@ class Dimensions:
     SpatialX = "X"
 
 
-AVAILABLE_OPERATING_DIMENSIONS = set((
-    Dimensions.Time,
-    Dimensions.SpatialZ,
-))
+AVAILABLE_OPERATING_DIMENSIONS = set((Dimensions.Time, Dimensions.SpatialZ,))
