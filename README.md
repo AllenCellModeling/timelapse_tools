@@ -35,7 +35,6 @@ _**Generate all scene and channel movie pairs from a file:**_
 from timelapse_tools import generate_movies
 
 # Generates a folder with every scene and channel pair of videos in the file
-# and an index.html for you to view them all in
 generate_movies("my_very_large_image.czi")
 ```
 
