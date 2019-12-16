@@ -75,6 +75,7 @@ extra_requirements = {
         *setup_requirements,
         *dev_requirements,
         *interactive_requirements,
+        *distributed_requirements,
     ],
 }
 
