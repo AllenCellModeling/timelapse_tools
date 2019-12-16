@@ -12,7 +12,7 @@ import numpy as np
 from prefect import Flow, task, unmapped
 
 from .constants import AVAILABLE_OPERATING_DIMENSIONS, Dimensions
-from .normalization.single_channel_percentile_norm import percentile_norm
+from .normalization.single_channel_percentile_norm import single_channel_percentile_norm
 from .projection.single_channel_max_project import single_channel_max_project
 from .utils.czi_reading import daread
 
@@ -272,17 +272,66 @@ def generate_movies(
     distributed: bool = False,
     distributed_executor_port: Union[str, int] = 8888,
     save_path: Optional[Union[str, Path]] = None,
+    operating_dim: str = Dimensions.Time,
     overwrite: bool = False,
     fps: int = 12,
     save_format: str = "mp4",
-    normalization_func: Callable = percentile_norm,
+    normalization_func: Callable = single_channel_percentile_norm,
     normalization_kwargs: Dict[str, Any] = {},
     projection_func: Callable = single_channel_max_project,
     projection_kwargs: Dict[str, Any] = {},
-    operating_dim: str = "T",
     S: Optional[Union[int, slice]] = None,
     C: Optional[Union[int, slice]] = None,
 ) -> Path:
+    """
+    Generate a movie for every scene and channel pair found in a file through an
+    operating dimension.
+
+    Parameters
+    ----------
+    img: Union[str, Path]
+        Path to a CZI file to read and generate movies for.
+    distributed: bool
+        Boolean option to distribute the workload across a Dask cluster.
+        Default: False
+    distributed_executor_port: Union[str, int]
+        The port to use for connecting to the distributed scheduler.
+        Default: 8888
+    save_path: Optional[Union[str, Path]]
+        A specific path to save the generated movies to.
+        Default: The a directory named after the provided file.
+    operating_dim: str
+        Which dimension to operating through for each frame of the movie.
+        Default: Dimensions.Time ("T")
+    overwrite: bool
+        Should existing files found under the same directory name be overwritten.
+        Default: False
+    fps: int
+        Frames per second of each produces movie.
+        Default: 12
+    save_format: str
+        Which movie format should be used for each produced file.
+        Default: mp4
+        Available: mov, avi, mpg, mpeg, mp4, mkv, wmv
+    normalization_func: Callable
+        A function to normalize the entire movie data prior to projection.
+        Default: timelapse_tools.normalization.single_channel_percentile_norm
+    normalization_kwargs: Dict[str, Any]
+        Any extra arguments to pass to the normalization function.
+        Default: {}
+    projection_func: Callable
+        A function to project the data for at each frame of the movie.
+        Default: timelapse_tools.projection.single_channel_max_project
+    projection_kwargs: Dict[str, Any]
+        Any extra arguments to pass to the projection function.
+        Default: {}
+    S: Optional[Union[int, slice]]
+        A specific integer or slice to use for selecting down the scenes to process.
+        Default: None (process all scenes)
+    C: Optional[Union[int, slice]]
+        A specific integer or slice to use for selecting down the channels to process.
+        Default: None (process all channels)
+    """
     if distributed:
         from prefect.engine.executors import DaskExecutor
 

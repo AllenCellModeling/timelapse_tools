@@ -8,7 +8,7 @@ from .. import exceptions
 ###############################################################################
 
 
-def percentile_norm(
+def single_channel_percentile_norm(
     data: da.core.Array, min_p: float = 50.0, max_p: float = 99.8, **kwargs
 ) -> da.core.Array:
     # Enforce shape
