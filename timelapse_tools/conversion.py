@@ -12,7 +12,8 @@ import numpy as np
 from prefect import Flow, task, unmapped
 
 from .constants import AVAILABLE_OPERATING_DIMENSIONS, Dimensions
-from .normalization.single_channel_percentile_norm import single_channel_percentile_norm
+from .normalization.single_channel_percentile_norm import \
+    single_channel_percentile_norm
 from .projection.single_channel_max_project import single_channel_max_project
 from .utils.czi_reading import daread
 
@@ -331,6 +332,11 @@ def generate_movies(
     C: Optional[Union[int, slice]]
         A specific integer or slice to use for selecting down the channels to process.
         Default: None (process all channels)
+
+    Returns
+    -------
+    save_path: Path
+        The path to the produced scene-channel pairings of movies.
     """
     if distributed:
         from prefect.engine.executors import DaskExecutor
