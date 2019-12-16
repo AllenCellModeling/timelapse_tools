@@ -41,7 +41,12 @@ dev_requirements = [
 interactive_requirements = [
     "altair",
     "jupyterlab",
-    "matplotlib",
+    "matplotlib"
+]
+
+distributed_requirements = [
+    "dask_jobqueue<=0.7.0",
+    "bokeh<=1.4.0",
 ]
 
 requirements = [
@@ -63,6 +68,7 @@ extra_requirements = {
     "setup": setup_requirements,
     "dev": dev_requirements,
     "interactive": interactive_requirements,
+    "distributed": distributed_requirements,
     "all": [
         *requirements,
         *test_requirements,
