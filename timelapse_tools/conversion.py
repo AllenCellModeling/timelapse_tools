@@ -270,8 +270,7 @@ def _generate_movie(
 
 def generate_movies(
     img: Union[str, Path],
-    distributed: bool = False,
-    distributed_executor_port: Union[str, int] = 8888,
+    distributed_executor_port: Optional[Union[str, int]] = None,
     save_path: Optional[Union[str, Path]] = None,
     operating_dim: str = Dimensions.Time,
     overwrite: bool = False,
@@ -293,12 +292,10 @@ def generate_movies(
     ----------
     img: Union[str, Path]
         Path to a CZI file to read and generate movies for.
-    distributed: bool
-        Boolean option to distribute the workload across a Dask cluster.
-        Default: False
-    distributed_executor_port: Union[str, int]
-        The port to use for connecting to the distributed scheduler.
-        Default: 8888
+    distributed_executor_port: Optional[Union[str, int]]
+        If provided a port to use for connecting to the distributed scheduler. All image
+        computation and workflow tasks will be distributed using Dask.
+        Default: None
     save_path: Optional[Union[str, Path]]
         A specific path to save the generated movies to.
         Default: The a directory named after the provided file.
