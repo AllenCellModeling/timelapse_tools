@@ -283,6 +283,7 @@ def generate_movies(
     projection_kwargs: Dict[str, Any] = {},
     S: Optional[Union[int, slice]] = None,
     C: Optional[Union[int, slice]] = None,
+    B: Union[int, slice] = 0,
 ) -> Path:
     """
     Generate a movie for every scene and channel pair found in a file through an
@@ -332,13 +333,15 @@ def generate_movies(
     C: Optional[Union[int, slice]]
         A specific integer or slice to use for selecting down the channels to process.
         Default: None (process all channels)
-
+    B: Union[int, slice]
+        A specific integer or slice to use for selecting down the channels to process.
+        Default: 0
     Returns
     -------
     save_path: Path
         The path to the produced scene-channel pairings of movies.
     """
-    if distributed:
+    if distributed_executor_port:
         from prefect.engine.executors import DaskExecutor
 
         executor = DaskExecutor(address=f"tcp://localhost:{distributed_executor_port}")
@@ -380,6 +383,14 @@ def generate_movies(
             dims=img_details[1],
             dim_name=Dimensions.Channel,
             dim_indicies_selected=C,
+        )
+
+        # Select 'B' data
+        img_details = _select_dimension(
+            img=img_details[0],
+            dims=img_details[1],
+            dim_name=Dimensions.B,
+            dim_indicies_selected=B,
         )
 
         # Generate all the indicie sets we will need to process

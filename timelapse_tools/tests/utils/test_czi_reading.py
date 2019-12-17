@@ -15,11 +15,16 @@ from timelapse_tools import daread
     [
         (
             "s_1_t_5_c_1_z_1.czi",
-            (1, 5, 1, 1, 624, 924),
-            (1, 1, 1, 1, 624, 924),
-            "STCZYX",
+            (1, 1, 5, 1, 1, 624, 924),
+            (1, 1, 1, 1, 1, 624, 924),
+            "BSTCZYX",
         ),
-        ("s_None_t_5_c_1_z_None.czi", (5, 1, 1248, 1848), (1, 1, 1248, 1848), "TCYX"),
+        (
+            "s_None_t_5_c_1_z_None.czi",
+            (1, 5, 1, 1248, 1848),
+            (1, 1, 1, 1248, 1848),
+            "BTCYX",
+        ),
         pytest.param(
             "does_not_exist.czi",
             None,

@@ -270,7 +270,7 @@ def test_generate_movies(data_dir, tmpdir, img, expected):
 
     # There _should_ only be one file produced from this, select it
     produced_files = [f for f in save_dir.iterdir()]
-    assert len(produced_files)
+    assert len(produced_files) == 1
 
     # Read the only one and compare with expected
     actual = np.stack(mimread(produced_files[0]))

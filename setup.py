@@ -50,7 +50,7 @@ distributed_requirements = [
 ]
 
 requirements = [
-    "aicspylibczi==2.1.0",
+    "aicspylibczi==2.2.0",
     "dask<=2.8.1",
     "fsspec<=0.6.1",
     "imageio<=2.6.1",
