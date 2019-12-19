@@ -89,14 +89,15 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Package modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="timelapse_tools.html">timelapse_tools package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="timelapse_tools.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.computation.html">timelapse_tools.computation package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.normalization.html">timelapse_tools.normalization package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.projection.html">timelapse_tools.projection package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.utils.html">timelapse_tools.utils package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="timelapse_tools.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="timelapse_tools.html#module-timelapse_tools.constants">timelapse_tools.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="timelapse_tools.html#module-timelapse_tools.conversion">timelapse_tools.conversion module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="timelapse_tools.html#module-timelapse_tools.exceptions">timelapse_tools.exceptions module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="timelapse_tools.html#module-timelapse_tools.label">timelapse_tools.label module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="timelapse_tools.html#module-timelapse_tools.movie">timelapse_tools.movie module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="timelapse_tools.html#module-timelapse_tools.projection">timelapse_tools.projection module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="timelapse_tools.html#module-timelapse_tools">Module contents</a></li>
 </ul>
 </li>
@@ -182,40 +183,78 @@
 <h1>Timelapse Tools<a class="headerlink" href="#timelapse-tools" title="Permalink to this headline">¶</a></h1>
 <a class="reference external image-reference" href="https://github.com/AllenCellModeling/timelapse_tools/actions"><img alt="Build Status" src="https://github.com/AllenCellModeling/timelapse_tools/workflows/Build%20Master/badge.svg" /></a>
 <a class="reference external image-reference" href="https://AllenCellModeling.github.io/timelapse_tools"><img alt="Documentation" src="https://github.com/AllenCellModeling/timelapse_tools/workflows/Documentation/badge.svg" /></a>
-<p>Load and convert timelapses</p>
+<a class="reference external image-reference" href="https://codecov.io/gh/AllenCellModeling/timelapse_tools"><img alt="Code Coverage" src="https://codecov.io/gh/AllenCellModeling/timelapse_tools/branch/master/graph/badge.svg" /></a>
+<p>Load and convert timelapse CZI files to movie formats</p>
 <hr class="docutils" />
 <div class="section" id="features">
 <h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Load and convert time lapse images</p></li>
+<li><p>Generate movies function that can operate on the <code class="docutils literal notranslate"><span class="pre">T</span></code> or <code class="docutils literal notranslate"><span class="pre">Z</span></code> axis</p></li>
+<li><p>General purpose CZI delayed reader</p></li>
+<li><p>Supported output formats:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">mov</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">avi</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mpg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mpeg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mp4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mkv</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wmv</span></code></p></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
-<p><strong>*Run computation over a large file:</strong>_</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">timelapse_tools</span> <span class="kn">import</span> <span class="n">compute</span>
-<span class="kn">from</span> <span class="nn">timelapse_tools.computation.min_max_intensity_finder</span> <span class="kn">import</span> <span class="n">MinMaxIntensityFinder</span>
+<p><strong>*Read and interact with a large file:</strong>_</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">timelapse_tools</span> <span class="kn">import</span> <span class="n">daread</span>
 
-<span class="c1"># Initialize your computation manager</span>
-<span class="n">computation_manager</span> <span class="o">=</span> <span class="n">MinMaxIntensityFinder</span><span class="p">()</span>
-
-<span class="c1"># Compute</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">compute</span><span class="p">(</span><span class="s2">&quot;timelapse_tools/tests/data/s_1_t_5_c_1_z_1.czi&quot;</span><span class="p">,</span> <span class="n">computation_manager</span><span class="p">)</span>
-<span class="c1"># (results.min_intensity, results.max_intensity) == (347, 1894)</span>
+<span class="c1"># Dask array with delayed reads for every YX plane</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">daread</span><span class="p">(</span><span class="s2">&quot;my_very_large_image.czi&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>*Generate a movie:</strong>_</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">timelapse_tools</span> <span class="kn">import</span> <span class="n">generate_movie</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">label</span>
+<p><strong>*Generate all scene and channel movie pairs from a file:</strong>_</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">timelapse_tools</span> <span class="kn">import</span> <span class="n">generate_movies</span>
 
-<span class="n">generate_movie</span><span class="p">(</span>
+<span class="c1"># Generates a folder with every scene and channel pair of movies in the file</span>
+<span class="n">generate_movies</span><span class="p">(</span><span class="s2">&quot;my_very_large_image.czi&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="distributed">
+<h2>Distributed<a class="headerlink" href="#distributed" title="Permalink to this headline">¶</a></h2>
+<p>If you want to generate these movies in a distributed fashion, spin up a Dask scheduler.
+The following settings generally work pretty well for our (AICS) SLURM cluster:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask_jobqueue</span> <span class="kn">import</span> <span class="n">SLURMCluster</span>
+<span class="kn">import</span> <span class="nn">dask</span><span class="o">,</span> <span class="nn">dask.distributed</span>
+
+<span class="n">cluster</span> <span class="o">=</span> <span class="n">SLURMCluster</span><span class="p">(</span>
+    <span class="n">cores</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;16GB&quot;</span><span class="p">,</span>
+    <span class="n">walltime</span><span class="o">=</span><span class="s2">&quot;12:00:00&quot;</span><span class="p">,</span>
+    <span class="n">queue</span><span class="o">=</span><span class="s2">&quot;aics_cpu_general&quot;</span>
+<span class="p">)</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">adapt</span><span class="p">(</span><span class="n">minimum_jobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">maximum_jobs</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>From there you simply need to pass the distributed executor port to the
+<code class="docutils literal notranslate"><span class="pre">generate_movies</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">timelapse_tools</span> <span class="kn">import</span> <span class="n">generate_movies</span>
+
+<span class="n">generate_movies</span><span class="p">(</span>
     <span class="s2">&quot;my_very_large_image.czi&quot;</span><span class="p">,</span>
-    <span class="n">projection_func</span><span class="o">=</span><span class="n">projection</span><span class="o">.</span><span class="n">im2proj_all_axes</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="o">.</span><span class="n">t_index_labeler</span><span class="p">,</span>
-    <span class="n">C</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">distributed_executor_port</span><span class="o">=</span><span class="n">cluster</span><span class="o">.</span><span class="n">scheduler_info</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference external image-reference" href="data/example.mp4"><img alt="Example Generated Timelapse Movie" src="data/example.mp4" /></a>
+<p><em>It is also recommended that whichever machine you run the scheduler on, to also set the
+following environment variable:</em></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">DASK_DISTRIBUTED__SCHEDULER__WORK_STEALING</span><span class="o">=</span><span class="s2">&quot;False&quot;</span>
+</pre></div>
+</div>
+<p><em>More details under the “work stealing” section
+`here &lt;https://docs.prefect.io/core/tutorials/dask-cluster.html&gt;`_.</em></p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>

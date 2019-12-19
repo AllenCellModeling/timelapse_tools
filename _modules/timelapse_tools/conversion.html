@@ -1,0 +1,639 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>timelapse_tools.conversion &mdash; Timelapse Tools 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Timelapse Tools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../timelapse_tools.html">timelapse_tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../timelapse_tools.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../timelapse_tools.normalization.html">timelapse_tools.normalization package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../timelapse_tools.projection.html">timelapse_tools.projection package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../timelapse_tools.utils.html">timelapse_tools.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../timelapse_tools.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../timelapse_tools.html#module-timelapse_tools.constants">timelapse_tools.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../timelapse_tools.html#module-timelapse_tools.conversion">timelapse_tools.conversion module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../timelapse_tools.html#module-timelapse_tools.exceptions">timelapse_tools.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../timelapse_tools.html#module-timelapse_tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Timelapse Tools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../timelapse_tools.html">timelapse_tools</a> &raquo;</li>
+        
+      <li>timelapse_tools.conversion</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for timelapse_tools.conversion</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">prefect</span> <span class="kn">import</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">unmapped</span>
+
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">AVAILABLE_OPERATING_DIMENSIONS</span><span class="p">,</span> <span class="n">Dimensions</span>
+<span class="kn">from</span> <span class="nn">.normalization.single_channel_percentile_norm</span> <span class="kn">import</span> <span class="n">single_channel_percentile_norm</span>
+<span class="kn">from</span> <span class="nn">.projection.single_channel_max_project</span> <span class="kn">import</span> <span class="n">single_channel_max_project</span>
+<span class="kn">from</span> <span class="nn">.utils.czi_reading</span> <span class="kn">import</span> <span class="n">daread</span>
+
+<span class="c1">###############################################################################</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">###############################################################################</span>
+
+<span class="n">ImageDetails</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">da</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+
+<span class="c1">###############################################################################</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">_get_save_path</span><span class="p">(</span>
+    <span class="n">save_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="kc">None</span><span class="p">]],</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="c1"># If save_path was provided just double check it is valid</span>
+    <span class="k">if</span> <span class="n">save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">save_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+    <span class="c1"># Else use filename to generate location</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">save_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+    <span class="c1"># Check that no directory or file exists at this location</span>
+    <span class="k">if</span> <span class="n">save_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The save path provided already points to an existing resource and &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;overwrite wasn&#39;t specified. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Provided: </span><span class="si">{save_path}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">save_path</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">_img_prep</span><span class="p">(</span><span class="n">img</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">operating_dim</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImageDetails</span><span class="p">:</span>
+    <span class="c1"># Convert to dask.array</span>
+    <span class="n">img</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="n">daread</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+    <span class="c1"># Get valid operating dimensions for this image by using set intersection</span>
+    <span class="n">valid_op_dims</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">])</span> <span class="o">&amp;</span> <span class="n">AVAILABLE_OPERATING_DIMENSIONS</span>
+
+    <span class="c1"># Check that the operating dim provided is valid for this image</span>
+    <span class="k">if</span> <span class="n">operating_dim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_op_dims</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid operating dimension provided. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Provided operating dimension: &#39;</span><span class="si">{operating_dim}</span><span class="s2">&#39;. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Valid operating dimensions for this image: </span><span class="si">{valid_op_dims}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">dims</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">_select_dimension</span><span class="p">(</span>
+    <span class="n">img</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span>
+    <span class="n">dims</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">dim_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">dim_indicies_selected</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImageDetails</span><span class="p">:</span>
+    <span class="c1"># Select which dimensions to process</span>
+    <span class="k">if</span> <span class="n">dim_name</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+        <span class="c1"># If specific dimension indicies were provided select them</span>
+        <span class="k">if</span> <span class="n">dim_indicies_selected</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim_indicies_selected</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{dim_name}</span><span class="s2"> selection may only be done by providing either an &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;integer or slice. Received: {type(dim_indicies_selected)}.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="c1"># Generate operations required to select the data</span>
+            <span class="n">ops</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="n">dim_name</span><span class="p">:</span>
+                    <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dim_indicies_selected</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+            <span class="c1"># Select the specified data</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">ops</span><span class="p">)]</span>
+
+            <span class="c1"># Remove the dimension from the dims if a specific integer was requested</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim_indicies_selected</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">dims</span> <span class="o">=</span> <span class="n">dims</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">dim_name</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Dimension not present dims</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dim_indicies_selected</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Ignoring the specified </span><span class="si">{dim_name}</span><span class="s2"> dimension(s) &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{dim_indicies_selected}</span><span class="s2">) as it was not found in the file.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">dims</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">_get_image_shape</span><span class="p">(</span><span class="n">img</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">_generate_getitem_indicies</span><span class="p">(</span>
+    <span class="n">img_shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">dims</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">]]]:</span>
+    <span class="n">getitem_indicies</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Generate getitem ops to process for each scene x channel pair</span>
+    <span class="k">if</span> <span class="n">Dimensions</span><span class="o">.</span><span class="n">Scene</span> <span class="ow">in</span> <span class="n">dims</span> <span class="ow">and</span> <span class="n">Dimensions</span><span class="o">.</span><span class="n">Channel</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+        <span class="n">sc_indicies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">product</span><span class="p">(</span>
+                <span class="nb">range</span><span class="p">(</span><span class="n">img_shape</span><span class="p">[</span><span class="n">dims</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">Dimensions</span><span class="o">.</span><span class="n">Scene</span><span class="p">)]),</span>
+                <span class="nb">range</span><span class="p">(</span><span class="n">img_shape</span><span class="p">[</span><span class="n">dims</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">Dimensions</span><span class="o">.</span><span class="n">Channel</span><span class="p">)]),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">sc_index_pair</span> <span class="ow">in</span> <span class="n">sc_indicies</span><span class="p">:</span>
+            <span class="n">this_pair_getitem_indices</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="n">Dimensions</span><span class="o">.</span><span class="n">Scene</span><span class="p">:</span>
+                    <span class="n">this_pair_getitem_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sc_index_pair</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">dim</span> <span class="ow">is</span> <span class="n">Dimensions</span><span class="o">.</span><span class="n">Channel</span><span class="p">:</span>
+                    <span class="n">this_pair_getitem_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sc_index_pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">this_pair_getitem_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+            <span class="n">getitem_indicies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">this_pair_getitem_indices</span><span class="p">))</span>
+
+    <span class="c1"># Generate getitem ops to process for each scene</span>
+    <span class="k">elif</span> <span class="n">Dimensions</span><span class="o">.</span><span class="n">Scene</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+        <span class="n">s_indicies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">img_shape</span><span class="p">[</span><span class="n">dims</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">Dimensions</span><span class="o">.</span><span class="n">Scene</span><span class="p">)]))</span>
+        <span class="k">for</span> <span class="n">s_index</span> <span class="ow">in</span> <span class="n">s_indicies</span><span class="p">:</span>
+            <span class="n">this_index_getitem_indices</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="n">Dimensions</span><span class="o">.</span><span class="n">Scene</span><span class="p">:</span>
+                    <span class="n">this_index_getitem_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s_index</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">this_index_getitem_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+            <span class="n">getitem_indicies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">this_index_getitem_indices</span><span class="p">))</span>
+
+    <span class="c1"># Generate getitem ops to process for each channel</span>
+    <span class="k">elif</span> <span class="n">Dimensions</span><span class="o">.</span><span class="n">Channel</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+        <span class="n">c_indicies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">img_shape</span><span class="p">[</span><span class="n">dims</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">Dimensions</span><span class="o">.</span><span class="n">Channel</span><span class="p">)]))</span>
+        <span class="k">for</span> <span class="n">c_index</span> <span class="ow">in</span> <span class="n">c_indicies</span><span class="p">:</span>
+            <span class="n">this_index_getitem_indices</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="n">Dimensions</span><span class="o">.</span><span class="n">Channel</span><span class="p">:</span>
+                    <span class="n">this_index_getitem_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_index</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">this_index_getitem_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+            <span class="n">getitem_indicies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">this_index_getitem_indices</span><span class="p">))</span>
+
+    <span class="c1"># Just pass through a list of a single getitem all</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">getitem_indicies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">([</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">getitem_indicies</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">_generate_process_list</span><span class="p">(</span>
+    <span class="n">img</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="n">getitem_indicies</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">]]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">da</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Array</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">img</span><span class="p">[</span><span class="n">getitem_selection</span><span class="p">]</span> <span class="k">for</span> <span class="n">getitem_selection</span> <span class="ow">in</span> <span class="n">getitem_indicies</span><span class="p">]</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">_generate_selected_dims_list</span><span class="p">(</span>
+    <span class="n">dims</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">getitem_indicies</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">]]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+    <span class="n">selected_dims</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">getitem_selection</span> <span class="ow">in</span> <span class="n">getitem_indicies</span><span class="p">:</span>
+        <span class="n">this_set_dims</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dims</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">getitem_selection</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">this_set_dims</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">getitem_selection</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">selected_dims</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_set_dims</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">selected_dims</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">_generate_movie</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">da</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span>
+    <span class="n">selected_indices</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">dims</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">operating_dim</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">fps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">save_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">normalization_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">normalization_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">projection_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">projection_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Array</span><span class="p">:</span>
+    <span class="c1"># Normalize the data</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">normalization_func</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">normalization_kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Get the dims for this movie</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dim</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span> <span class="k">if</span> <span class="n">dim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selected_indices</span><span class="p">)</span>
+
+    <span class="c1"># Generate projections for each index of the operating dim</span>
+    <span class="n">frame_getitem_indicies</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">dims</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">operating_dim</span><span class="p">)]):</span>
+        <span class="n">this_frame_set</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="n">operating_dim</span><span class="p">:</span>
+                <span class="n">this_frame_set</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">this_frame_set</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">frame_getitem_indicies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">this_frame_set</span><span class="p">))</span>
+
+    <span class="c1"># Project all frames</span>
+    <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">frame_getitem_set</span> <span class="ow">in</span> <span class="n">frame_getitem_indicies</span><span class="p">:</span>
+        <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">projection_func</span><span class="p">(</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">frame_getitem_set</span><span class="p">],</span>
+                <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">operating_dim</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                <span class="o">**</span><span class="n">projection_kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Generate output file name</span>
+    <span class="n">this_file</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">selected</span> <span class="ow">in</span> <span class="n">selected_indices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">this_file</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+        <span class="n">this_file</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">selected</span><span class="p">))</span>
+    <span class="n">this_file</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">this_file</span><span class="p">)</span>
+
+    <span class="c1"># Remove any leading period from save format</span>
+    <span class="k">if</span> <span class="n">save_format</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+        <span class="n">save_format</span> <span class="o">=</span> <span class="n">save_format</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">output_file</span> <span class="o">=</span> <span class="n">save_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;dims-</span><span class="si">{this_file}</span><span class="s2">.</span><span class="si">{save_format}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Make save dir if doesn&#39;t exist yet</span>
+    <span class="n">save_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Init writer</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">imageio</span><span class="o">.</span><span class="n">get_writer</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">)</span>
+
+    <span class="c1"># Iter over frames and append to writer</span>
+    <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>
+
+    <span class="c1"># Close writer</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="generate_movies"><a class="viewcode-back" href="../../timelapse_tools.html#timelapse_tools.conversion.generate_movies">[docs]</a><span class="k">def</span> <span class="nf">generate_movies</span><span class="p">(</span>
+    <span class="n">img</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+    <span class="n">distributed_executor_port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">operating_dim</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Dimensions</span><span class="o">.</span><span class="n">Time</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">fps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="n">save_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mp4&quot;</span><span class="p">,</span>
+    <span class="n">normalization_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">single_channel_percentile_norm</span><span class="p">,</span>
+    <span class="n">normalization_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">projection_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">single_channel_max_project</span><span class="p">,</span>
+    <span class="n">projection_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">S</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">C</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">B</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a movie for every scene and channel pair found in a file through an</span>
+<span class="sd">    operating dimension.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    img: Union[str, Path]</span>
+<span class="sd">        Path to a CZI file to read and generate movies for.</span>
+<span class="sd">    distributed_executor_port: Optional[Union[str, int]]</span>
+<span class="sd">        If provided a port to use for connecting to the distributed scheduler. All image</span>
+<span class="sd">        computation and workflow tasks will be distributed using Dask.</span>
+<span class="sd">        Default: None</span>
+<span class="sd">    save_path: Optional[Union[str, Path]]</span>
+<span class="sd">        A specific path to save the generated movies to.</span>
+<span class="sd">        Default: The a directory named after the provided file.</span>
+<span class="sd">    operating_dim: str</span>
+<span class="sd">        Which dimension to operating through for each frame of the movie.</span>
+<span class="sd">        Default: Dimensions.Time (&quot;T&quot;)</span>
+<span class="sd">    overwrite: bool</span>
+<span class="sd">        Should existing files found under the same directory name be overwritten.</span>
+<span class="sd">        Default: False</span>
+<span class="sd">    fps: int</span>
+<span class="sd">        Frames per second of each produces movie.</span>
+<span class="sd">        Default: 12</span>
+<span class="sd">    save_format: str</span>
+<span class="sd">        Which movie format should be used for each produced file.</span>
+<span class="sd">        Default: mp4</span>
+<span class="sd">        Available: mov, avi, mpg, mpeg, mp4, mkv, wmv</span>
+<span class="sd">    normalization_func: Callable</span>
+<span class="sd">        A function to normalize the entire movie data prior to projection.</span>
+<span class="sd">        Default: timelapse_tools.normalization.single_channel_percentile_norm</span>
+<span class="sd">    normalization_kwargs: Dict[str, Any]</span>
+<span class="sd">        Any extra arguments to pass to the normalization function.</span>
+<span class="sd">        Default: {}</span>
+<span class="sd">    projection_func: Callable</span>
+<span class="sd">        A function to project the data for at each frame of the movie.</span>
+<span class="sd">        Default: timelapse_tools.projection.single_channel_max_project</span>
+<span class="sd">    projection_kwargs: Dict[str, Any]</span>
+<span class="sd">        Any extra arguments to pass to the projection function.</span>
+<span class="sd">        Default: {}</span>
+<span class="sd">    S: Optional[Union[int, slice]]</span>
+<span class="sd">        A specific integer or slice to use for selecting down the scenes to process.</span>
+<span class="sd">        Default: None (process all scenes)</span>
+<span class="sd">    C: Optional[Union[int, slice]]</span>
+<span class="sd">        A specific integer or slice to use for selecting down the channels to process.</span>
+<span class="sd">        Default: None (process all channels)</span>
+<span class="sd">    B: Union[int, slice]</span>
+<span class="sd">        A specific integer or slice to use for selecting down the channels to process.</span>
+<span class="sd">        Default: 0</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    save_path: Path</span>
+<span class="sd">        The path to the produced scene-channel pairings of movies.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">distributed_executor_port</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">prefect.engine.executors</span> <span class="kn">import</span> <span class="n">DaskExecutor</span>
+
+        <span class="n">executor</span> <span class="o">=</span> <span class="n">DaskExecutor</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;tcp://localhost:</span><span class="si">{distributed_executor_port}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">prefect.engine.executors</span> <span class="kn">import</span> <span class="n">LocalExecutor</span>
+
+        <span class="n">executor</span> <span class="o">=</span> <span class="n">LocalExecutor</span><span class="p">()</span>
+
+    <span class="c1"># Run all processing through prefect + dask for better</span>
+    <span class="c1"># parallelization and task optimization</span>
+    <span class="k">with</span> <span class="n">Flow</span><span class="p">(</span><span class="s2">&quot;czi_to_mp4_conversion&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">flow</span><span class="p">:</span>
+        <span class="c1"># Convert img to Path</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">img</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Determine save path</span>
+        <span class="n">save_path</span> <span class="o">=</span> <span class="n">_get_save_path</span><span class="p">(</span>
+            <span class="n">save_path</span><span class="o">=</span><span class="n">save_path</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Setup and check image and operating dimension provided</span>
+        <span class="n">img_details</span> <span class="o">=</span> <span class="n">_img_prep</span><span class="p">(</span>
+            <span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span>
+            <span class="n">operating_dim</span><span class="o">=</span><span class="n">operating_dim</span><span class="p">,</span>
+            <span class="c1"># Don&#39;t run if save path checking failed</span>
+            <span class="n">upstream_tasks</span><span class="o">=</span><span class="p">[</span><span class="n">save_path</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Select scene data</span>
+        <span class="n">img_details</span> <span class="o">=</span> <span class="n">_select_dimension</span><span class="p">(</span>
+            <span class="n">img</span><span class="o">=</span><span class="n">img_details</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">dims</span><span class="o">=</span><span class="n">img_details</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">dim_name</span><span class="o">=</span><span class="n">Dimensions</span><span class="o">.</span><span class="n">Scene</span><span class="p">,</span>
+            <span class="n">dim_indicies_selected</span><span class="o">=</span><span class="n">S</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Select channel data</span>
+        <span class="n">img_details</span> <span class="o">=</span> <span class="n">_select_dimension</span><span class="p">(</span>
+            <span class="n">img</span><span class="o">=</span><span class="n">img_details</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">dims</span><span class="o">=</span><span class="n">img_details</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">dim_name</span><span class="o">=</span><span class="n">Dimensions</span><span class="o">.</span><span class="n">Channel</span><span class="p">,</span>
+            <span class="n">dim_indicies_selected</span><span class="o">=</span><span class="n">C</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Select &#39;B&#39; data</span>
+        <span class="n">img_details</span> <span class="o">=</span> <span class="n">_select_dimension</span><span class="p">(</span>
+            <span class="n">img</span><span class="o">=</span><span class="n">img_details</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">dims</span><span class="o">=</span><span class="n">img_details</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">dim_name</span><span class="o">=</span><span class="n">Dimensions</span><span class="o">.</span><span class="n">B</span><span class="p">,</span>
+            <span class="n">dim_indicies_selected</span><span class="o">=</span><span class="n">B</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Generate all the indicie sets we will need to process</span>
+        <span class="n">getitem_indicies</span> <span class="o">=</span> <span class="n">_generate_getitem_indicies</span><span class="p">(</span>
+            <span class="n">img_shape</span><span class="o">=</span><span class="n">_get_image_shape</span><span class="p">(</span><span class="n">img_details</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dims</span><span class="o">=</span><span class="n">img_details</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Generate all the movie selections</span>
+        <span class="n">to_process</span> <span class="o">=</span> <span class="n">_generate_process_list</span><span class="p">(</span>
+            <span class="n">img</span><span class="o">=</span><span class="n">img_details</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">getitem_indicies</span><span class="o">=</span><span class="n">getitem_indicies</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Generate a list of dictionaries that map dimension to selected data</span>
+        <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">_generate_selected_dims_list</span><span class="p">(</span>
+            <span class="n">dims</span><span class="o">=</span><span class="n">img_details</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">getitem_indicies</span><span class="o">=</span><span class="n">getitem_indicies</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Generate movies for each</span>
+        <span class="n">_generate_movie</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">to_process</span><span class="p">,</span>
+            <span class="n">selected_indices</span><span class="o">=</span><span class="n">selected_indices</span><span class="p">,</span>
+            <span class="n">dims</span><span class="o">=</span><span class="n">unmapped</span><span class="p">(</span><span class="n">img_details</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">operating_dim</span><span class="o">=</span><span class="n">unmapped</span><span class="p">(</span><span class="n">operating_dim</span><span class="p">),</span>
+            <span class="n">save_path</span><span class="o">=</span><span class="n">unmapped</span><span class="p">(</span><span class="n">save_path</span><span class="p">),</span>
+            <span class="n">fps</span><span class="o">=</span><span class="n">unmapped</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span>
+            <span class="n">save_format</span><span class="o">=</span><span class="n">unmapped</span><span class="p">(</span><span class="n">save_format</span><span class="p">),</span>
+            <span class="n">normalization_func</span><span class="o">=</span><span class="n">unmapped</span><span class="p">(</span><span class="n">normalization_func</span><span class="p">),</span>
+            <span class="n">normalization_kwargs</span><span class="o">=</span><span class="n">unmapped</span><span class="p">(</span><span class="n">normalization_kwargs</span><span class="p">),</span>
+            <span class="n">projection_func</span><span class="o">=</span><span class="n">unmapped</span><span class="p">(</span><span class="n">projection_func</span><span class="p">),</span>
+            <span class="n">projection_kwargs</span><span class="o">=</span><span class="n">unmapped</span><span class="p">(</span><span class="n">projection_kwargs</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Run the flow</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">executor</span><span class="o">=</span><span class="n">executor</span><span class="p">)</span>
+
+    <span class="c1"># Get resulting path</span>
+    <span class="n">save_path</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="n">flow</span><span class="o">.</span><span class="n">get_tasks</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;_get_save_path&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">result</span>
+
+    <span class="k">return</span> <span class="n">save_path</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Dave Williams
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

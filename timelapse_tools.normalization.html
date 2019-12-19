@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>timelapse_tools &mdash; Timelapse Tools 0.1.0 documentation</title>
+  <title>timelapse_tools.normalization package &mdash; Timelapse Tools 0.1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="timelapse_tools package" href="timelapse_tools.html" />
-    <link rel="prev" title="Welcome to Timelapse Tools’s documentation!" href="index.html" /> 
+    <link rel="next" title="timelapse_tools.projection package" href="timelapse_tools.projection.html" />
+    <link rel="prev" title="timelapse_tools package" href="timelapse_tools.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,10 +87,10 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Package modules</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.html">timelapse_tools package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="timelapse_tools.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.normalization.html">timelapse_tools.normalization package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="timelapse_tools.html">timelapse_tools package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="timelapse_tools.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">timelapse_tools.normalization package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="timelapse_tools.projection.html">timelapse_tools.projection package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="timelapse_tools.utils.html">timelapse_tools.utils package</a></li>
 </ul>
@@ -149,13 +149,17 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>timelapse_tools</li>
+          <li><a href="modules.html">timelapse_tools</a> &raquo;</li>
+        
+          <li><a href="timelapse_tools.html">timelapse_tools package</a> &raquo;</li>
+        
+      <li>timelapse_tools.normalization package</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/timelapse_tools.normalization.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -165,10 +169,10 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="timelapse_tools.html" class="btn btn-neutral float-right" title="timelapse_tools package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="timelapse_tools.projection.html" class="btn btn-neutral float-right" title="timelapse_tools.projection package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Timelapse Tools’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="timelapse_tools.html" class="btn btn-neutral float-left" title="timelapse_tools package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -177,42 +181,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="timelapse-tools">
-<h1>timelapse_tools<a class="headerlink" href="#timelapse-tools" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="timelapse_tools.html">timelapse_tools package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="timelapse_tools.normalization.html">timelapse_tools.normalization package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.normalization.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.normalization.html#module-timelapse_tools.normalization.single_channel_percentile_norm">timelapse_tools.normalization.single_channel_percentile_norm module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.normalization.html#module-timelapse_tools.normalization">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="timelapse_tools.projection.html">timelapse_tools.projection package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.projection.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.projection.html#module-timelapse_tools.projection.single_channel_max_project">timelapse_tools.projection.single_channel_max_project module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.projection.html#module-timelapse_tools.projection">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="timelapse_tools.utils.html">timelapse_tools.utils package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.utils.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.utils.html#module-timelapse_tools.utils.czi_metadata">timelapse_tools.utils.czi_metadata module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.utils.html#module-timelapse_tools.utils.czi_reading">timelapse_tools.utils.czi_reading module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.utils.html#module-timelapse_tools.utils.file_summary">timelapse_tools.utils.file_summary module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.utils.html#module-timelapse_tools.utils">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.html#module-timelapse_tools.constants">timelapse_tools.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.html#module-timelapse_tools.conversion">timelapse_tools.conversion module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.html#module-timelapse_tools.exceptions">timelapse_tools.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.html#module-timelapse_tools">Module contents</a></li>
-</ul>
-</li>
-</ul>
+  <div class="section" id="timelapse-tools-normalization-package">
+<h1>timelapse_tools.normalization package<a class="headerlink" href="#timelapse-tools-normalization-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-timelapse_tools.normalization.single_channel_percentile_norm">
+<span id="timelapse-tools-normalization-single-channel-percentile-norm-module"></span><h2>timelapse_tools.normalization.single_channel_percentile_norm module<a class="headerlink" href="#module-timelapse_tools.normalization.single_channel_percentile_norm" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="timelapse_tools.normalization.single_channel_percentile_norm.single_channel_percentile_norm">
+<code class="sig-prename descclassname">timelapse_tools.normalization.single_channel_percentile_norm.</code><code class="sig-name descname">single_channel_percentile_norm</code><span class="sig-paren">(</span><em class="sig-param">data: dask.array.core.Array</em>, <em class="sig-param">min_p: float = 50.0</em>, <em class="sig-param">max_p: float = 99.8</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; dask.array.core.Array<a class="reference internal" href="_modules/timelapse_tools/normalization/single_channel_percentile_norm.html#single_channel_percentile_norm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.normalization.single_channel_percentile_norm.single_channel_percentile_norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-timelapse_tools.normalization">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-timelapse_tools.normalization" title="Permalink to this headline">¶</a></h2>
+<p>Normalization package for timelapse_tools.</p>
 </div>
 </div>
 

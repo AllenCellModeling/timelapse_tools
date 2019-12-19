@@ -1,0 +1,38 @@
+timelapse\_tools.utils package
+==============================
+
+Submodules
+----------
+
+timelapse\_tools.utils.czi\_metadata module
+-------------------------------------------
+
+.. automodule:: timelapse_tools.utils.czi_metadata
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+timelapse\_tools.utils.czi\_reading module
+------------------------------------------
+
+.. automodule:: timelapse_tools.utils.czi_reading
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+timelapse\_tools.utils.file\_summary module
+-------------------------------------------
+
+.. automodule:: timelapse_tools.utils.file_summary
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: timelapse_tools.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

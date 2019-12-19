@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>timelapse_tools.exceptions &mdash; Timelapse Tools 0.1.0 documentation</title>
+  <title>timelapse_tools.constants &mdash; Timelapse Tools 0.1.0 documentation</title>
   
 
   
@@ -151,7 +151,7 @@
         
           <li><a href="../timelapse_tools.html">timelapse_tools</a> &raquo;</li>
         
-      <li>timelapse_tools.exceptions</li>
+      <li>timelapse_tools.constants</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -166,28 +166,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for timelapse_tools.exceptions</h1><div class="highlight"><pre>
+  <h1>Source code for timelapse_tools.constants</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="ConflictingArgumentsError"><a class="viewcode-back" href="../../timelapse_tools.html#timelapse_tools.exceptions.ConflictingArgumentsError">[docs]</a><span class="k">class</span> <span class="nc">ConflictingArgumentsError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="k">pass</span></div>
+<div class="viewcode-block" id="Dimensions"><a class="viewcode-back" href="../../timelapse_tools.html#timelapse_tools.constants.Dimensions">[docs]</a><span class="k">class</span> <span class="nc">Dimensions</span><span class="p">:</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span>
+    <span class="n">Scene</span> <span class="o">=</span> <span class="s2">&quot;S&quot;</span>
+    <span class="n">Time</span> <span class="o">=</span> <span class="s2">&quot;T&quot;</span>
+    <span class="n">Channel</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span>
+    <span class="n">SpatialZ</span> <span class="o">=</span> <span class="s2">&quot;Z&quot;</span>
+    <span class="n">SpatialY</span> <span class="o">=</span> <span class="s2">&quot;Y&quot;</span>
+    <span class="n">SpatialX</span> <span class="o">=</span> <span class="s2">&quot;X&quot;</span></div>
 
 
-<div class="viewcode-block" id="InvalidShapeError"><a class="viewcode-back" href="../../timelapse_tools.html#timelapse_tools.exceptions.InvalidShapeError">[docs]</a><span class="k">class</span> <span class="nc">InvalidShapeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actual</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">actual</span> <span class="o">=</span> <span class="n">actual</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Invalid dimensions for this operation. &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Recieved array with </span><span class="si">{self.actual}</span><span class="s2"> dimensions. &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Expected array with </span><span class="si">{self.expected}</span><span class="s2"> dimensions. &quot;</span>
-        <span class="p">)</span></div>
+<span class="n">AVAILABLE_OPERATING_DIMENSIONS</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="n">Dimensions</span><span class="o">.</span><span class="n">Time</span><span class="p">,</span> <span class="n">Dimensions</span><span class="o">.</span><span class="n">SpatialZ</span><span class="p">,))</span>
 </pre></div>
 
            </div>

@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>timelapse_tools.utils.czi_reading &mdash; Timelapse Tools 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Timelapse Tools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../timelapse_tools.html">timelapse_tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../timelapse_tools.normalization.html">timelapse_tools.normalization package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../timelapse_tools.projection.html">timelapse_tools.projection package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../timelapse_tools.utils.html">timelapse_tools.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#module-timelapse_tools.constants">timelapse_tools.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#module-timelapse_tools.conversion">timelapse_tools.conversion module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#module-timelapse_tools.exceptions">timelapse_tools.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#module-timelapse_tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Timelapse Tools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../timelapse_tools.html">timelapse_tools</a> &raquo;</li>
+        
+      <li>timelapse_tools.utils.czi_reading</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for timelapse_tools.utils.czi_reading</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">aicspylibczi</span> <span class="kn">import</span> <span class="n">CziFile</span>
+<span class="kn">from</span> <span class="nn">dask</span> <span class="kn">import</span> <span class="n">delayed</span>
+
+<span class="c1">###############################################################################</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">###############################################################################</span>
+
+
+<span class="k">def</span> <span class="nf">_read_image</span><span class="p">(</span>
+    <span class="n">img</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">read_dims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+    <span class="c1"># Catch optional read dim</span>
+    <span class="k">if</span> <span class="n">read_dims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">read_dims</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Init czi</span>
+    <span class="n">czi</span> <span class="o">=</span> <span class="n">CziFile</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+    <span class="c1"># Read image</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading dimensions: </span><span class="si">{read_dims}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="n">czi</span><span class="o">.</span><span class="n">read_image</span><span class="p">(</span><span class="o">**</span><span class="n">read_dims</span><span class="p">)</span>
+
+    <span class="c1"># Drop dims that shouldn&#39;t be provided back</span>
+    <span class="n">ops</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">real_dims</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dim_info</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dims</span><span class="p">):</span>
+        <span class="c1"># Expand dimension info</span>
+        <span class="n">dim</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">dim_info</span>
+
+        <span class="c1"># If the dim was provided in the read dims we know a single plane for that</span>
+        <span class="c1"># dimension was requested so remove it</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">read_dims</span><span class="p">:</span>
+            <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Otherwise just read the full slice</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="n">real_dims</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dim_info</span><span class="p">)</span>
+
+    <span class="c1"># Convert ops and run getitem</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">ops</span><span class="p">)],</span> <span class="n">real_dims</span>
+
+
+<span class="k">def</span> <span class="nf">_imread</span><span class="p">(</span><span class="n">img</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">read_dims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="n">_read_image</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">read_dims</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+
+
+<div class="viewcode-block" id="daread"><a class="viewcode-back" href="../../../timelapse_tools.utils.html#timelapse_tools.utils.czi_reading.daread">[docs]</a><span class="k">def</span> <span class="nf">daread</span><span class="p">(</span><span class="n">img</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">da</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Array</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a CZI image file as a delayed dask array where each YX plane will be read on</span>
+<span class="sd">    request.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    img: Union[str, Path]</span>
+<span class="sd">        The filepath to read.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img: dask.array.core.Array</span>
+<span class="sd">        The constructed dask array where each YX plane is a delayed read.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert pathlike to CziFile</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
+        <span class="c1"># Resolve path</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">img</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Check path</span>
+        <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">IsADirectoryError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Please provide a single file to the `img` parameter. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Received directory: </span><span class="si">{img}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Check that no other type was provided</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Please provide a path to a file as a string, or an pathlib.Path, to the &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;`img` parameter. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Received type: {type(img)}&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Init temp czi</span>
+    <span class="n">czi</span> <span class="o">=</span> <span class="n">CziFile</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+    <span class="c1"># Get image dims shape</span>
+    <span class="n">image_dims</span> <span class="o">=</span> <span class="n">czi</span><span class="o">.</span><span class="n">dims_shape</span><span class="p">()</span>
+
+    <span class="c1"># Setup the read dimensions dictionary for reading the first plane</span>
+    <span class="n">first_plane_read_dims</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">dim_info</span> <span class="ow">in</span> <span class="n">image_dims</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># Unpack dimension info</span>
+        <span class="n">dim_begin_index</span><span class="p">,</span> <span class="n">dim_end_index</span> <span class="o">=</span> <span class="n">dim_info</span>
+
+        <span class="c1"># Add to read dims</span>
+        <span class="n">first_plane_read_dims</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">dim_begin_index</span>
+
+    <span class="c1"># Read first plane for information used by dask.array.from_delayed</span>
+    <span class="n">sample</span><span class="p">,</span> <span class="n">sample_dims</span> <span class="o">=</span> <span class="n">czi</span><span class="o">.</span><span class="n">read_image</span><span class="p">(</span><span class="o">**</span><span class="n">first_plane_read_dims</span><span class="p">)</span>
+
+    <span class="c1"># The Y and X dimensions are always the last two dimensions, in that order.</span>
+    <span class="c1"># These dimensions cannot be operated over but the shape information is used</span>
+    <span class="c1"># in multiple places so we pull them out for easier access.</span>
+    <span class="n">sample_YX_shape</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+
+    <span class="c1"># Create operating shape and dim order list</span>
+    <span class="n">operating_shape</span> <span class="o">=</span> <span class="n">czi</span><span class="o">.</span><span class="n">size</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="n">dim</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">czi</span><span class="o">.</span><span class="n">dims</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]]</span>
+
+    <span class="c1"># Create empty numpy array with the operating shape so that we can iter through</span>
+    <span class="c1"># and use the multi_index to create the readers.</span>
+    <span class="c1"># We add empty dimensions of size one to fake being the Y and X dimensions.</span>
+    <span class="n">lazy_arrays</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">operating_shape</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+    <span class="c1"># We can enumerate over the multi-indexed array and construct read_dims</span>
+    <span class="c1"># dictionaries by simply zipping together the ordered dims list and the current</span>
+    <span class="c1"># multi-index plus the begin index for that plane.</span>
+    <span class="c1"># We then set the value of the array at the same multi-index to</span>
+    <span class="c1"># the delayed reader using the constructed read_dims dictionary.</span>
+    <span class="n">begin_indicies</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">image_dims</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">lazy_arrays</span><span class="p">):</span>
+        <span class="n">this_plane_read_indicies</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">current_dim_begin_index</span> <span class="o">+</span> <span class="n">curr_dim_index</span>
+            <span class="k">for</span> <span class="n">current_dim_begin_index</span><span class="p">,</span> <span class="n">curr_dim_index</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">begin_indicies</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">this_plane_read_dims</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">this_plane_read_indicies</span><span class="p">))</span>
+        <span class="n">lazy_arrays</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">from_delayed</span><span class="p">(</span>
+            <span class="n">delayed</span><span class="p">(</span><span class="n">_imread</span><span class="p">)(</span><span class="n">img</span><span class="p">,</span> <span class="n">this_plane_read_dims</span><span class="p">),</span>
+            <span class="n">shape</span><span class="o">=</span><span class="n">sample_YX_shape</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Convert the numpy array of lazy readers into a dask array</span>
+    <span class="n">merged</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">block</span><span class="p">(</span><span class="n">lazy_arrays</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+    <span class="c1"># Because dimensions outside of Y and X can be in any order and present or not</span>
+    <span class="c1"># we also return the dimension order string.</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">dims</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">merged</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Dave Williams
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

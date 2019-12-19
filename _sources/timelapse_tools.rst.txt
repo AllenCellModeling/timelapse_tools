@@ -6,39 +6,33 @@ Subpackages
 
 .. toctree::
 
-   timelapse_tools.computation
+   timelapse_tools.normalization
+   timelapse_tools.projection
+   timelapse_tools.utils
 
 Submodules
 ----------
+
+timelapse\_tools.constants module
+---------------------------------
+
+.. automodule:: timelapse_tools.constants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+timelapse\_tools.conversion module
+----------------------------------
+
+.. automodule:: timelapse_tools.conversion
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 timelapse\_tools.exceptions module
 ----------------------------------
 
 .. automodule:: timelapse_tools.exceptions
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-timelapse\_tools.label module
------------------------------
-
-.. automodule:: timelapse_tools.label
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-timelapse\_tools.movie module
------------------------------
-
-.. automodule:: timelapse_tools.movie
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-timelapse\_tools.projection module
-----------------------------------
-
-.. automodule:: timelapse_tools.projection
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,0 +1,22 @@
+timelapse\_tools.projection package
+===================================
+
+Submodules
+----------
+
+timelapse\_tools.projection.single\_channel\_max\_project module
+----------------------------------------------------------------
+
+.. automodule:: timelapse_tools.projection.single_channel_max_project
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: timelapse_tools.projection
+   :members:
+   :undoc-members:
+   :show-inheritance:

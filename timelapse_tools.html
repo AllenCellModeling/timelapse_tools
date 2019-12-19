@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="timelapse_tools.computation package" href="timelapse_tools.computation.html" />
+    <link rel="next" title="timelapse_tools.normalization package" href="timelapse_tools.normalization.html" />
     <link rel="prev" title="timelapse_tools" href="modules.html" /> 
 </head>
 
@@ -90,14 +90,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">timelapse_tools package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.computation.html">timelapse_tools.computation package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.normalization.html">timelapse_tools.normalization package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.projection.html">timelapse_tools.projection package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timelapse_tools.utils.html">timelapse_tools.utils package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-timelapse_tools.constants">timelapse_tools.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-timelapse_tools.conversion">timelapse_tools.conversion module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-timelapse_tools.exceptions">timelapse_tools.exceptions module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-timelapse_tools.label">timelapse_tools.label module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-timelapse_tools.movie">timelapse_tools.movie module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-timelapse_tools.projection">timelapse_tools.projection module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-timelapse_tools">Module contents</a></li>
 </ul>
 </li>
@@ -166,7 +167,7 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="timelapse_tools.computation.html" class="btn btn-neutral float-right" title="timelapse_tools.computation package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="timelapse_tools.normalization.html" class="btn btn-neutral float-right" title="timelapse_tools.normalization package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="modules.html" class="btn btn-neutral float-left" title="timelapse_tools" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -184,13 +185,24 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="timelapse_tools.computation.html">timelapse_tools.computation package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.computation.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.computation.html#module-timelapse_tools.computation.computation_manager">timelapse_tools.computation.computation_manager module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.computation.html#module-timelapse_tools.computation.file_summary">timelapse_tools.computation.file_summary module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.computation.html#module-timelapse_tools.computation.intensity_distributions">timelapse_tools.computation.intensity_distributions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.computation.html#module-timelapse_tools.computation.min_max_intensity_finder">timelapse_tools.computation.min_max_intensity_finder module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.computation.html#module-timelapse_tools.computation">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="timelapse_tools.normalization.html">timelapse_tools.normalization package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.normalization.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.normalization.html#module-timelapse_tools.normalization.single_channel_percentile_norm">timelapse_tools.normalization.single_channel_percentile_norm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.normalization.html#module-timelapse_tools.normalization">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="timelapse_tools.projection.html">timelapse_tools.projection package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.projection.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.projection.html#module-timelapse_tools.projection.single_channel_max_project">timelapse_tools.projection.single_channel_max_project module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.projection.html#module-timelapse_tools.projection">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="timelapse_tools.utils.html">timelapse_tools.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.utils.html#module-timelapse_tools.utils.czi_metadata">timelapse_tools.utils.czi_metadata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.utils.html#module-timelapse_tools.utils.czi_reading">timelapse_tools.utils.czi_reading module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.utils.html#module-timelapse_tools.utils.file_summary">timelapse_tools.utils.file_summary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timelapse_tools.utils.html#module-timelapse_tools.utils">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -198,6 +210,101 @@
 </div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-timelapse_tools.constants">
+<span id="timelapse-tools-constants-module"></span><h2>timelapse_tools.constants module<a class="headerlink" href="#module-timelapse_tools.constants" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="timelapse_tools.constants.Dimensions">
+<em class="property">class </em><code class="sig-prename descclassname">timelapse_tools.constants.</code><code class="sig-name descname">Dimensions</code><a class="reference internal" href="_modules/timelapse_tools/constants.html#Dimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.constants.Dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="timelapse_tools.constants.Dimensions.B">
+<code class="sig-name descname">B</code><em class="property"> = 'B'</em><a class="headerlink" href="#timelapse_tools.constants.Dimensions.B" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="timelapse_tools.constants.Dimensions.Channel">
+<code class="sig-name descname">Channel</code><em class="property"> = 'C'</em><a class="headerlink" href="#timelapse_tools.constants.Dimensions.Channel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="timelapse_tools.constants.Dimensions.Scene">
+<code class="sig-name descname">Scene</code><em class="property"> = 'S'</em><a class="headerlink" href="#timelapse_tools.constants.Dimensions.Scene" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="timelapse_tools.constants.Dimensions.SpatialX">
+<code class="sig-name descname">SpatialX</code><em class="property"> = 'X'</em><a class="headerlink" href="#timelapse_tools.constants.Dimensions.SpatialX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="timelapse_tools.constants.Dimensions.SpatialY">
+<code class="sig-name descname">SpatialY</code><em class="property"> = 'Y'</em><a class="headerlink" href="#timelapse_tools.constants.Dimensions.SpatialY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="timelapse_tools.constants.Dimensions.SpatialZ">
+<code class="sig-name descname">SpatialZ</code><em class="property"> = 'Z'</em><a class="headerlink" href="#timelapse_tools.constants.Dimensions.SpatialZ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="timelapse_tools.constants.Dimensions.Time">
+<code class="sig-name descname">Time</code><em class="property"> = 'T'</em><a class="headerlink" href="#timelapse_tools.constants.Dimensions.Time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-timelapse_tools.conversion">
+<span id="timelapse-tools-conversion-module"></span><h2>timelapse_tools.conversion module<a class="headerlink" href="#module-timelapse_tools.conversion" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="timelapse_tools.conversion.generate_movies">
+<code class="sig-prename descclassname">timelapse_tools.conversion.</code><code class="sig-name descname">generate_movies</code><span class="sig-paren">(</span><em class="sig-param">img: Union[str, pathlib.Path], distributed_executor_port: Union[str, int, None] = None, save_path: Union[str, pathlib.Path, None] = None, operating_dim: str = 'T', overwrite: bool = False, fps: int = 12, save_format: str = 'mp4', normalization_func: Callable = &lt;function single_channel_percentile_norm&gt;, normalization_kwargs: Dict[str, Any] = {}, projection_func: Callable = &lt;function single_channel_max_project&gt;, projection_kwargs: Dict[str, Any] = {}, S: Union[int, slice, None] = None, C: Union[int, slice, None] = None, B: Union[int, slice] = 0</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="reference internal" href="_modules/timelapse_tools/conversion.html#generate_movies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.conversion.generate_movies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a movie for every scene and channel pair found in a file through an
+operating dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>Union[str, Path]</em>) – Path to a CZI file to read and generate movies for.</p></li>
+<li><p><strong>distributed_executor_port</strong> (<em>Optional[Union[str, int]]</em>) – If provided a port to use for connecting to the distributed scheduler. All image
+computation and workflow tasks will be distributed using Dask.
+Default: None</p></li>
+<li><p><strong>save_path</strong> (<em>Optional[Union[str, Path]]</em>) – A specific path to save the generated movies to.
+Default: The a directory named after the provided file.</p></li>
+<li><p><strong>operating_dim</strong> (<em>str</em>) – Which dimension to operating through for each frame of the movie.
+Default: Dimensions.Time (“T”)</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em>) – Should existing files found under the same directory name be overwritten.
+Default: False</p></li>
+<li><p><strong>fps</strong> (<em>int</em>) – Frames per second of each produces movie.
+Default: 12</p></li>
+<li><p><strong>save_format</strong> (<em>str</em>) – Which movie format should be used for each produced file.
+Default: mp4
+Available: mov, avi, mpg, mpeg, mp4, mkv, wmv</p></li>
+<li><p><strong>normalization_func</strong> (<em>Callable</em>) – A function to normalize the entire movie data prior to projection.
+Default: timelapse_tools.normalization.single_channel_percentile_norm</p></li>
+<li><p><strong>normalization_kwargs</strong> (<em>Dict[str, Any]</em>) – Any extra arguments to pass to the normalization function.
+Default: {}</p></li>
+<li><p><strong>projection_func</strong> (<em>Callable</em>) – A function to project the data for at each frame of the movie.
+Default: timelapse_tools.projection.single_channel_max_project</p></li>
+<li><p><strong>projection_kwargs</strong> (<em>Dict[str, Any]</em>) – Any extra arguments to pass to the projection function.
+Default: {}</p></li>
+<li><p><strong>S</strong> (<em>Optional[Union[int, slice]]</em>) – A specific integer or slice to use for selecting down the scenes to process.
+Default: None (process all scenes)</p></li>
+<li><p><strong>C</strong> (<em>Optional[Union[int, slice]]</em>) – A specific integer or slice to use for selecting down the channels to process.
+Default: None (process all channels)</p></li>
+<li><p><strong>B</strong> (<em>Union[int, slice]</em>) – A specific integer or slice to use for selecting down the channels to process.
+Default: 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>save_path</strong> – The path to the produced scene-channel pairings of movies.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Path</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-timelapse_tools.exceptions">
 <span id="timelapse-tools-exceptions-module"></span><h2>timelapse_tools.exceptions module<a class="headerlink" href="#module-timelapse_tools.exceptions" title="Permalink to this headline">¶</a></h2>
@@ -207,101 +314,10 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 </dd></dl>
 
-</div>
-<div class="section" id="module-timelapse_tools.label">
-<span id="timelapse-tools-label-module"></span><h2>timelapse_tools.label module<a class="headerlink" href="#module-timelapse_tools.label" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="timelapse_tools.label.t_index_labeler">
-<code class="sig-prename descclassname">timelapse_tools.label.</code><code class="sig-name descname">t_index_labeler</code><span class="sig-paren">(</span><em class="sig-param">metadata: lxml.etree._Element, start_T: int, current_T: int, shape: List[Tuple[str, int]]</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/timelapse_tools/label.html#t_index_labeler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.label.t_index_labeler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate a string with the current time index.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="timelapse_tools.label.t_plus_duration_labeler">
-<code class="sig-prename descclassname">timelapse_tools.label.</code><code class="sig-name descname">t_plus_duration_labeler</code><span class="sig-paren">(</span><em class="sig-param">metadata: lxml.etree._Element, start_T: int, current_T: int, shape: List[Tuple[str, int]]</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/timelapse_tools/label.html#t_plus_duration_labeler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.label.t_plus_duration_labeler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse through the metadata for the beginning time and and current time and take the difference to be displayed.</p>
-</dd></dl>
-
-</div>
-<div class="section" id="module-timelapse_tools.movie">
-<span id="timelapse-tools-movie-module"></span><h2>timelapse_tools.movie module<a class="headerlink" href="#module-timelapse_tools.movie" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="timelapse_tools.movie.generate_movie">
-<code class="sig-prename descclassname">timelapse_tools.movie.</code><code class="sig-name descname">generate_movie</code><span class="sig-paren">(</span><em class="sig-param">input_file: Union[str, pathlib.Path], output_file: Union[str, pathlib.Path, None] = None, overwrite: bool = False, projection_func: Callable = &lt;function im2proj&gt;, projection_kwargs: Dict = {}, series_range: slice = slice(None, None, None), fps: int = 1, label: Union[Callable, str, None] = None, font: pathlib.Path = PosixPath('/usr/local/lib/python3.7/dist-packages/timelapse_tools/fonts/DejaVuSansMono.ttf'), show_progress: bool = False, S: int = 0, C: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="reference internal" href="_modules/timelapse_tools/movie.html#generate_movie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.movie.generate_movie" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a single large file into a much smaller movie. Image reading and writing is done a single frame at a time.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_file</strong> (<em>Union[str, Path]</em>) – The path to the file to be processed.</p></li>
-<li><p><strong>output_file</strong> (<em>Optional[Union[str, Path]]</em>) – Optionally, a path to where the output file should be stored. If None provided, stores it in the same directory
-as the input_file, with the same name but with the .mp4 suffix.</p></li>
-<li><p><strong>overwrite</strong> (<em>bool</em>) – If a file already exists at the output_file location, allow it to be overwritten.</p></li>
-<li><p><strong>projection_func</strong> (<em>Callable</em>) – Which function to be used to generate a projection for the plane.</p></li>
-<li><p><strong>projection_kwargs</strong> (<em>Dict</em>) – Any additional kwargs to be passed to the projection function.</p></li>
-<li><p><strong>series_range</strong> (<em>slice</em>) – A slice object to inform which timepoints to use.</p></li>
-<li><p><strong>fps</strong> (<em>int</em>) – How many frames should be shown per second in the output file.</p></li>
-<li><p><strong>label</strong> (<em>Optional[Union[Callable, str]]</em>) – Optionally, either: a function to generate a string or a string to placed on each frame.</p></li>
-<li><p><strong>font</strong> (<em>Optional[ImageFont.FreeTypeFont]</em>) – Optionally, a preloaded font to use for the label.</p></li>
-<li><p><strong>S</strong> (<em>int</em>) – Which scene to read.</p></li>
-<li><p><strong>C</strong> (<em>Optional[int]</em>) – Which channel to read. Default to reading all channels.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>saved_file</strong> – The resulting save path for the produced file.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Path</p>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
-<div class="section" id="module-timelapse_tools.projection">
-<span id="timelapse-tools-projection-module"></span><h2>timelapse_tools.projection module<a class="headerlink" href="#module-timelapse_tools.projection" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="timelapse_tools.projection.im2proj">
-<code class="sig-prename descclassname">timelapse_tools.projection.</code><code class="sig-name descname">im2proj</code><span class="sig-paren">(</span><em class="sig-param">data: numpy.ndarray, shape: List[Tuple[str, int]], C: int = 0, min_percent_intensity: float = 50.0, max_percent_intensity: float = 99.8, project_axis: str = 'Z', **kwargs</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="_modules/timelapse_tools/projection.html#im2proj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.projection.im2proj" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate a 2D (YX) projection for the ndarray.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>np.ndarray</em>) – The image data to create a projection for.</p></li>
-<li><p><strong>shape</strong> (<em>List[Tuple[str, int]]</em>) – The dimension and shape information to infer projection processing with.</p></li>
-<li><p><strong>C</strong> (<em>int</em>) – Which channel to use for the projection.</p></li>
-<li><p><strong>min_percent_intensity</strong> (<em>float</em>) – The minimum percent intensity to allow through before projecting.</p></li>
-<li><p><strong>max_percent_intensity</strong> (<em>float</em>) – The maximum percent intensity to allow through before projecting.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>projection</strong> – The 2D (YX) projection.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="timelapse_tools.projection.im2proj_all_axes">
-<code class="sig-prename descclassname">timelapse_tools.projection.</code><code class="sig-name descname">im2proj_all_axes</code><span class="sig-paren">(</span><em class="sig-param">data: numpy.ndarray, shape: List[Tuple[str, int]], C: int = 0, min_percent_intensity: float = 50.0, max_percent_intensity: float = 99.8, **kwargs</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="_modules/timelapse_tools/projection.html#im2proj_all_axes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.projection.im2proj_all_axes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate 2D projections for all axes and stack them together for the ndarray.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>np.ndarray</em>) – The image data to create a projection for.</p></li>
-<li><p><strong>shape</strong> (<em>List[Tuple[str, int]]</em>) – The dimension and shape information to infer projection processing with.</p></li>
-<li><p><strong>C</strong> (<em>int</em>) – Which channel to use for the projection.</p></li>
-<li><p><strong>min_percent_intensity</strong> (<em>float</em>) – The minimum percent intensity to allow through before projecting.</p></li>
-<li><p><strong>max_percent_intensity</strong> (<em>float</em>) – The maximum percent intensity to allow through before projecting.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>projection</strong> – The stacked 2D projections as a single 2D array.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.ndarray</p>
-</dd>
-</dl>
+<dl class="exception">
+<dt id="timelapse_tools.exceptions.InvalidShapeError">
+<em class="property">exception </em><code class="sig-prename descclassname">timelapse_tools.exceptions.</code><code class="sig-name descname">InvalidShapeError</code><span class="sig-paren">(</span><em class="sig-param">actual: int</em>, <em class="sig-param">expected: int</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/timelapse_tools/exceptions.html#InvalidShapeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.exceptions.InvalidShapeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 </dd></dl>
 
 </div>

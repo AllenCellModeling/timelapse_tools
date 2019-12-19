@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>timelapse_tools.utils.czi_metadata &mdash; Timelapse Tools 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Timelapse Tools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../timelapse_tools.html">timelapse_tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../timelapse_tools.normalization.html">timelapse_tools.normalization package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../timelapse_tools.projection.html">timelapse_tools.projection package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../timelapse_tools.utils.html">timelapse_tools.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#module-timelapse_tools.constants">timelapse_tools.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#module-timelapse_tools.conversion">timelapse_tools.conversion module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#module-timelapse_tools.exceptions">timelapse_tools.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../timelapse_tools.html#module-timelapse_tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Timelapse Tools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../timelapse_tools.html">timelapse_tools</a> &raquo;</li>
+        
+      <li>timelapse_tools.utils.czi_metadata</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for timelapse_tools.utils.czi_metadata</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">dateutil.parser</span> <span class="kn">import</span> <span class="n">isoparse</span>
+
+<span class="c1">###############################################################################</span>
+
+
+<div class="viewcode-block" id="datetime_created"><a class="viewcode-back" href="../../../timelapse_tools.utils.html#timelapse_tools.utils.czi_metadata.datetime_created">[docs]</a><span class="k">def</span> <span class="nf">datetime_created</span><span class="p">(</span><span class="n">czi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Date created as indicated by czi metadata&quot;&quot;&quot;</span>
+    <span class="n">creation_xml</span> <span class="o">=</span> <span class="n">czi</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;//CreationDate&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">creation_xml</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Wrong number of creation dates&quot;</span>
+    <span class="k">return</span> <span class="n">isoparse</span><span class="p">(</span><span class="n">creation_xml</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="created_by"><a class="viewcode-back" href="../../../timelapse_tools.utils.html#timelapse_tools.utils.czi_metadata.created_by">[docs]</a><span class="k">def</span> <span class="nf">created_by</span><span class="p">(</span><span class="n">czi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;User of record&quot;&quot;&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">czi</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;//UserName&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">return</span> <span class="n">user</span></div>
+
+
+<div class="viewcode-block" id="channel_names"><a class="viewcode-back" href="../../../timelapse_tools.utils.html#timelapse_tools.utils.czi_metadata.channel_names">[docs]</a><span class="k">def</span> <span class="nf">channel_names</span><span class="p">(</span><span class="n">czi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Metadata specified channel names&quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;./Metadata/Information/Image/Dimensions/Channels/Channel&quot;</span>
+    <span class="n">channels</span> <span class="o">=</span> <span class="n">czi</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">channels</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="time_per_frame"><a class="viewcode-back" href="../../../timelapse_tools.utils.html#timelapse_tools.utils.czi_metadata.time_per_frame">[docs]</a><span class="k">def</span> <span class="nf">time_per_frame</span><span class="p">(</span><span class="n">czi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Waiting on subblock metadata&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;Unavailable&quot;</span></div>
+
+
+<div class="viewcode-block" id="total_duration"><a class="viewcode-back" href="../../../timelapse_tools.utils.html#timelapse_tools.utils.czi_metadata.total_duration">[docs]</a><span class="k">def</span> <span class="nf">total_duration</span><span class="p">(</span><span class="n">czi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Waiting on subblock metadata&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;Unavailable&quot;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Dave Williams
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
