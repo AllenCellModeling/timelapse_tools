@@ -41,19 +41,26 @@ dev_requirements = [
 interactive_requirements = [
     "altair",
     "jupyterlab",
-    "matplotlib",
+    "matplotlib"
+]
+
+distributed_requirements = [
+    "dask_jobqueue<=0.7.0",
+    "bokeh<=1.4.0",
 ]
 
 requirements = [
+    "aicspylibczi==2.2.0",
+    "dask<=2.8.1",
+    "fsspec<=0.6.1",
+    "imageio<=2.6.1",
+    "imageio-ffmpeg<=0.3.0",
+    "lxml<=4.4.1",
+    "numpy<=1.17.4",
+    "pandas<=0.25.3",
+    "Pillow<=6.2.1",
+    "prefect<=0.8.0",
     "xlrd",
-    "aicspylibczi==2.1.0",
-    "imageio==2.6.1",
-    "imageio-ffmpeg==0.3.0",
-    "lxml==4.4.1",
-    "numpy==1.17.4",
-    "pandas==0.25.3",
-    "Pillow==6.2.1",
-    "tqdm==4.38.0",
 ]
 
 extra_requirements = {
@@ -61,13 +68,15 @@ extra_requirements = {
     "setup": setup_requirements,
     "dev": dev_requirements,
     "interactive": interactive_requirements,
+    "distributed": distributed_requirements,
     "all": [
         *requirements,
         *test_requirements,
         *setup_requirements,
         *dev_requirements,
-        *interactive_requirements
-    ]
+        *interactive_requirements,
+        *distributed_requirements,
+    ],
 }
 
 setup(

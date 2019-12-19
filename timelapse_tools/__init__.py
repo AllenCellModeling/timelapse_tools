@@ -9,9 +9,9 @@ __email__ = "jacksonb@alleninstitute.org, cdavew@alleninstitute.org"
 __version__ = "0.1.0"
 
 
+from .conversion import generate_movies  # noqa: F401
+from .utils import daread  # noqa: F401
+
+
 def get_module_version():
     return __version__
-
-
-from .computation import compute  # noqa: F401
-from .movie import generate_movie  # noqa: F401

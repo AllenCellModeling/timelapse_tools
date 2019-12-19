@@ -16,12 +16,12 @@ jobs:
     strategy:
       max-parallel: 6
       matrix:
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu-latest, macOS-latest, windows-latest]
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v1
     - name: Set up Python
-      uses: actions/setup-python@master
+      uses: actions/setup-python@v1
       with:
         python-version: 3.7
     - name: Install dependencies
@@ -30,15 +30,16 @@ jobs:
         pip install .[test]
     - name: Test with pytest
       run: |
-        pytest timelapse_tools/tests/
+        pytest --cov-report xml --cov=cdptools timelapse_tools/tests/
+        codecov -t ${{ secrets.CODECOV_TOKEN }}
 
   lint:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v1
     - name: Set up Python
-      uses: actions/setup-python@master
+      uses: actions/setup-python@v1
       with:
         python-version: 3.7
     - name: Install dependencies
@@ -47,4 +48,4 @@ jobs:
         pip install .[test]
     - name: Lint with flake8
       run: |
-        flake8 timelapse_tools --count --verbose --max-line-length=127 --show-source --statistics
+        flake8 timelapse_tools --count --verbose --max-line-length=88 --show-source --statistics
