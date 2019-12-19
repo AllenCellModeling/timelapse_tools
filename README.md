@@ -34,11 +34,45 @@ _**Generate all scene and channel movie pairs from a file:**_
 ```python
 from timelapse_tools import generate_movies
 
-# Generates a folder with every scene and channel pair of videos in the file
+# Generates a folder with every scene and channel pair of movies in the file
 generate_movies("my_very_large_image.czi")
 ```
 
-![Example Generated Timelapse Movie](data/example.mp4)
+## Distributed
+If you want to generate these movies in a distributed fashion, spin up a Dask scheduler.
+The following settings generally work pretty well for our (AICS) SLURM cluster:
+```python
+from dask_jobqueue import SLURMCluster
+import dask, dask.distributed
+
+cluster = SLURMCluster(
+    cores=2,
+    memory="16GB",
+    walltime="12:00:00",
+    queue="aics_cpu_general"
+)
+cluster.adapt(minimum_jobs=2, maximum_jobs=40)
+client = dask.distributed.Client(cluster)
+```
+
+From there you simply need to pass the distributed executor port to the
+`generate_movies` function:
+```python
+from timelapse_tools import generate_movies
+
+generate_movies(
+    "my_very_large_image.czi",
+    distributed_executor_port=cluster.scheduler_info["address"].split(":")[-1]
+)
+```
+
+_It is also recommended that whichever machine you run the scheduler on, to also set the
+following environment variable:_
+```bash
+export DASK_DISTRIBUTED__SCHEDULER__WORK_STEALING="False"
+```
+_More details under the "work stealing" section
+[here](https://docs.prefect.io/core/tutorials/dask-cluster.html)._
 
 ## Installation
 
