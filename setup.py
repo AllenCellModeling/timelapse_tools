@@ -59,7 +59,7 @@ requirements = [
     "numpy<=1.17.4",
     "pandas<=0.25.3",
     "Pillow<=6.2.1",
-    "prefect<=0.8.0",
+    "prefect[viz]<=0.8.0",
     "xlrd",
 ]
 

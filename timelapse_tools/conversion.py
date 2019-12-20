@@ -12,7 +12,8 @@ import numpy as np
 from prefect import Flow, task, unmapped
 
 from .constants import AVAILABLE_OPERATING_DIMENSIONS, Dimensions
-from .normalization.single_channel_percentile_norm import single_channel_percentile_norm
+from .normalization.single_channel_percentile_norm import \
+    single_channel_percentile_norm
 from .projection.single_channel_max_project import single_channel_max_project
 from .utils.czi_reading import daread
 
@@ -424,5 +425,8 @@ def generate_movies(
 
     # Get resulting path
     save_path = state.result[flow.get_tasks(name="_get_save_path")[0]].result
+
+    # Save the flow viz to the same save_path
+    flow.visualize(filename=str(save_path / "workflow.png"))
 
     return save_path
