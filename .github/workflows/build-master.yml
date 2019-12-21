@@ -30,7 +30,7 @@ jobs:
         pip install .[test]
     - name: Test with pytest
       run: |
-        pytest --cov-report xml --cov=cdptools timelapse_tools/tests/
+        pytest --cov-report xml --cov=timelapse_tools timelapse_tools/tests/
         codecov -t ${{ secrets.CODECOV_TOKEN }}
 
   lint:
