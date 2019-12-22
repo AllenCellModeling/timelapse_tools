@@ -275,6 +275,7 @@ def generate_movies(
     operating_dim: str = Dimensions.Time,
     overwrite: bool = False,
     fps: int = 12,
+    quality: int = 6,
     save_format: str = "mp4",
     normalization_func: Callable = single_channel_percentile_norm,
     normalization_kwargs: Dict[str, Any] = {},
@@ -308,6 +309,9 @@ def generate_movies(
     fps: int
         Frames per second of each produces movie.
         Default: 12
+    quality: int
+        ImageIO's compression system. 0 is high compression, 10 is no compression.
+        Default: 6
     save_format: str
         Which movie format should be used for each produced file.
         Default: mp4
