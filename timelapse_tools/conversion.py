@@ -277,6 +277,7 @@ def generate_movies(
     fps: int = 12,
     quality: int = 6,
     save_format: str = "mp4",
+    save_workflow: bool = False,
     normalization_func: Callable = single_channel_percentile_norm,
     normalization_kwargs: Dict[str, Any] = {},
     projection_func: Callable = single_channel_max_project,
@@ -316,6 +317,11 @@ def generate_movies(
         Which movie format should be used for each produced file.
         Default: mp4
         Available: mov, avi, mpg, mpeg, mp4, mkv, wmv
+    save_workflow: bool
+        Optionally, save a PNG and PDF of the workflow that ran.
+        If this is set to True, be sure you have installed graphviz and added
+        it's executable to your PATH.
+        Default: False
     normalization_func: Callable
         A function to normalize the entire movie data prior to projection.
         Default: timelapse_tools.normalization.single_channel_percentile_norm
@@ -431,6 +437,7 @@ def generate_movies(
     save_path = state.result[flow.get_tasks(name="_get_save_path")[0]].result
 
     # Save the flow viz to the same save_path
-    flow.visualize(filename=str(save_path / "workflow.png"))
+    if save_workflow:
+        flow.visualize(filename=str(save_path / "workflow.png"))
 
     return save_path

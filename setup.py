@@ -41,7 +41,8 @@ dev_requirements = [
 interactive_requirements = [
     "altair",
     "jupyterlab",
-    "matplotlib"
+    "matplotlib",
+    "graphviz<=0.13.2",
 ]
 
 distributed_requirements = [
@@ -53,7 +54,6 @@ requirements = [
     "aicspylibczi==2.2.0",
     "dask<=2.8.1",
     "fsspec<=0.6.1",
-    "graphviz<=0.13.2",
     "imageio<=2.6.1",
     "imageio-ffmpeg<=0.3.0",
     "lxml<=4.4.1",
