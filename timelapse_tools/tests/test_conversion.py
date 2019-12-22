@@ -265,7 +265,7 @@ def test_generate_selected_dims_list(dims, getitem_indicies, expected):
 def test_generate_movies(data_dir, tmpdir, img, expected):
     # Generate movies
     save_dir = conversion.generate_movies(
-        data_dir / img, save_path=tmpdir, overwrite=True
+        data_dir / img, save_path=tmpdir, overwrite=True, fps=1, quality=10
     )
 
     # There _should_ only be one file produced from this, select it
