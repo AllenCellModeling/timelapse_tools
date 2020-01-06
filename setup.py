@@ -52,7 +52,7 @@ distributed_requirements = [
 
 requirements = [
     "aicspylibczi==2.2.0",
-    "dask<=2.8.1",
+    "dask==2.9.0",
     "fsspec<=0.6.1",
     "imageio<=2.6.1",
     "imageio-ffmpeg<=0.3.0",
