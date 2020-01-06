@@ -78,6 +78,9 @@ _More details under the "work stealing" section
 
 `pip install git+https://github.com/AllenCellModeling/timelapse_tools.git`
 
+_*Note:* If you want to produce workflow visualizations at the end of conversion, you
+will need to install pydot + graphviz._
+
 ## Documentation
 For full package documentation please visit [AllenCellModeling.github.io/timelapse_tools](https://AllenCellModeling.github.io/timelapse_tools).
 
