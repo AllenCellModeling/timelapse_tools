@@ -16,7 +16,7 @@ def single_channel_percentile_norm(
         raise exceptions.InvalidShapeError(len(data.shape), 4)
 
     # Get the norm by values
-    norm_by = da.percentile(data.flatten(), [min_p, min_p])
+    norm_by = da.percentile(data.flatten(), [min_p, min_p]).compute()
 
     # Norm
     normed = (data - norm_by[0]) / (norm_by[1] - norm_by[0])
