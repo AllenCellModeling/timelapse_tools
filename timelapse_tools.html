@@ -259,7 +259,7 @@
 <span id="timelapse-tools-conversion-module"></span><h2>timelapse_tools.conversion module<a class="headerlink" href="#module-timelapse_tools.conversion" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="timelapse_tools.conversion.generate_movies">
-<code class="sig-prename descclassname">timelapse_tools.conversion.</code><code class="sig-name descname">generate_movies</code><span class="sig-paren">(</span><em class="sig-param">img: Union[str, pathlib.Path], distributed_executor_port: Union[str, int, None] = None, save_path: Union[str, pathlib.Path, None] = None, operating_dim: str = 'T', overwrite: bool = False, fps: int = 12, save_format: str = 'mp4', normalization_func: Callable = &lt;function single_channel_percentile_norm&gt;, normalization_kwargs: Dict[str, Any] = {}, projection_func: Callable = &lt;function single_channel_max_project&gt;, projection_kwargs: Dict[str, Any] = {}, S: Union[int, slice, None] = None, C: Union[int, slice, None] = None, B: Union[int, slice] = 0</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="reference internal" href="_modules/timelapse_tools/conversion.html#generate_movies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.conversion.generate_movies" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">timelapse_tools.conversion.</code><code class="sig-name descname">generate_movies</code><span class="sig-paren">(</span><em class="sig-param">img: Union[str, pathlib.Path], distributed_executor_port: Union[str, int, None] = None, save_path: Union[str, pathlib.Path, None] = None, operating_dim: str = 'T', overwrite: bool = False, fps: int = 12, quality: int = 6, save_format: str = 'mp4', save_workflow: bool = False, normalization_func: Callable = &lt;function single_channel_percentile_norm&gt;, normalization_kwargs: Dict[str, Any] = {}, projection_func: Callable = &lt;function single_channel_max_project&gt;, projection_kwargs: Dict[str, Any] = {}, S: Union[int, slice, None] = None, C: Union[int, slice, None] = None, B: Union[int, slice] = 0</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="reference internal" href="_modules/timelapse_tools/conversion.html#generate_movies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#timelapse_tools.conversion.generate_movies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a movie for every scene and channel pair found in a file through an
 operating dimension.</p>
 <dl class="field-list simple">
@@ -277,9 +277,15 @@ Default: Dimensions.Time (“T”)</p></li>
 Default: False</p></li>
 <li><p><strong>fps</strong> (<em>int</em>) – Frames per second of each produces movie.
 Default: 12</p></li>
+<li><p><strong>quality</strong> (<em>int</em>) – ImageIO’s compression system. 0 is high compression, 10 is no compression.
+Default: 6</p></li>
 <li><p><strong>save_format</strong> (<em>str</em>) – Which movie format should be used for each produced file.
 Default: mp4
 Available: mov, avi, mpg, mpeg, mp4, mkv, wmv</p></li>
+<li><p><strong>save_workflow</strong> (<em>bool</em>) – Optionally, save a PNG and PDF of the workflow that ran.
+If this is set to True, be sure you have installed graphviz and added
+it’s executable to your PATH.
+Default: False</p></li>
 <li><p><strong>normalization_func</strong> (<em>Callable</em>) – A function to normalize the entire movie data prior to projection.
 Default: timelapse_tools.normalization.single_channel_percentile_norm</p></li>
 <li><p><strong>normalization_kwargs</strong> (<em>Dict[str, Any]</em>) – Any extra arguments to pass to the normalization function.
